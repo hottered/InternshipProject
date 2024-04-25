@@ -98,7 +98,7 @@ namespace DataLayer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -349,9 +349,7 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DataLayer.Models.Position.UserPosition", "Position")
                         .WithMany("Employee")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PositionId");
 
                     b.Navigation("Position");
                 });

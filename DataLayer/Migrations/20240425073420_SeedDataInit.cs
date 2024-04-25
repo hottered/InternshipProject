@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedData : Migration
+    public partial class SeedDataInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -91,7 +91,7 @@ namespace DataLayer.Migrations
                     Address = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     IDNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DaysOffNumber = table.Column<int>(type: "int", nullable: true),
-                    PositionId = table.Column<int>(type: "int", nullable: false),
+                    PositionId = table.Column<int>(type: "int", nullable: true),
                     EmploymentStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmploymentEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -118,8 +118,7 @@ namespace DataLayer.Migrations
                         name: "FK_AspNetUsers_Positions_PositionId",
                         column: x => x.PositionId,
                         principalTable: "Positions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

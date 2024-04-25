@@ -27,11 +27,8 @@ namespace DataLayer.Models
         public string ?IDNumber { get; set; } = default!;
 
         public int ?DaysOffNumber { get; set; } = default!;
-
-        public UserPosition? Position { get; set; }
-        public int PositionId {  get; set; }
-        public List<UserRequest>? Request { get; set; } = default!;
-
+        public UserPosition? Position { get; set; } = null!;
+        public List<UserRequest>? Request { get; set; } = new();
         public DateTime EmploymentStartDate { get; set; } = DateTime.UtcNow;
 
         public DateTime? EmploymentEndDate { get; set; } = DateTime.UtcNow;

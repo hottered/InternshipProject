@@ -38,6 +38,7 @@ namespace DataLayer.Repositories
         public async Task<UserPosition?> GetPositionByIdAsync(int id)
         {
             return await _context.Positions.FirstOrDefaultAsync(x => x.Id == id);
+            
         }
         public async Task<bool> UpdatePositionAsync(UserPosition userPosition)
         {

@@ -17,6 +17,7 @@ namespace DataLayer.Repositories.Interfaces
         public Task<List<Employee>> GetAllUsersAsync();
         public  Task<Employee?> GetUserByIdAsync(int id);
         public Task<bool> UpdateUserAsync(Employee employee);
+        public Task AssignRoleAsync(Employee employee, string role);
 
     }
 }

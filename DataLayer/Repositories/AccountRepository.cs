@@ -47,6 +47,10 @@ namespace DataLayer.Repositories
             await _userManager.UpdateAsync(employee);
             return true;
         }
+        public async Task AssignRoleAsync(Employee employee,string role)
+        {
+            await _userManager.AddToRoleAsync(employee, role);
+        }
 
     }
 }

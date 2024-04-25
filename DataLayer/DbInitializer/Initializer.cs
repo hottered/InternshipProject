@@ -2,6 +2,7 @@
 using DataLayer.Domain;
 using DataLayer.Models;
 using DataLayer.Models.Position;
+using DataLayer.Models.Request;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -26,10 +27,10 @@ namespace DataLayer.DbInitializer
             _positionRepository = positionRepository;
             _userRequestRepository = userRequestRepository;
         }
-        public  async Task InitializeAsync()
+        public async Task InitializeAsync()
         {
-            var anyPositions =  (await _positionRepository.GetAllPositionsAsync()).Any();
-            if(!anyPositions)
+            var anyPositions = (await _positionRepository.GetAllPositionsAsync()).Any();
+            if (!anyPositions)
             {
                 var position = new UserPosition
                 {
@@ -38,8 +39,26 @@ namespace DataLayer.DbInitializer
                 };
                 await _positionRepository.CreatePositionAsync(position);
             }
+            var anyRequests = (await _userRequestRepository.GetAllRequestsAsync()).Any();
+            if (!anyRequests)
+            {
+                var request1 = new UserRequest
+                {
+                    LeaveType = "Vacation",
+                    CommentEmployee = "Odlazim i ne vracam se",
+                    CommentHR = "Odlazi cao"
+                };
+                var request2 = new UserRequest
+                {
+                    LeaveType = "Vacation",
+                    CommentEmployee = "Odlazim i ne vracam se",
+                    CommentHR = "Odlazi cao"
+                };
+                await _userRequestRepository.CreateRequestAsync(request1);
+                await _userRequestRepository.CreateRequestAsync(request2);
+            }
             var anyUsers = (await _accountRepository.GetAllUsersAsync()).Any();
-            if(!anyUsers)
+            if (!anyUsers)
             {
                 var admin = new Employee
                 {
@@ -67,6 +86,8 @@ namespace DataLayer.DbInitializer
                     NormalizedUserName = "HR@TEST.RS".ToUpper(),
                     SecurityStamp = Guid.NewGuid().ToString()
                 };
+                var position = await _positionRepository.GetPositionByIdAsync(1);
+                var requests = await _userRequestRepository.GetAllRequestsAsync();
                 var user1 = new Employee
                 {
                     FirstName = "User1",
@@ -76,13 +97,28 @@ namespace DataLayer.DbInitializer
                     DaysOffNumber = 0,
                     Email = "User1@test.rs",
                     EmailConfirmed = true,
-                    UserName = RolesEnum.HR.ToString(),
+                    UserName = "User1",
                     NormalizedUserName = "USER1@TEST.RS".ToUpper(),
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    PositionId = 1
+                    Position = position,
+                    Request = requests
                 };
-                //await _accountRepository.CreateUserAsync(admin)
+
+                var result = await _accountRepository.CreateUserAsync(admin, "Sifra.1234");
+                if (result.Succeeded)
+                {
+                    await _accountRepository.AssignRoleAsync(admin, RolesEnum.Admin.ToString());
+                }
+                var resultHr = await _accountRepository.CreateUserAsync(hr, "Sifra.1234");
+                if (resultHr.Succeeded)
+                {
+                    await _accountRepository.AssignRoleAsync(hr, RolesEnum.HR.ToString());
+
+                }
+                await _accountRepository.CreateUserAsync(user1, "Sifra.1234");
+
             }
+
         }
     }
 }
