@@ -7,12 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
 using DataLayer.DbInitializer;
+using DataLayer.Repositories.GenericRepository.Interfaces;
+using DataLayer.Models.Request;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using DataLayer.Repositories.GenericRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 
 //DatabaseString
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -27,6 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddIdentity<Employee, IdentityRole<int>>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+//Cookie
 builder.Services.ConfigureApplicationCookie(config =>
 {
     config.Cookie.Name = "MyCookieAuth";
@@ -38,6 +42,7 @@ builder.Services.ConfigureApplicationCookie(config =>
 
 //DI
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IUserRequestRepository, UserRequestRepository>();
 builder.Services.AddScoped<Initializer>();

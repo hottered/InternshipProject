@@ -3,6 +3,8 @@ using DataLayer.Domain;
 using DataLayer.Models;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
+using DataLayer.Repositories;
+using DataLayer.Repositories.GenericRepository.Interfaces;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -16,20 +18,21 @@ namespace DataLayer.DbInitializer
     public class Initializer
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IPositionRepository _positionRepository;
-        private readonly IUserRequestRepository _userRequestRepository;
+        private readonly IRepository<UserRequest> _userRequestRepository;
+        private readonly IRepository<UserPosition> _userPositionRepository;
+        
         public Initializer(
-            IAccountRepository accountRepository,
-            IPositionRepository positionRepository,
-            IUserRequestRepository userRequestRepository)
+            IRepository<UserRequest> userRequestRepository,
+            IRepository<UserPosition> userPositionRepository,
+            IAccountRepository accountRepository)
         {
-            _accountRepository = accountRepository;
-            _positionRepository = positionRepository;
+            _userPositionRepository = userPositionRepository;
             _userRequestRepository = userRequestRepository;
+            _accountRepository = accountRepository;
         }
         public async Task InitializeAsync()
         {
-            var anyPositions = (await _positionRepository.GetAllPositionsAsync()).Any();
+            var anyPositions = (await _userPositionRepository.GetAllAsync()).Any();
             if (!anyPositions)
             {
                 var position = new UserPosition
@@ -37,9 +40,9 @@ namespace DataLayer.DbInitializer
                     Caption = "Developer",
                     Description = "Description"
                 };
-                await _positionRepository.CreatePositionAsync(position);
+                await _userPositionRepository.CreateAsync(position);
             }
-            var anyRequests = (await _userRequestRepository.GetAllRequestsAsync()).Any();
+            var anyRequests = (await _userRequestRepository.GetAllAsync()).Any();
             if (!anyRequests)
             {
                 var request1 = new UserRequest
@@ -54,8 +57,8 @@ namespace DataLayer.DbInitializer
                     CommentEmployee = "Odlazim i ne vracam se",
                     CommentHR = "Odlazi cao"
                 };
-                await _userRequestRepository.CreateRequestAsync(request1);
-                await _userRequestRepository.CreateRequestAsync(request2);
+                await _userRequestRepository.CreateAsync(request1);
+                await _userRequestRepository.CreateAsync(request2);
             }
             var anyUsers = (await _accountRepository.GetAllUsersAsync()).Any();
             if (!anyUsers)
@@ -86,8 +89,8 @@ namespace DataLayer.DbInitializer
                     NormalizedUserName = "HR@TEST.RS".ToUpper(),
                     SecurityStamp = Guid.NewGuid().ToString()
                 };
-                var position = await _positionRepository.GetPositionByIdAsync(1);
-                var requests = await _userRequestRepository.GetAllRequestsAsync();
+                var position = await _userPositionRepository.GetByIdAsync(1);
+                var requests = await _userRequestRepository.GetAllAsync();
                 var user1 = new Employee
                 {
                     FirstName = "User1",
@@ -101,7 +104,7 @@ namespace DataLayer.DbInitializer
                     NormalizedUserName = "USER1@TEST.RS".ToUpper(),
                     SecurityStamp = Guid.NewGuid().ToString(),
                     Position = position,
-                    Request = requests
+                    Request = requests.ToList(),
                 };
 
                 var result = await _accountRepository.CreateUserAsync(admin, "Sifra.1234");
