@@ -33,12 +33,9 @@ namespace InternshipProject.Controllers
             {
                 var result = await _accountRepository.CreateUserAsync(signUpModel);
 
-                if (!result.Succeeded)
+                if (!result)
                 {
-                    foreach (var errorMessage in result.Errors)
-                    {
-                        ModelState.AddModelError("", errorMessage.Description);
-                    }
+                    ModelState.AddModelError("", "There was an eror creating the user. Please try again!");
                     return View(signUpModel);
                 }
                 ModelState.Clear();

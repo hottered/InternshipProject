@@ -29,8 +29,8 @@ namespace DataLayer.Data
 
             modelBuilder.Entity<IdentityRole<int>>().HasData(
 
-                    new IdentityRole<int>() { Id = 1, Name = RolesEnum.Admin.ToString(), ConcurrencyStamp = "1", NormalizedName = RolesEnum.Admin.ToString().ToUpper() },
-                    new IdentityRole<int>() { Id = 2, Name = RolesEnum.HR.ToString(), ConcurrencyStamp = "2", NormalizedName = RolesEnum.HR.ToString().ToUpper() }
+                    new IdentityRole<int>() { Id = 1, Name = nameof(RolesEnum.Admin), ConcurrencyStamp = "1", NormalizedName = nameof(RolesEnum.Admin).ToUpper() },
+                    new IdentityRole<int>() { Id = 2, Name = nameof(RolesEnum.HR), ConcurrencyStamp = "2", NormalizedName = nameof(RolesEnum.HR).ToUpper() }
 
                 );
             

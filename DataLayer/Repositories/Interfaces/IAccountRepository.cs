@@ -12,8 +12,8 @@ namespace DataLayer.Repositories.Interfaces
 {
     public interface IAccountRepository
     {
-        public Task<IdentityResult> CreateUserAsync(SignUpModel model);
-        public Task<IdentityResult> CreateUserAsync(Employee model, string password);
+        public Task<bool> CreateUserAsync(SignUpModel model);
+        public Task<bool> CreateUserAsync(Employee model, string password);
         public Task<List<Employee>> GetAllUsersAsync();
         public  Task<Employee?> GetUserByIdAsync(int id);
         public Task<bool> UpdateUserAsync(Employee employee);

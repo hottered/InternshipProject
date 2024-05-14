@@ -45,26 +45,12 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IUserRequestRepository, UserRequestRepository>();
-builder.Services.AddScoped<Initializer>();
 
-//builder.Services.AddScoped<IAccountService,AccountService >();
 
 var app = builder.Build();
 
-using(var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var dataSeeder = services.GetRequiredService<Initializer>();
-        await dataSeeder.InitializeAsync();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Nije uspelo");
-        Console.WriteLine(ex.Message);
-    }
-}
+//Seed data
+await AppDbInitializer.Seed(app);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
