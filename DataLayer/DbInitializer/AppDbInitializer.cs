@@ -25,40 +25,56 @@ namespace DataLayer.DbInitializer
                 var _context = serviceScope.ServiceProvider.GetService<AppDbContext>();
                 var _userManager = serviceScope.ServiceProvider.GetService<UserManager<Employee>>();
 
+                _context.Database.EnsureCreated();
 
-                var anyPositions =  await _context.Positions.AnyAsync();
-                if (!anyPositions)
+                var position = await _context.Positions.FirstOrDefaultAsync();
+
+                //POSITIONS
+                if (position is null)
                 {
-                    var position = new UserPosition
+                    position = new UserPosition
                     {
                         Caption = "Developer",
                         Description = "Description"
                     };
                     await _context.Positions.AddAsync(position);
                 }
-                var anyRequests = await _context.Requests.AnyAsync();
-                if (!anyRequests)
+
+
+                //REQUESTS
+
+                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Vacation");
+                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Sick");
+                var requests = new List<UserRequest>();
+
+                if (request1 is null && request2 is null)
                 {
-                    var request1 = new UserRequest
+                    request1 = new UserRequest
                     {
                         LeaveType = "Vacation",
                         CommentEmployee = "Leaving and never coming back",
                         CommentHR = "Goodbye!"
                     };
-                    var request2 = new UserRequest
+                    request2 = new UserRequest
                     {
-                        LeaveType = "Vacation",
+                        LeaveType = "Sick",
                         CommentEmployee = "Leaving and never returning",
                         CommentHR = "GoodByte!"
                     };
+                    requests.Add(request1);
+                    requests.Add(request2);
                     await _context.Requests.AddAsync(request1);
                     await _context.Requests.AddAsync(request2);
                 }
-                await _context.SaveChangesAsync();
-                var anyUsers = await _context.Users.AnyAsync();
-                if (!anyUsers)
+
+
+                var admin = await _context.Users.FirstOrDefaultAsync(x=>x.Email == "admin@test.rs");
+                var hr = await _context.Users.FirstOrDefaultAsync(x=>x.Email == "hr@test.rs");
+                var user1 = await _context.Users.FirstOrDefaultAsync(x=>x.Email == "user1@test.rs");
+
+                if (admin is null && hr is null && user1 is null)
                 {
-                    var admin = new Employee
+                    admin = new Employee
                     {
                         FirstName = nameof(RolesEnum.Admin),
                         LastName = nameof(RolesEnum.Admin),
@@ -71,7 +87,7 @@ namespace DataLayer.DbInitializer
                         NormalizedUserName = "ADMIN@TEST.RS".ToUpper(),
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
-                    var hr = new Employee
+                    hr = new Employee
                     {
                         FirstName = nameof(RolesEnum.HR),
                         LastName = nameof(RolesEnum.HR),
@@ -84,19 +100,15 @@ namespace DataLayer.DbInitializer
                         NormalizedUserName = "HR@TEST.RS".ToUpper(),
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
-                    //var position = await _userPositionRepository.GetByIdAsync(1);
-                    //var requests = await _userRequestRepository.GetAllAsync();
-                    var position = await _context.Positions.FirstOrDefaultAsync(x => x.Id == 1);
-                    var requests = await _context.Requests.ToListAsync();
 
-                    var user1 = new Employee
+                    user1 = new Employee
                     {
                         FirstName = "User1",
                         LastName = "User1",
                         Address = "User1Address",
                         IDNumber = "User1IdNumber",
                         DaysOffNumber = 0,
-                        Email = "User1@test.rs",
+                        Email = "user1@test.rs",
                         EmailConfirmed = true,
                         UserName = "User1",
                         NormalizedUserName = "USER1@TEST.RS".ToUpper(),
@@ -118,8 +130,9 @@ namespace DataLayer.DbInitializer
                     }
                     await _userManager.CreateAsync(user1, "Sifra.1234");
 
-                    await _context.SaveChangesAsync();
                 }
+
+                await _context.SaveChangesAsync();
             }
         }
     }
