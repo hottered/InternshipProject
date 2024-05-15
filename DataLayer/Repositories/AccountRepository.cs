@@ -17,7 +17,7 @@ namespace DataLayer.Repositories
         {
             _userManager = userManager;
         }
-        public async Task<IdentityResult> CreateUserAsync(SignUpModel model)
+        public async Task<bool> CreateUserAsync(SignUpModel model)
         {
             var user = new Employee()
             {
@@ -27,12 +27,14 @@ namespace DataLayer.Repositories
 
             };
             var result = await _userManager.CreateAsync(user, model.Password);
-            return result;
+            if (result.Succeeded) { return true; };
+            return false;
         }
-        public async Task<IdentityResult> CreateUserAsync(Employee model,string password)
+        public async Task<bool> CreateUserAsync(Employee model,string password)
         {
             var result = await _userManager.CreateAsync(model,password);
-            return result;
+            if(result.Succeeded) { return true; };
+            return false;
         }
         public async Task<List<Employee>> GetAllUsersAsync()
         {

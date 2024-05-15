@@ -10,10 +10,5 @@ namespace DataLayer.Repositories.Interfaces
 {
     public interface IPositionRepository
     {
-        public Task<List<UserPosition>> GetAllPositionsAsync();
-        public Task<bool> CreatePositionAsync(UserPosition userPosition);
-        public Task<UserPosition?> GetPositionByIdAsync(int id);
-        public Task<bool> UpdatePositionAsync(UserPosition userPosition);
-        public Task<bool> DeletePositionAsync(int id);
     }
 }

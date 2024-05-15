@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240425073420_SeedDataInit")]
-    partial class SeedDataInit
+    [Migration("20240426141604_SeedDataInitial")]
+    partial class SeedDataInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
