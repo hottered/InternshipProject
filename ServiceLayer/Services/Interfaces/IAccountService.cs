@@ -13,6 +13,12 @@ namespace ServiceLayer.Services.Interfaces
         public  Task<List<Employee>> GetAllUsersAsync();
         public Task<Employee?> GetUserByIdAsync(int id);
 
-        //public Task<>
+        public Task<bool> CreateUserAsync(Employee employee,string password);
+
+        public Task<bool> DeleteUserAsync(int id);
+
+        public Task<bool> UpdateUserAsync(Employee employee);
+        
+
     }
 }

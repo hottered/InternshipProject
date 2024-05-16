@@ -15,19 +15,24 @@ namespace DataLayer.Models
     public class Employee : IdentityUser<int>
     {
         [MaxLength(50)]
-        public string ?FirstName { get; set; } = default!;
+        public string? FirstName { get; set; } = default!;
 
         [MaxLength(50)]
-        public string ?LastName { get; set; } = default!;
+        public string? LastName { get; set; } = default!;
 
         [MaxLength(512)]
-        public string ?Address { get; set; } = default!;
+        public string? Address { get; set; } = default!;
 
         [MaxLength(50)]
-        public string ?IDNumber { get; set; } = default!;
+        public string? IDNumber { get; set; } = default!;
 
-        public int ?DaysOffNumber { get; set; } = default!;
+        public int? DaysOffNumber { get; set; } = default!;
+
+        public bool ? IsDeleted { get; set; } = false;
         public UserPosition? Position { get; set; } = null!;
+
+        [ForeignKey(nameof(Position))]
+        public int? PositionId { get; set; } = null!;
         public List<UserRequest>? Request { get; set; } = new();
         public DateTime EmploymentStartDate { get; set; } = DateTime.UtcNow;
 

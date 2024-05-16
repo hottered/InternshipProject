@@ -83,7 +83,7 @@ namespace DataLayer.DbInitializer
                         DaysOffNumber = 0,
                         Email = "admin@test.rs",
                         EmailConfirmed = true,
-                        UserName = nameof(RolesEnum.Admin),
+                        UserName = "admin@test.rs",
                         NormalizedUserName = "ADMIN@TEST.RS".ToUpper(),
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
@@ -96,7 +96,7 @@ namespace DataLayer.DbInitializer
                         DaysOffNumber = 0,
                         Email = "hr@test.rs",
                         EmailConfirmed = true,
-                        UserName = nameof(RolesEnum.HR),
+                        UserName = "hr@test.rs",
                         NormalizedUserName = "HR@TEST.RS".ToUpper(),
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
@@ -110,7 +110,7 @@ namespace DataLayer.DbInitializer
                         DaysOffNumber = 0,
                         Email = "user1@test.rs",
                         EmailConfirmed = true,
-                        UserName = "User1",
+                        UserName = "user1@test.rs",
                         NormalizedUserName = "USER1@TEST.RS".ToUpper(),
                         SecurityStamp = Guid.NewGuid().ToString(),
                         Position = position,
