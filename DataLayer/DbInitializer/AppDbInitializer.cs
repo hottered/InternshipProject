@@ -1,6 +1,5 @@
 ﻿using DataLayer.Data;
 using DataLayer.Domain;
-using DataLayer.Migrations;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
 using DataLayer.Models;
@@ -39,38 +38,10 @@ namespace DataLayer.DbInitializer
                     };
                     await _context.Positions.AddAsync(position);
                 }
-
-
-                //REQUESTS
-
-                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Vacation");
-                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Sick");
-                var requests = new List<UserRequest>();
-
-                if (request1 is null && request2 is null)
-                {
-                    request1 = new UserRequest
-                    {
-                        LeaveType = "Vacation",
-                        CommentEmployee = "Leaving and never coming back",
-                        CommentHR = "Goodbye!"
-                    };
-                    request2 = new UserRequest
-                    {
-                        LeaveType = "Sick",
-                        CommentEmployee = "Leaving and never returning",
-                        CommentHR = "GoodByte!"
-                    };
-                    requests.Add(request1);
-                    requests.Add(request2);
-                    await _context.Requests.AddAsync(request1);
-                    await _context.Requests.AddAsync(request2);
-                }
-
-
-                var admin = await _context.Users.FirstOrDefaultAsync(x=>x.Email == "admin@test.rs");
-                var hr = await _context.Users.FirstOrDefaultAsync(x=>x.Email == "hr@test.rs");
-                var user1 = await _context.Users.FirstOrDefaultAsync(x=>x.Email == "user1@test.rs");
+                //USERS
+                var admin = await _context.Users.FirstOrDefaultAsync(x => x.Email == "admin@test.rs");
+                var hr = await _context.Users.FirstOrDefaultAsync(x => x.Email == "hr@test.rs");
+                var user1 = await _context.Users.FirstOrDefaultAsync(x => x.Email == "user1@test.rs");
 
                 if (admin is null && hr is null && user1 is null)
                 {
@@ -114,7 +85,6 @@ namespace DataLayer.DbInitializer
                         NormalizedUserName = "USER1@TEST.RS".ToUpper(),
                         SecurityStamp = Guid.NewGuid().ToString(),
                         Position = position,
-                        Request = requests,
                     };
 
                     var result = await _userManager.CreateAsync(admin, "Sifra.1234");
@@ -131,6 +101,35 @@ namespace DataLayer.DbInitializer
                     await _userManager.CreateAsync(user1, "Sifra.1234");
 
                 }
+
+                //REQUESTS
+
+                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Vacation");
+                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Sick");
+                var requests = new List<UserRequest>();
+
+                if (request1 is null && request2 is null)
+                {
+                    request1 = new UserRequest
+                    {
+                        LeaveType = "Vacation",
+                        CommentEmployee = "Leaving and never coming back",
+                        CommentHR = "Goodbye!",
+                        EmployeeID = user1.Id
+                    };
+                    request2 = new UserRequest
+                    {
+                        LeaveType = "Sick",
+                        CommentEmployee = "Leaving and never returning",
+                        CommentHR = "GoodByte!",
+                        EmployeeID = user1.Id
+
+                    };
+                    requests.Add(request1);
+                    requests.Add(request2);
+                    await _context.Requests.AddAsync(request1);
+                    await _context.Requests.AddAsync(request2);
+                }             
 
                 await _context.SaveChangesAsync();
             }

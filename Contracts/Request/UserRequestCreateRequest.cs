@@ -10,6 +10,7 @@ namespace Contracts.Request
         DateTime StartDate,
         DateTime EndDate,
         string LeaveType,
-        string CommentEmployee
+        string CommentEmployee,
+        int UserId
         );
 }

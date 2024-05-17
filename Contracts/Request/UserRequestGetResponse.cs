@@ -11,6 +11,7 @@ namespace Contracts.Request
         DateTime EndDate,
         string LeaveType,
         string CommentEmployee,
-        string CommentHR
+        string CommentHR,
+        int UserId
         );
 }

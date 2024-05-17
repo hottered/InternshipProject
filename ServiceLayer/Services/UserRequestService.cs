@@ -16,24 +16,46 @@ namespace ServiceLayer.Services
         {
             _userRequestRepository = userRequestRepository;
         }
-        public Task<bool> CreateUserRequestAsync(UserRequest userRequest)
+        public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
         {
-            throw new NotImplementedException();
+            var existingRequest = await _userRequestRepository.GetByIdAsync(userRequest.Id);
+
+            if (existingRequest is not null) {
+
+                return false;
+
+            }
+
+            var result = await _userRequestRepository.CreateAsync(userRequest);
+
+            if (result is not null)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public Task<List<UserRequest>> GetAllRequestsAsync()
+        public async Task<List<UserRequest>> GetAllRequestsAsync()
         {
-            throw new NotImplementedException();
+            return await _userRequestRepository.GetAllAsync();
         }
 
-        public Task<UserRequest?> GetUserRequestByIdAsync(int id)
+        public async Task<UserRequest?> GetUserRequestByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _userRequestRepository.GetByIdAsync(id);
         }
 
-        public Task<bool> UpdateUserRequestAsync(UserRequest newUserRequest)
+        public async Task<bool> UpdateUserRequestAsync(UserRequest newUserRequest)
         {
-            throw new NotImplementedException();
+            var result = await _userRequestRepository.UpdateAsync(newUserRequest);
+            
+            if(result is null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

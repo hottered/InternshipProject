@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedDataInitial : Migration
+    public partial class IsDeletedAddedToAll : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,8 @@ namespace DataLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Caption = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,7 +53,8 @@ namespace DataLayer.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LeaveType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CommentEmployee = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    CommentHR = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
+                    CommentHR = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,6 +93,7 @@ namespace DataLayer.Migrations
                     Address = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     IDNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DaysOffNumber = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
                     PositionId = table.Column<int>(type: "int", nullable: true),
                     EmploymentStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmploymentEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
