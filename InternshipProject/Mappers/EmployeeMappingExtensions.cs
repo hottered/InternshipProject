@@ -28,6 +28,36 @@ namespace InternshipProject.Mappers
                 SecurityStamp = Guid.NewGuid().ToString()
             };
         }
+        public static Employee ToEmployee(this Employee employee, EmployeeUpdateRequest updateRequest)
+        {
+            if (employee == null)
+            {
+                return null;
+            }
+            employee.FirstName = updateRequest.FirstName;
+            employee.LastName = updateRequest.LastName;
+            employee.Address = updateRequest.Address;
+            employee.IDNumber = updateRequest.IDNumber;
+            employee.DaysOffNumber = updateRequest.DaysOffNumber;
+            employee.PositionId = updateRequest.PositionId;
+
+            return employee;
+        }
+        public static EmployeeUpdateRequest ToEmployeeUpdateRequest(this Employee employee)
+        {
+            if (employee == null) { return null; }
+
+            return new EmployeeUpdateRequest(
+                    employee.Id,
+                    employee.FirstName,
+                    employee.LastName,
+                    employee.Address,
+                    employee.IDNumber,
+                    (int)employee.DaysOffNumber,
+                    (int)employee.PositionId
+                );
+
+        }
         public static EmployeeGetResponse ToEmployeeGetResponse(this Employee employee)
         {
             if (employee == null)
@@ -46,5 +76,6 @@ namespace InternshipProject.Mappers
                 (DateTime)employee.EmploymentEndDate
             );
         }
+
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Contracts.Employee
 {
     public record EmployeeUpdateRequest( 
+        int Id,
         string FirstName,
         string LastName,
         string Address,

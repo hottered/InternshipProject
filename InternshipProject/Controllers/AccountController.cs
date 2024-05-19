@@ -1,23 +1,26 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using DataLayer.Repositories.Interfaces;
+using InternshipProject.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Services.Interfaces;
 
 namespace InternshipProject.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IAccountService _accountService;
         private readonly SignInManager<Employee> _signInManager;
         public AccountController(
-            IAccountRepository accountRepository,
+            IAccountService accountService,
             SignInManager<Employee> signInManager)
         {
-            _accountRepository = accountRepository;
             _signInManager = signInManager;
+            _accountService = accountService;
         }
 
         [Route("signup")]
@@ -27,16 +30,17 @@ namespace InternshipProject.Controllers
         }
         [Route("signup")]
         [HttpPost]
-        public async Task<IActionResult> Signup(SignUpModel signUpModel)
+        public async Task<IActionResult> Signup(EmployeeCreateRequest createRequest)
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountRepository.CreateUserAsync(signUpModel);
+                var employee = createRequest.ToEmployee();
+                var result = await _accountService.CreateUserAsync(employee, createRequest.Passwrod);
 
                 if (!result)
                 {
                     ModelState.AddModelError("", "There was an eror creating the user. Please try again!");
-                    return View(signUpModel);
+                    return View();
                 }
                 ModelState.Clear();
             }
@@ -55,32 +59,25 @@ namespace InternshipProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var result = await _accountRepository.PasswordSignInAsync(loginModel);
                 var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RemmemberMe, false);
+
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
+
                 ModelState.AddModelError("", "Invalid credidentials");
             }
+
             return View(loginModel);
         }
 
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
-            //await _accountRepository.SignOutAsync();
             await _signInManager.SignOutAsync();
+
             return RedirectToAction("Index", "Home");
-        }
-
-        [Authorize,Route("allUsers")]
-        public async Task<IActionResult> AllUsers()
-        {
-            // Retrieve all users from the database
-            var users = await _accountRepository.GetAllUsersAsync(); // Assuming you're using Entity Framework Core
-
-            return View(users);
         }
     }
 }
