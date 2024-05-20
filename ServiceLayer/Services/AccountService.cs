@@ -1,5 +1,7 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using DataLayer.Models;
 using DataLayer.Repositories.Interfaces;
+using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,16 +21,18 @@ namespace ServiceLayer.Services
             _accountRepository = accountRepository;
         }
 
-        public async Task<bool> CreateUserAsync(Employee employee, string password)
+        public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {
-            var existingUser = await _accountRepository.GetUserByIdAsync(employee.Id);
+            var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
 
-            if(existingUser != null)
+            if(existingUser is not null)
             {
                 return false;
             }
 
-            var result = await _accountRepository.CreateUserAsync(employee, password);
+            var employeeToCreate = employee.ToEmployee();
+
+            var result = await _accountRepository.CreateUserAsync(employeeToCreate, password);
 
             return result;
             
@@ -38,7 +42,7 @@ namespace ServiceLayer.Services
         {
             var userToDelete = await _accountRepository.GetUserByIdAsync(id);
 
-            if(userToDelete != null)
+            if(userToDelete is null)
             {
                 return false;
             }
@@ -61,9 +65,18 @@ namespace ServiceLayer.Services
             return await _accountRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<bool> UpdateUserAsync(Employee employee)
+        public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)
         {
-            return await _accountRepository.UpdateUserAsync(employee);
+            var employee = await _accountRepository.GetUserByIdAsync(updateRequest.Id);
+
+            if(employee is null)
+            {
+                return false;
+            }
+
+            var employeeUpdate = employee.ToEmployee(updateRequest);
+
+            return await _accountRepository.UpdateUserAsync(employeeUpdate);
         }
     }
 }

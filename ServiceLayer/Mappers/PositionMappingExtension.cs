@@ -1,7 +1,7 @@
 ﻿using Contracts.Position;
 using DataLayer.Models.Position;
 
-namespace InternshipProject.Mappers
+namespace ServiceLayer.Mappers
 {
     public static class PositionMappingExtension
     {

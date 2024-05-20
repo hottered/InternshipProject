@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class IsDeletedAddedToAll : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,24 +41,6 @@ namespace DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Positions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Requests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LeaveType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CommentEmployee = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    CommentHR = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Requests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -210,25 +192,26 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeUserRequest",
+                name: "Requests",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LeaveType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CommentEmployee = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    CommentHR = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    RequestId = table.Column<int>(type: "int", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeUserRequest", x => new { x.EmployeeId, x.RequestId });
+                    table.PrimaryKey("PK_Requests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmployeeUserRequest_AspNetUsers_EmployeeId",
+                        name: "FK_Requests_AspNetUsers_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeeUserRequest_Requests_RequestId",
-                        column: x => x.RequestId,
-                        principalTable: "Requests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -287,9 +270,9 @@ namespace DataLayer.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeUserRequest_RequestId",
-                table: "EmployeeUserRequest",
-                column: "RequestId");
+                name: "IX_Requests_EmployeeId",
+                table: "Requests",
+                column: "EmployeeId");
         }
 
         /// <inheritdoc />
@@ -311,16 +294,13 @@ namespace DataLayer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmployeeUserRequest");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "Positions");

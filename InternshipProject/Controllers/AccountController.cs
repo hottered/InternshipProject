@@ -3,7 +3,6 @@ using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using DataLayer.Repositories.Interfaces;
-using InternshipProject.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +33,7 @@ namespace InternshipProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var employee = createRequest.ToEmployee();
-                var result = await _accountService.CreateUserAsync(employee, createRequest.Passwrod);
+                var result = await _accountService.CreateUserAsync(createRequest, createRequest.Password);
 
                 if (!result)
                 {

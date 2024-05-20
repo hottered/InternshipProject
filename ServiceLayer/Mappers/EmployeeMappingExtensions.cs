@@ -3,7 +3,7 @@ using DataLayer.Domain;
 using DataLayer.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace InternshipProject.Mappers
+namespace ServiceLayer.Mappers
 {
     public static class EmployeeMappingExtensions
     {

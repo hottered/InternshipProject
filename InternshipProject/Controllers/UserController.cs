@@ -1,8 +1,8 @@
 ﻿using Contracts.Employee;
-using InternshipProject.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 
 namespace InternshipProject.Controllers
@@ -19,7 +19,7 @@ namespace InternshipProject.Controllers
         [Authorize, Route("allUsers")]
         public async Task<IActionResult> AllUsers()
         {
-            var users = await _accountService.GetAllUsersAsync(); 
+            var users = await _accountService.GetAllUsersAsync();
 
             return View(users);
         }
@@ -33,16 +33,14 @@ namespace InternshipProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(EmployeeCreateRequest createRequest)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var employee = createRequest.ToEmployee();
-
-                var result = await _accountService.CreateUserAsync(employee, createRequest.Passwrod);
+                var result = await _accountService.CreateUserAsync(createRequest, createRequest.Password);
 
                 if (!result)
                 {
                     ModelState.AddModelError("", "There was an error while creating the user. Please try again!");
-                    
+
                     return View();
                 }
                 ModelState.Clear();
@@ -75,22 +73,36 @@ namespace InternshipProject.Controllers
             if (ModelState.IsValid)
             {
 
-                var employee = await _accountService.GetUserByIdAsync(updateRequest.Id);
-
-                var employeeUpdate = employee.ToEmployee(updateRequest);
-
-                var result = await _accountService.UpdateUserAsync(employeeUpdate);
+                var result = await _accountService.UpdateUserAsync(updateRequest);
 
                 if (!result)
                 {
                     ModelState.AddModelError("", "There was an error while updating the user. Please try again!");
-                    
+
                     return View();
                 }
 
                 ModelState.Clear();
+
+                return RedirectToAction("AllUsers", "User");
+
             }
             return View();
+        }
+
+
+        [Route("DeleteUser")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+
+            var result = await _accountService.DeleteUserAsync(id);
+
+            if (!result)
+            {
+                return RedirectToAction("AllUsers", "User");
+            }
+            return RedirectToAction("AllUsers", "User");
         }
     }
 }

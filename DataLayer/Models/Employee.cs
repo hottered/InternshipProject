@@ -29,11 +29,13 @@ namespace DataLayer.Models
         public int? DaysOffNumber { get; set; } = default!;
 
         public bool ? IsDeleted { get; set; } = false;
+
         public UserPosition? Position { get; set; } = null!;
 
-        [ForeignKey(nameof(Position))]
         public int? PositionId { get; set; } = null!;
+
         public List<UserRequest>? Request { get; set; } = new();
+
         public DateTime EmploymentStartDate { get; set; } = DateTime.UtcNow;
 
         public DateTime? EmploymentEndDate { get; set; } = DateTime.UtcNow;

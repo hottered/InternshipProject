@@ -1,4 +1,5 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using DataLayer.Models;
 using DataLayer.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,14 @@ namespace ServiceLayer.Services.Interfaces
     public interface IAccountService
     {
         public  Task<List<Employee>> GetAllUsersAsync();
+
         public Task<Employee?> GetUserByIdAsync(int id);
 
-        public Task<bool> CreateUserAsync(Employee employee,string password);
+        public Task<bool> CreateUserAsync(EmployeeCreateRequest employee,string password);
 
         public Task<bool> DeleteUserAsync(int id);
 
-        public Task<bool> UpdateUserAsync(Employee employee);
+        public Task<bool> UpdateUserAsync(EmployeeUpdateRequest employee);
         
 
     }

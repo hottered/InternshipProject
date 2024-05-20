@@ -13,6 +13,6 @@ namespace Contracts.Employee
         string IdNumber,
         int PositionID,
         string Email,
-        string Passwrod
+        string Password
         );
 }
