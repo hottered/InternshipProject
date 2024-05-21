@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240426141604_SeedDataInitial")]
-    partial class SeedDataInitial
+    [Migration("20240520162232_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("IDNumber")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(50)
@@ -145,6 +148,9 @@ namespace DataLayer.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Positions");
@@ -168,8 +174,14 @@ namespace DataLayer.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LeaveType")
                         .IsRequired()
@@ -181,22 +193,9 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("Requests");
-                });
-
-            modelBuilder.Entity("EmployeeUserRequest", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId", "RequestId");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("EmployeeUserRequest");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -357,19 +356,15 @@ namespace DataLayer.Migrations
                     b.Navigation("Position");
                 });
 
-            modelBuilder.Entity("EmployeeUserRequest", b =>
+            modelBuilder.Entity("DataLayer.Models.Request.UserRequest", b =>
                 {
-                    b.HasOne("DataLayer.Models.Employee", null)
-                        .WithMany()
+                    b.HasOne("DataLayer.Models.Employee", "Employee")
+                        .WithMany("Request")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.Models.Request.UserRequest", null)
-                        .WithMany()
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -421,6 +416,11 @@ namespace DataLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DataLayer.Models.Employee", b =>
+                {
+                    b.Navigation("Request");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Position.UserPosition", b =>
