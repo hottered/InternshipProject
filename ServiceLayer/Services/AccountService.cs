@@ -23,6 +23,7 @@ namespace ServiceLayer.Services
 
         public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {
+            
             var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
 
             if(existingUser is not null)
@@ -48,6 +49,7 @@ namespace ServiceLayer.Services
             }
 
             userToDelete.IsDeleted = true;
+            userToDelete.DateDeleted = DateTime.UtcNow;
 
             var result = await _accountRepository.UpdateUserAsync(userToDelete);
 

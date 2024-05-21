@@ -38,7 +38,7 @@ namespace InternshipProject.Controllers
                 if (!result)
                 {
                     ModelState.AddModelError("", "There was an eror creating the user. Please try again!");
-                    return View();
+                    return View(createRequest);
                 }
                 ModelState.Clear();
             }
