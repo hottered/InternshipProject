@@ -1,6 +1,8 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Position;
+using DataLayer.Models;
 using DataLayer.Models.Position;
 using DataLayer.Repositories.Interfaces;
+using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,16 +21,18 @@ namespace ServiceLayer.Services
             _userPositionRepository = userPositionRepository;
         }
 
-        public async Task<bool> CreateUserPositionAsync(UserPosition userPosition)
+        public async Task<bool> CreateUserPositionAsync(UserPositionCreateRequest userPosition)
         {
-            var existingPosition = await _userPositionRepository.GetByIdAsync(userPosition.Id);
+            //var existingPosition = await _userPositionRepository.GetByIdAsync(userPosition.Id);
 
-            if (existingPosition is not null)
-            {
-                return false;
-            }
+            //if (existingPosition is not null)
+            //{
+            //    return false;
+            //}
 
-            var result = await _userPositionRepository.CreateAsync(userPosition);
+            var createRequest = userPosition.ToUserPosition();
+
+            var result = await _userPositionRepository.CreateAsync(createRequest);
 
             if(result is null) 
             {
@@ -70,9 +74,19 @@ namespace ServiceLayer.Services
             return await _userPositionRepository.GetByIdAsync(id);
         }
 
-        public async Task<bool> UpdateUserPositionAsync(UserPosition userPosition)
+        public async Task<bool> UpdateUserPositionAsync(UserPositionUpdateRequest userPosition)
         {
-            var updated = await _userPositionRepository.UpdateAsync(userPosition);
+
+            var position = await _userPositionRepository.GetByIdAsync(userPosition.Id);
+
+            if(position is null)
+            {
+                return false;
+            }
+
+            var positionUpdate = position.ToUserPosition(userPosition);
+
+            var updated = await _userPositionRepository.UpdateAsync(positionUpdate);
 
             if(updated is null)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.Position
 {
-    public record PositionGetResponse(
+    public record UserPositionGetResponse(
         string Caption, 
         string Description);
 

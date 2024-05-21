@@ -1,4 +1,5 @@
-﻿using DataLayer.Models.Position;
+﻿using Contracts.Position;
+using DataLayer.Models.Position;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<UserPosition?> GetUserPositionByIdAsync(int id);
         
-        public Task<bool> CreateUserPositionAsync(UserPosition userPosition);
+        public Task<bool> CreateUserPositionAsync(UserPositionCreateRequest userPosition);
 
         public Task<bool> DeleteUserPositionAsync(int id);
 
-        public Task<bool> UpdateUserPositionAsync(UserPosition userPosition);
+        public Task<bool> UpdateUserPositionAsync(UserPositionUpdateRequest userPosition);
     }
 }
