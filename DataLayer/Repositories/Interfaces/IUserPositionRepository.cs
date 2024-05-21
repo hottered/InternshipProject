@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models.Position;
+using DataLayer.Repositories.GenericRepository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Repositories.Interfaces
 {
-    public interface IPositionRepository
+    public interface IUserPositionRepository : IRepository<UserPosition>
     {
+
     }
 }

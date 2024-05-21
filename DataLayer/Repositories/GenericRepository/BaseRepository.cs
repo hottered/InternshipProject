@@ -29,7 +29,7 @@ namespace DataLayer.Repositories.GenericRepository
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
