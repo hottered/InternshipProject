@@ -35,8 +35,8 @@ builder.Services.ConfigureApplicationCookie(config =>
 {
     config.Cookie.Name = "MyCookieAuth";
     config.LoginPath = "/login";
-    config.ExpireTimeSpan = TimeSpan.FromSeconds(20);
-    config.Cookie.MaxAge = TimeSpan.FromSeconds(20);
+    config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    config.Cookie.MaxAge = TimeSpan.FromMinutes(10);
     config.SlidingExpiration = true;
 });
 
