@@ -1,17 +1,22 @@
-﻿@model Contracts.Employee.EmployeeCreateRequest
+﻿@model Contracts.Employee.EmployeeUpdateRequest
 
 @{
-    ViewData["Title"] = "Signup";
+    ViewData["Title"] = "UpdateUser";
 }
 
-<h1>Signup</h1>
+<h1>UpdateUser</h1>
 
-<h4>EmployeeCreateRequest</h4>
+<h4>EmployeeUpdateRequest</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Signup">
+        <form asp-action="UpdateUser">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -23,33 +28,27 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdNumber" class="control-label"></label>
-                <input asp-for="IdNumber" class="form-control" />
-                <span asp-validation-for="IdNumber" class="text-danger"></span>
+                <label asp-for="IDNumber" class="control-label"></label>
+                <input asp-for="IDNumber" class="form-control" />
+                <span asp-validation-for="IDNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PositionID" class="control-label"></label>
-                <input asp-for="PositionID" class="form-control" />
-                <span asp-validation-for="PositionID" class="text-danger"></span>
+                <label asp-for="DaysOffNumber" class="control-label"></label>
+                <input asp-for="DaysOffNumber" class="form-control" />
+                <span asp-validation-for="DaysOffNumber" class="text-danger"></span>
             </div>
-            
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="PositionId" class="control-label"></label>
+                <input asp-for="PositionId" class="form-control" />
+                <span asp-validation-for="PositionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

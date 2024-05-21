@@ -2,13 +2,12 @@
 @inject Microsoft.AspNetCore.Identity.SignInManager<Employee> _signInManager
 
 <li class="nav-item">
-    <a class="btn btn-outline-primary" asp-controller="Account" asp-action="AllUsers">Users</a>
+    <a class="btn btn-outline-primary" asp-controller="User" asp-action="AllUsers">Users</a>
 </li>
 @if (_signInManager.IsSignedIn(User))
 {
     <li class="nav-item">
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Logout">Logout</a>
-        @* <a class="btn btn-outline-primary" asp-controller="Users" asp-action="AllUsers">Users</a> *@
     </li>
 }
 else

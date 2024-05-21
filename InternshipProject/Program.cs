@@ -45,7 +45,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IUserRequestRepository, UserRequestRepository>();
-
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 

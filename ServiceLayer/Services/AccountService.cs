@@ -1,5 +1,7 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using DataLayer.Models;
 using DataLayer.Repositories.Interfaces;
+using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,13 +20,63 @@ namespace ServiceLayer.Services
         {
             _accountRepository = accountRepository;
         }
+
+        public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
+        {
+            var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
+
+            if(existingUser is not null)
+            {
+                return false;
+            }
+
+            var employeeToCreate = employee.ToEmployee();
+
+            var result = await _accountRepository.CreateUserAsync(employeeToCreate, password);
+
+            return result;
+            
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            var userToDelete = await _accountRepository.GetUserByIdAsync(id);
+
+            if(userToDelete is null)
+            {
+                return false;
+            }
+
+            userToDelete.IsDeleted = true;
+
+            var result = await _accountRepository.UpdateUserAsync(userToDelete);
+
+            return result;
+
+        }
+
         public async Task<List<Employee>> GetAllUsersAsync()
         {
             return await _accountRepository.GetAllUsersAsync();
         }
+
         public async Task<Employee?> GetUserByIdAsync(int id)
         {
             return await _accountRepository.GetUserByIdAsync(id);
+        }
+
+        public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)
+        {
+            var employee = await _accountRepository.GetUserByIdAsync(updateRequest.Id);
+
+            if(employee is null)
+            {
+                return false;
+            }
+
+            var employeeUpdate = employee.ToEmployee(updateRequest);
+
+            return await _accountRepository.UpdateUserAsync(employeeUpdate);
         }
     }
 }
