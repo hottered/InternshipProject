@@ -41,7 +41,7 @@ namespace InternshipProject.Controllers
                 {
                     ModelState.AddModelError("", "There was an error while creating the user. Please try again!");
 
-                    return View();
+                    return View(createRequest);
                 }
                 ModelState.Clear();
 
@@ -82,7 +82,7 @@ namespace InternshipProject.Controllers
                 {
                     ModelState.AddModelError("", "There was an error while updating the user. Please try again!");
 
-                    return View();
+                    return View(updateRequest);
                 }
 
                 ModelState.Clear();

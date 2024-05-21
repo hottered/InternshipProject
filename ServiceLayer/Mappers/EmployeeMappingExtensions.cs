@@ -47,6 +47,15 @@ namespace ServiceLayer.Mappers
         {
             if (employee == null) { return null; }
 
+            //return new EmployeeUpdateRequest(
+            //        employee.Id,
+            //        employee.FirstName,
+            //        employee.LastName,
+            //        employee.Address,
+            //        employee.IDNumber,
+            //        (int)employee.DaysOffNumber,
+            //        (int)employee.PositionId
+            //   );
             return new EmployeeUpdateRequest(
                     employee.Id,
                     employee.FirstName,
@@ -55,7 +64,7 @@ namespace ServiceLayer.Mappers
                     employee.IDNumber,
                     (int)employee.DaysOffNumber,
                     (int)employee.PositionId
-                );
+               );
 
         }
         public static EmployeeGetResponse ToEmployeeGetResponse(this Employee employee)
