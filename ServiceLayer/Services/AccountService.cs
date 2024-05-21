@@ -49,6 +49,7 @@ namespace ServiceLayer.Services
             }
 
             userToDelete.IsDeleted = true;
+            userToDelete.DateDeleted = DateTime.UtcNow;
 
             var result = await _accountRepository.UpdateUserAsync(userToDelete);
 
