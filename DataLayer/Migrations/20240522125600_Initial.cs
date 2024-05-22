@@ -203,6 +203,7 @@ namespace DataLayer.Migrations
                     CommentEmployee = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     CommentHR = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Approved = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

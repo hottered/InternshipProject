@@ -23,13 +23,6 @@ namespace ServiceLayer.Services
 
         public async Task<bool> CreateUserPositionAsync(UserPositionCreateRequest userPosition)
         {
-            //var existingPosition = await _userPositionRepository.GetByIdAsync(userPosition.Id);
-
-            //if (existingPosition is not null)
-            //{
-            //    return false;
-            //}
-
             var createRequest = userPosition.ToUserPosition();
 
             var result = await _userPositionRepository.CreateAsync(createRequest);

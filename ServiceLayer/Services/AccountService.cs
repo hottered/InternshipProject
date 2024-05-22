@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,6 +66,11 @@ namespace ServiceLayer.Services
         public async Task<Employee?> GetUserByIdAsync(int id)
         {
             return await _accountRepository.GetUserByIdAsync(id);
+        }
+
+        public async Task<Employee?> GetUserThatIsSignedInAsync(ClaimsPrincipal user)
+        {
+            return await _accountRepository.GetUserThatIsSignedInAsync(user);
         }
 
         public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)

@@ -94,5 +94,14 @@ namespace InternshipProject.Controllers
             return View();
         }
 
+        [Route("DeleteUserPosition")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteUserPosition(int id)
+        {
+            await _userPositionService.DeleteUserPositionAsync(id);
+
+            return RedirectToAction("AllUserPositions", "UserPosition");
+        }
+
     }
 }

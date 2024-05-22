@@ -99,12 +99,8 @@ namespace InternshipProject.Controllers
         public async Task<IActionResult> DeleteUser(int id)
         {
 
-            var result = await _accountService.DeleteUserAsync(id);
+            await _accountService.DeleteUserAsync(id);
 
-            if (!result)
-            {
-                return RedirectToAction("AllUsers", "User");
-            }
             return RedirectToAction("AllUsers", "User");
         }
     }
