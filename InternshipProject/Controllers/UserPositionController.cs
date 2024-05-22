@@ -50,7 +50,7 @@ namespace InternshipProject.Controllers
             }
             return View();
         }
-
+         
 
         [Route("UpdateUserPosition")]
         [HttpGet]
