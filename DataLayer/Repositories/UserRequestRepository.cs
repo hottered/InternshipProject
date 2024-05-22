@@ -15,12 +15,12 @@ namespace DataLayer.Repositories
     {
         public UserRequestRepository(AppDbContext context) : base(context)
         {
+
         }
         public override async Task DeleteAsync(UserRequest entity)
         {
             _dbContext.Requests.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
-
     }
 }

@@ -10,7 +10,6 @@ namespace InternshipProject.Controllers
     public class UserRequestController : Controller
     {
         private readonly IUserRequestService _userRequestService;
-        private readonly UserManager<Employee> _userManager;
         public UserRequestController(IUserRequestService userRequestService)
         {
             _userRequestService = userRequestService;
@@ -32,7 +31,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an error while creating the user position. Please try again!");
+                    ModelState.AddModelError("", "There was an error while creating the user request. Please try again!");
 
                     return View(createRequest);
                 }
@@ -43,6 +42,15 @@ namespace InternshipProject.Controllers
 
             }
             return View();
+        }
+
+        [HttpGet]
+        [Route("AllUserRequests")]
+        public async Task<IActionResult> AllUserRequests()
+        {
+            var requests = await _userRequestService.GetAllRequestsAsync();
+
+            return View(requests);
         }
     }
 }

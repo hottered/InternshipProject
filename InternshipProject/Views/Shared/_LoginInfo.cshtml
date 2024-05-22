@@ -1,14 +1,19 @@
 ﻿@using DataLayer.Models
 @inject Microsoft.AspNetCore.Identity.SignInManager<Employee> _signInManager
 
-<li class="nav-item">
-    <a class="btn btn-outline-primary" asp-controller="User" asp-action="AllUsers">Users</a>
-</li>
+
 @if (_signInManager.IsSignedIn(User))
 {
     <li class="nav-item">
+
+        <a class="btn btn-outline-primary" asp-controller="User" asp-action="AllUsers">Users</a>
+        
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Logout">Logout</a>
+
         <a class="btn btn-outline-primary" asp-controller="UserPosition" asp-action="AllUserPositions">All Positions</a>
+
+        <a class="btn btn-outline-primary" asp-controller="UserRequest" asp-action="AllUserRequests">All Requests</a>
+
         <a class="btn btn-outline-primary" asp-controller="UserRequest" asp-action="CreateUserRequest">Create Request</a>
     </li>
 }
@@ -16,6 +21,7 @@ else
 {
     <li class="nav-item">
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Login</a>
+
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Signup">Register</a>
 
     </li>
