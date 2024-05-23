@@ -46,9 +46,9 @@ namespace ServiceLayer.Services
 
             userPositionToDelete.IsDeleted = true;
 
-            var updated = _userPositionRepository.DeleteAsync(userPositionToDelete);
+            var updated = await _userPositionRepository.UpdateAsync(userPositionToDelete);
 
-            if (!updated.IsCompleted)
+            if (updated is null)
             {
                 return false;
             }

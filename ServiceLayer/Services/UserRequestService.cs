@@ -55,9 +55,9 @@ namespace ServiceLayer.Services
 
             userRequestToDelete.IsDeleted = true;
 
-            var updated = _userRequestRepository.DeleteAsync(userRequestToDelete);
+            var updated = await _userRequestRepository.UpdateAsync(userRequestToDelete);
 
-            if (!updated.IsCompleted)
+            if (updated is null)
             {
                 return false;
             }

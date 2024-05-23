@@ -27,7 +27,8 @@ namespace DataLayer.Repositories
         }
         public async Task<List<Employee>> GetAllUsersAsync()
         {
-            return await _userManager.Users.Where(x=>x.IsDeleted == false).ToListAsync();
+            //return await _userManager.Users.Where(x=>x.IsDeleted == false).ToListAsync();
+            return await _userManager.Users.ToListAsync();
         }
         public async Task<Employee?> GetUserByIdAsync(int id)
         {

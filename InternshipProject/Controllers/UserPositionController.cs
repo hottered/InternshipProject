@@ -1,5 +1,6 @@
 ﻿using Contracts.Employee;
 using Contracts.Position;
+using DataLayer.Shared;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services;
@@ -38,11 +39,10 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an error while creating the user position. Please try again!");
+                    ModelState.AddModelError("",Constants.UserPosisitonCreateErrorMessage);
 
                     return View(createRequest);
                 }
-                ModelState.Clear();
 
                 return RedirectToAction("AllUserPositions", "UserPosition");
 
@@ -81,12 +81,10 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an error while updating the user position. Please try again!");
+                    ModelState.AddModelError("", Constants.UserPosisitonCUpdateErrorMessage);
 
                     return View(updateRequest);
                 }
-
-                ModelState.Clear();
 
                 return RedirectToAction("AllUserPositions", "UserPosition");
 

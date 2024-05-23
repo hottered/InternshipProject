@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Contracts.Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,32 +10,32 @@ namespace Contracts.Employee
 {
     public record EmployeeCreateRequest
     (
-        [Required(ErrorMessage = "First Name is required.")]
-        [StringLength(50, ErrorMessage = "First Name can't be longer than 50 characters.")]
-        string FirstName,
+    [Required(ErrorMessage = Constants.FirstNameRequired)]
+    [StringLength(50, ErrorMessage = Constants.FirstNameErrorMessage)]
+    string FirstName,
 
-        [Required(ErrorMessage = "Last Name is required.")]
-        [StringLength(50, ErrorMessage = "Last Name can't be longer than 50 characters.")]
-        string LastName,
+    [Required(ErrorMessage = Constants.LastNameRequired)]
+    [StringLength(50, ErrorMessage = Constants.LastNameErrorMessage)]
+    string LastName,
 
-        [Required(ErrorMessage = "Address is required.")]
-        [StringLength(100, ErrorMessage = "Address can't be longer than 100 characters.")]
-        string Address,
+    [Required(ErrorMessage = Constants.AddressRequired)]
+    [StringLength(100, ErrorMessage = Constants.AddressErrorMessage)]
+    string Address,
 
-        [Required(ErrorMessage = "ID Number is required.")]
-        [StringLength(20, ErrorMessage = "ID Number can't be longer than 20 characters.")]
-        string IdNumber,
+    [Required(ErrorMessage = Constants.IdNumberRequired)]
+    [StringLength(20, ErrorMessage = Constants.IdNumberErrorMessage)]
+    string IdNumber,
 
-        [Required(ErrorMessage = "Position ID is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Position ID must be a positive integer.")]
-        int PositionID,
+    [Required(ErrorMessage = Constants.PositionIdRequired)]
+    [Range(1, int.MaxValue, ErrorMessage = Constants.PositionIdRangeErrorMessage)]
+    int PositionID,
 
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email format.")]
-        string Email,
+    [Required(ErrorMessage = Constants.EmailRequired)]
+    [EmailAddress(ErrorMessage = Constants.EmailErrorMessage)]
+    string Email,
 
-        [Required(ErrorMessage = "Password is required.")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
-        string Password
+    [Required(ErrorMessage = Constants.PasswordRequired)]
+    [StringLength(100, MinimumLength = 6, ErrorMessage = Constants.PasswordErrorMessage)]
+    string Password
     );
 }

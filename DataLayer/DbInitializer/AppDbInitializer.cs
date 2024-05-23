@@ -115,10 +115,9 @@ namespace DataLayer.DbInitializer
 
                 var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation2);
 
-                var requests = new List<UserRequest>();
-
                 if (request1 is null && request2 is null)
                 {
+                    
                     request1 = new UserRequest
                     {
                         LeaveType = Constants.LeaveTypeVacation1,
@@ -136,9 +135,7 @@ namespace DataLayer.DbInitializer
 
                     };
 
-                    requests.Add(request1);
-
-                    requests.Add(request2);
+                    var requests = new List<UserRequest> { request1, request2 };
 
                     _context.Requests.AddRange(requests);
                     

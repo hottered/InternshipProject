@@ -15,15 +15,5 @@ namespace DataLayer.Repositories
     {
         public UserPositionRepository(AppDbContext context) : base(context) { }
 
-        public override async Task DeleteAsync(UserPosition entity)
-        {
-            _dbContext.Positions.Update(entity);
-            await _dbContext.SaveChangesAsync();
-        }
-        public override async Task<List<UserPosition>> GetAllAsync()
-        {
-            return await _dbContext.Positions.Where(x => x.IsDeleted == false).ToListAsync();
-        }
-
     }
 }

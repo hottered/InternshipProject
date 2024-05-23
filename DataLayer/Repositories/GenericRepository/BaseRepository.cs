@@ -23,13 +23,13 @@ namespace DataLayer.Repositories.GenericRepository
             return entity;
         }
 
-        public virtual async Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public virtual async Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }

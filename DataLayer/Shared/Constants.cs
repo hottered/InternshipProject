@@ -30,7 +30,15 @@ namespace DataLayer.Shared
         public const string CommentEmployee = "Leaving and never coming back";
         public const string CommentHR = "Goodbye!";
 
-
+        public const string UserPosisitonCreateErrorMessage = "There was an error while creating the user position. Please try again!";
+        public const string UserPosisitonCUpdateErrorMessage = "There was an error while updating the user position. Please try again!";
+        
+        public const string UserRequestCreateErrorMessage = "There was an error while creating the user request. Please try again!";
+        
+        public const string UserCreateErrorMessage = "There was an error while creating the user. Please try again!";
+        public const string UserUpdateErrorMessage = "There was an error while updating the user. Please try again!";
+        
+        public const string LoginError = "Invalid credidentials";
 
     }
 }

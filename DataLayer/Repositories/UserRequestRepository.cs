@@ -17,10 +17,5 @@ namespace DataLayer.Repositories
         {
 
         }
-        public override async Task DeleteAsync(UserRequest entity)
-        {
-            _dbContext.Requests.Update(entity);
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }

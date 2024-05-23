@@ -21,9 +21,16 @@ namespace DataLayer.Data
         public DbSet<UserRequest> Requests { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Employee>().HasQueryFilter(user => !user.IsDeleted);
+
+            builder.Entity<UserPosition>().HasQueryFilter(position => !position.IsDeleted);
+
+            builder.Entity<UserRequest>().HasQueryFilter(position => !position.IsDeleted);
+
             base.OnModelCreating(builder);
             SeedRoles(builder);
         }
+        
         private static void SeedRoles(ModelBuilder modelBuilder)
         {
 

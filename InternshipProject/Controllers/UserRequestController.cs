@@ -1,6 +1,7 @@
 ﻿using Contracts.Position;
 using Contracts.Request;
 using DataLayer.Models;
+using DataLayer.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services.Interfaces;
@@ -31,7 +32,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an error while creating the user request. Please try again!");
+                    ModelState.AddModelError("", Constants.UserRequestCreateErrorMessage);
 
                     return View(createRequest);
                 }
