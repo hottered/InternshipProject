@@ -5,6 +5,7 @@ using DataLayer.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services.Interfaces;
+using System.Security.Claims;
 
 namespace InternshipProject.Controllers
 {
@@ -27,8 +28,9 @@ namespace InternshipProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                var result = await _userRequestService.CreateUserRequestAsync(User,createRequest);
+                var result = await _userRequestService.CreateUserRequestAsync(userId,createRequest);
 
                 if (!result)
                 {

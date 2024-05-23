@@ -68,11 +68,6 @@ namespace ServiceLayer.Services
             return await _accountRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<Employee?> GetUserThatIsSignedInAsync(ClaimsPrincipal user)
-        {
-            return await _accountRepository.GetUserThatIsSignedInAsync(user);
-        }
-
         public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)
         {
             var employee = await _accountRepository.GetUserByIdAsync(updateRequest.Id);

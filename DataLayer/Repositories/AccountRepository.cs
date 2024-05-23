@@ -1,5 +1,4 @@
-﻿
-using DataLayer.Models;
+﻿using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using DataLayer.Repositories.Interfaces;
@@ -49,9 +48,5 @@ namespace DataLayer.Repositories
             return await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
 
-        public async Task<Employee?> GetUserThatIsSignedInAsync(ClaimsPrincipal user)
-        {
-            return await _userManager.GetUserAsync(user);
-        }
     }
 }

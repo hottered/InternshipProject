@@ -16,8 +16,6 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<Employee?> GetUserByIdAsync(int id);
 
-        public Task<Employee?> GetUserThatIsSignedInAsync(ClaimsPrincipal user);
-
         public Task<bool> CreateUserAsync(EmployeeCreateRequest employee,string password);
 
         public Task<bool> DeleteUserAsync(int id);

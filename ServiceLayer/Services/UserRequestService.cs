@@ -19,18 +19,13 @@ namespace ServiceLayer.Services
     public class UserRequestService : IUserRequestService
     {
         private readonly IUserRequestRepository _userRequestRepository;
-        private readonly IAccountRepository _accountRepository;
-        public UserRequestService(IUserRequestRepository userRequestRepository,
-            IAccountRepository accountRepository)
+        public UserRequestService(IUserRequestRepository userRequestRepository)
         {
             _userRequestRepository = userRequestRepository;
-            _accountRepository = accountRepository;
         }
-        public async Task<bool> CreateUserRequestAsync(ClaimsPrincipal user,UserRequestCreateRequest userRequest)
+        public async Task<bool> CreateUserRequestAsync(int userId,UserRequestCreateRequest userRequest)
         {
-            var userSignedIn = await _accountRepository.GetUserThatIsSignedInAsync(user);
-
-            var updatedUserRequest = userRequest with { UserId = userSignedIn.Id };
+            var updatedUserRequest = userRequest with { UserId = userId };
 
             var request = updatedUserRequest.ToUserRequest();
 

@@ -13,11 +13,9 @@ namespace ServiceLayer.Services.Interfaces
     {
         public Task<List<UserRequest>> GetAllRequestsAsync();
 
-
-
         public Task<UserRequest?> GetUserRequestByIdAsync(int id);
 
-        public Task<bool> CreateUserRequestAsync(ClaimsPrincipal user, UserRequestCreateRequest userRequest);
+        public Task<bool> CreateUserRequestAsync(int userId, UserRequestCreateRequest userRequest);
 
         public Task<bool> UpdateUserRequestAsync(UserRequestUpdateRequest newUserRequest);
 

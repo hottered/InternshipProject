@@ -16,7 +16,6 @@ namespace DataLayer.Repositories.Interfaces
         public Task<bool> CreateUserAsync(Employee model, string password);
         public Task<List<Employee>> GetAllUsersAsync();
         public  Task<Employee?> GetUserByIdAsync(int id);
-        public Task<Employee?> GetUserThatIsSignedInAsync(ClaimsPrincipal user);
         public Task<Employee?> GetUserByEmailAsync(string username);
         public Task<bool> UpdateUserAsync(Employee employee);
         public Task AssignRoleAsync(Employee employee, string role);
