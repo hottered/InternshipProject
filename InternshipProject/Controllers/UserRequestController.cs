@@ -34,7 +34,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", Constants.UserRequestCreateErrorMessage);
+                    ModelState.AddModelError(string.Empty, Constants.UserRequestCreateErrorMessage);
 
                     return View(createRequest);
                 }

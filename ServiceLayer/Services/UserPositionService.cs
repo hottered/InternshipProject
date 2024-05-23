@@ -25,14 +25,9 @@ namespace ServiceLayer.Services
         {
             var createRequest = userPosition.ToUserPosition();
 
-            var result = await _userPositionRepository.CreateAsync(createRequest);
+            var result = await _userPositionRepository.CreateUserPositionAsync(createRequest);
 
-            if(result is null) 
-            {
-                return false;
-            }
-
-            return true;
+            return result;
         }
 
         public async Task<bool> DeleteUserPositionAsync(int id)
@@ -46,14 +41,9 @@ namespace ServiceLayer.Services
 
             userPositionToDelete.IsDeleted = true;
 
-            var updated = await _userPositionRepository.UpdateAsync(userPositionToDelete);
+            var result = await _userPositionRepository.UpdateUserPositionAsync(userPositionToDelete);
 
-            if (updated is null)
-            {
-                return false;
-            }
-
-            return true;
+            return result;
 
         }
 
@@ -79,14 +69,9 @@ namespace ServiceLayer.Services
 
             var positionUpdate = position.ToUserPosition(userPosition);
 
-            var updated = await _userPositionRepository.UpdateAsync(positionUpdate);
+            var updated = await _userPositionRepository.UpdateUserPositionAsync(positionUpdate);
 
-            if(updated is null)
-            {
-                return false;
-            }
-
-            return true;
+            return updated;
         }
     }
 }

@@ -29,14 +29,9 @@ namespace ServiceLayer.Services
 
             var request = updatedUserRequest.ToUserRequest();
 
-            var result = await _userRequestRepository.CreateAsync(request);
+            var result = await _userRequestRepository.CreateUserRequestAsync(request);
 
-            if (result is not null)
-            {
-                return true;
-            }
-
-            return false;
+            return result;
         }
 
         public async Task<bool> DeleteUserRequestAsync(int id)
@@ -50,14 +45,9 @@ namespace ServiceLayer.Services
 
             userRequestToDelete.IsDeleted = true;
 
-            var updated = await _userRequestRepository.UpdateAsync(userRequestToDelete);
+            var updated = await _userRequestRepository.UpdateUserRequestAsync(userRequestToDelete);
 
-            if (updated is null)
-            {
-                return false;
-            }
-
-            return true;
+            return updated;
         }
 
         public async Task<List<UserRequest>> GetAllRequestsAsync()
@@ -80,14 +70,9 @@ namespace ServiceLayer.Services
                 return false;
             }
 
-            var result = await _userRequestRepository.UpdateAsync(existingRequest.ToUserRequest(newUserRequest));
-            
-            if(result is null)
-            {
-                return false;
-            }
+            var result = await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
 
-            return true;
+            return result;
         }
     }
 }

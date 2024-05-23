@@ -38,7 +38,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", Constants.UserCreateErrorMessage);
+                    ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
                     return View(createRequest);
                 }
             }
@@ -64,7 +64,7 @@ namespace InternshipProject.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", Constants.LoginError);
+                ModelState.AddModelError(string.Empty, Constants.LoginError);
             }
 
             return View(loginModel);

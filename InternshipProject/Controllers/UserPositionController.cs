@@ -39,7 +39,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("",Constants.UserPosisitonCreateErrorMessage);
+                    ModelState.AddModelError(string.Empty,Constants.UserPosisitonCreateErrorMessage);
 
                     return View(createRequest);
                 }
@@ -81,7 +81,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", Constants.UserPosisitonCUpdateErrorMessage);
+                    ModelState.AddModelError(string.Empty, Constants.UserPosisitonCUpdateErrorMessage);
 
                     return View(updateRequest);
                 }

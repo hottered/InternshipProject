@@ -40,7 +40,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", Constants.UserCreateErrorMessage);
+                    ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
 
                     return View(createRequest);
                 }
@@ -80,7 +80,7 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", Constants.UserUpdateErrorMessage);
+                    ModelState.AddModelError(string.Empty, Constants.UserUpdateErrorMessage);
 
                     return View(updateRequest);
                 }

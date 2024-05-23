@@ -11,6 +11,8 @@ namespace DataLayer.Repositories.Interfaces
 {
     public interface IUserPositionRepository : IRepository<UserPosition>
     {
+        public Task<bool> CreateUserPositionAsync(UserPosition userPosition);
 
+        public Task<bool> UpdateUserPositionAsync(UserPosition userPosition);
     }
 }

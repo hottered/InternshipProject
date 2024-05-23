@@ -15,5 +15,22 @@ namespace DataLayer.Repositories
     {
         public UserPositionRepository(AppDbContext context) : base(context) { }
 
+        public async Task<bool> CreateUserPositionAsync(UserPosition userPosition)
+        {
+            await _dbContext.Positions.AddAsync(userPosition);
+
+            var res = await _dbContext.SaveChangesAsync();
+
+            return res > 0;
+        }
+
+        public async Task<bool> UpdateUserPositionAsync(UserPosition userPosition)
+        {
+            _dbContext.Positions.Update(userPosition);
+
+            var res = await _dbContext.SaveChangesAsync();
+
+            return res > 0;
+        }
     }
 }
