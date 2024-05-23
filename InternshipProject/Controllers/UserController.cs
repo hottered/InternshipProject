@@ -1,4 +1,5 @@
 ﻿using Contracts.Employee;
+using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -39,11 +40,10 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an error while creating the user. Please try again!");
+                    ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
 
                     return View(createRequest);
                 }
-                ModelState.Clear();
 
                 return RedirectToAction("AllUsers", "User");
 
@@ -80,12 +80,10 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an error while updating the user. Please try again!");
+                    ModelState.AddModelError(string.Empty, Constants.UserUpdateErrorMessage);
 
                     return View(updateRequest);
                 }
-
-                ModelState.Clear();
 
                 return RedirectToAction("AllUsers", "User");
 
@@ -99,12 +97,8 @@ namespace InternshipProject.Controllers
         public async Task<IActionResult> DeleteUser(int id)
         {
 
-            var result = await _accountService.DeleteUserAsync(id);
+            await _accountService.DeleteUserAsync(id);
 
-            if (!result)
-            {
-                return RedirectToAction("AllUsers", "User");
-            }
             return RedirectToAction("AllUsers", "User");
         }
     }

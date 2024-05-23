@@ -20,5 +20,25 @@ namespace DataLayer.Shared
         public const string User1Address = "User1Address";
 
         public const string Password = "Sifra.1234";
+
+        public const string PositionCaption = "Developer";
+        public const string PositionDescription = "Description";
+
+        public const string LeaveTypeVacation1 = "Vacation";
+        public const string LeaveTypeVacation2 = "Sick";
+
+        public const string CommentEmployee = "Leaving and never coming back";
+        public const string CommentHR = "Goodbye!";
+
+        public const string UserPosisitonCreateErrorMessage = "There was an error while creating the user position. Please try again!";
+        public const string UserPosisitonCUpdateErrorMessage = "There was an error while updating the user position. Please try again!";
+        
+        public const string UserRequestCreateErrorMessage = "There was an error while creating the user request. Please try again!";
+        
+        public const string UserCreateErrorMessage = "There was an error while creating the user. Please try again!";
+        public const string UserUpdateErrorMessage = "There was an error while updating the user. Please try again!";
+        
+        public const string LoginError = "Invalid credidentials";
+
     }
 }

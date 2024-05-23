@@ -43,9 +43,12 @@ builder.Services.ConfigureApplicationCookie(config =>
 //DI
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+builder.Services.AddScoped<IUserPositionRepository, UserPositionRepository>();
 builder.Services.AddScoped<IUserRequestRepository, UserRequestRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserPositionService, UserPositionService>();
+builder.Services.AddScoped<IUserRequestService, UserRequestService>();
+
 
 var app = builder.Build();
 

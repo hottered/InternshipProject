@@ -23,6 +23,7 @@ namespace DataLayer.DbInitializer
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
                 var _context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+
                 var _userManager = serviceScope.ServiceProvider.GetService<UserManager<Employee>>();
 
                 _context.Database.EnsureCreated();
@@ -34,14 +35,17 @@ namespace DataLayer.DbInitializer
                 {
                     position = new UserPosition
                     {
-                        Caption = "Developer",
-                        Description = "Description"
+                        Caption = Constants.PositionCaption,
+                        Description = Constants.PositionDescription,
                     };
+
                     await _context.Positions.AddAsync(position);
                 }
                 //USERS
                 var admin = await _context.Users.FirstOrDefaultAsync(x => x.Email == Constants.AdminEmail);
+
                 var hr = await _context.Users.FirstOrDefaultAsync(x => x.Email == Constants.HrEmail);
+
                 var user1 = await _context.Users.FirstOrDefaultAsync(x => x.Email == Constants.User1Email);
 
                 if (admin is null && hr is null && user1 is null)
@@ -93,7 +97,9 @@ namespace DataLayer.DbInitializer
                     {
                         await _userManager.AddToRoleAsync(admin, nameof(RolesEnum.Admin));
                     }
+
                     var resultHr = await _userManager.CreateAsync(hr, Constants.Password);
+
                     if (resultHr.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(hr, nameof(RolesEnum.HR));
@@ -105,29 +111,32 @@ namespace DataLayer.DbInitializer
 
                 //REQUESTS
 
-                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Vacation");
-                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == "Sick");
-                var requests = new List<UserRequest>();
+                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation1);
+
+                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation2);
 
                 if (request1 is null && request2 is null)
                 {
+                    
                     request1 = new UserRequest
                     {
-                        LeaveType = "Vacation",
-                        CommentEmployee = "Leaving and never coming back",
-                        CommentHR = "Goodbye!",
+                        LeaveType = Constants.LeaveTypeVacation1,
+                        CommentEmployee = Constants.CommentEmployee,
+                        CommentHR = Constants.CommentHR,
                         EmployeeId = user1.Id
                     };
+
                     request2 = new UserRequest
                     {
-                        LeaveType = "Sick",
-                        CommentEmployee = "Leaving and never returning",
-                        CommentHR = "GoodByte!",
+                        LeaveType = Constants.LeaveTypeVacation2,
+                        CommentEmployee = Constants.CommentEmployee,
+                        CommentHR = Constants.CommentHR,
                         EmployeeId = user1.Id
 
                     };
-                    requests.Add(request1);
-                    requests.Add(request2);
+
+                    var requests = new List<UserRequest> { request1, request2 };
+
                     _context.Requests.AddRange(requests);
                     
                 }             

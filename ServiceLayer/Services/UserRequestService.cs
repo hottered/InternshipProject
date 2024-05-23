@@ -1,9 +1,16 @@
-﻿using DataLayer.Models.Request;
+﻿using Contracts.Position;
+using Contracts.Request;
+using DataLayer.Models;
+using DataLayer.Models.Request;
+using DataLayer.Repositories;
 using DataLayer.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,24 +23,31 @@ namespace ServiceLayer.Services
         {
             _userRequestRepository = userRequestRepository;
         }
-        public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
+        public async Task<bool> CreateUserRequestAsync(int userId,UserRequestCreateRequest userRequest)
         {
-            var existingRequest = await _userRequestRepository.GetByIdAsync(userRequest.Id);
+            var updatedUserRequest = userRequest with { UserId = userId };
 
-            if (existingRequest is not null) {
+            var request = updatedUserRequest.ToUserRequest();
 
-                return false;
+            var result = await _userRequestRepository.CreateUserRequestAsync(request);
 
-            }
+            return result;
+        }
 
-            var result = await _userRequestRepository.CreateAsync(userRequest);
+        public async Task<bool> DeleteUserRequestAsync(int id)
+        {
+            var userRequestToDelete = await _userRequestRepository.GetByIdAsync(id);
 
-            if (result is not null)
+            if (userRequestToDelete is null)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            userRequestToDelete.IsDeleted = true;
+
+            var updated = await _userRequestRepository.UpdateUserRequestAsync(userRequestToDelete);
+
+            return updated;
         }
 
         public async Task<List<UserRequest>> GetAllRequestsAsync()
@@ -46,16 +60,19 @@ namespace ServiceLayer.Services
             return await _userRequestRepository.GetByIdAsync(id);
         }
 
-        public async Task<bool> UpdateUserRequestAsync(UserRequest newUserRequest)
+        public async Task<bool> UpdateUserRequestAsync(UserRequestUpdateRequest newUserRequest)
         {
-            var result = await _userRequestRepository.UpdateAsync(newUserRequest);
-            
-            if(result is null)
+
+            var existingRequest = await _userRequestRepository.GetByIdAsync(newUserRequest.Id);
+
+            if(existingRequest is null) 
             {
                 return false;
             }
 
-            return true;
+            var result = await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
+
+            return result;
         }
     }
 }

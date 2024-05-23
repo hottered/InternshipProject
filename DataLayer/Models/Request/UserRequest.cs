@@ -23,11 +23,13 @@ namespace DataLayer.Models.Request
         public string CommentEmployee { get; set; } = default!;
 
         [MaxLength(512)]
-        public string CommentHR { get; set; } = default!;
+        public string? CommentHR { get; set; } = default!;
 
         public Employee Employee { get; set; } = default!;
 
         public int EmployeeId { get; set; }
+
+        public bool Approved { get; set; }  = false;
 
         public bool IsDeleted { get; set; } = false;
     }

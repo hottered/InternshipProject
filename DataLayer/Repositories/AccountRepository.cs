@@ -1,10 +1,10 @@
-﻿
-using DataLayer.Models;
+﻿using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DataLayer.Repositories
 {
@@ -17,19 +17,7 @@ namespace DataLayer.Repositories
         {
             _userManager = userManager;
         }
-        public async Task<bool> CreateUserAsync(SignUpModel model)
-        {
-            var user = new Employee()
-            {
-                Email = model.Email,
-                UserName = model.Email,
-                Address = ""
-
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded) { return true; };
-            return false;
-        }
+        
         public async Task<bool> CreateUserAsync(Employee model,string password)
         {
             var result = await _userManager.CreateAsync(model,password);
@@ -38,7 +26,7 @@ namespace DataLayer.Repositories
         }
         public async Task<List<Employee>> GetAllUsersAsync()
         {
-            return await _userManager.Users.Where(x=>x.IsDeleted == false).ToListAsync();
+            return await _userManager.Users.ToListAsync();
         }
         public async Task<Employee?> GetUserByIdAsync(int id)
         {
@@ -58,5 +46,6 @@ namespace DataLayer.Repositories
         {
             return await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
+
     }
 }

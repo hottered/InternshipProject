@@ -72,9 +72,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "UpdateUser", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @* @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id }) *@
-                    <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
+                    @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
                 </td>
             </tr>
         }

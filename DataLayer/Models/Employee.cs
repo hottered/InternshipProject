@@ -28,7 +28,7 @@ namespace DataLayer.Models
 
         public int? DaysOffNumber { get; set; } = default!;
 
-        public bool ? IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         public UserPosition? Position { get; set; } = null!;
 

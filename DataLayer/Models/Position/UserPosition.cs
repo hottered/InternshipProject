@@ -16,6 +16,7 @@ namespace DataLayer.Models.Position
 
         [MaxLength(512)]
         public string ?Description { get; set; } = default!;
+
         public List<Employee>? Employee { get; set; } = default!;
     
         public bool IsDeleted { get; set; } = false;

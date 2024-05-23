@@ -10,5 +10,8 @@ namespace DataLayer.Repositories.Interfaces
 {
     public interface IUserRequestRepository : IRepository<UserRequest>
     {
+        public Task<bool> CreateUserRequestAsync(UserRequest userRequest);
+
+        public Task<bool> UpdateUserRequestAsync(UserRequest userRequest);
     }
 }

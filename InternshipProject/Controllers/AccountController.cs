@@ -3,6 +3,7 @@ using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using DataLayer.Repositories.Interfaces;
+using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,10 +38,9 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "There was an eror creating the user. Please try again!");
+                    ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
                     return View(createRequest);
                 }
-                ModelState.Clear();
             }
             return View();
         }
@@ -64,7 +64,7 @@ namespace InternshipProject.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", "Invalid credidentials");
+                ModelState.AddModelError(string.Empty, Constants.LoginError);
             }
 
             return View(loginModel);
