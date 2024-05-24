@@ -1,9 +1,12 @@
 ﻿using Contracts.Position;
 using Contracts.Request;
+using DataLayer.Domain;
 using DataLayer.Models;
 using DataLayer.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
 using System.Security.Claims;
 
@@ -38,14 +41,13 @@ namespace InternshipProject.Controllers
 
                     return View(createRequest);
                 }
-                ModelState.Clear();
 
                 return RedirectToAction("Index", "Home");
-
 
             }
             return View();
         }
+
 
         [HttpGet]
         [Route("AllUserRequests")]
@@ -53,7 +55,25 @@ namespace InternshipProject.Controllers
         {
             var requests = await _userRequestService.GetAllRequestsAsync();
 
-            return View(requests);
+            return View("AllUserRequests", requests);
+        }
+
+        [HttpGet]
+        [Route("AllUserRequests/{id}")]
+        public async Task<IActionResult> AllUserRequests(int id)
+        {
+            var requests = await _userRequestService.GetAllRequestsForTheUserWithId(id);
+
+            return View("AllUserRequests",requests);
+        }
+
+        [Route("DeleteUserRequest")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteUserRequest(int id)
+        {
+            await _userRequestService.DeleteUserRequestAsync(id);
+
+            return RedirectToAction("AllUserRequests", "UserRequest");
         }
     }
 }

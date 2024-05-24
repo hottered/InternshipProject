@@ -1,25 +1,43 @@
 ﻿@using DataLayer.Models
+@using System.Security.Claims
 @inject Microsoft.AspNetCore.Identity.SignInManager<Employee> _signInManager
 
 
 @if (_signInManager.IsSignedIn(User))
 {
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    
+    <li class="nav-item dropdown">
+
+        <a class="nav-link dropdown-toggle btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menu
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <a class="dropdown-item" asp-controller="User" asp-action="AllUsers">Users</a>
+            </li>           
+            <li>
+                <a class="dropdown-item" asp-controller="UserPosition" asp-action="AllUserPositions">All Positions</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-controller="UserRequest" asp-action="AllUserRequests" asp-route-id="@userId">All requests For logged in user</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-controller="UserRequest" asp-action="AllUserRequests">All Requests</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-controller="UserRequest" asp-action="CreateUserRequest">Create Request</a>
+            </li>
+        </ul>
+    </li>
     <li class="nav-item">
-
-        <a class="btn btn-outline-primary" asp-controller="User" asp-action="AllUsers">Users</a>
-        
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Logout">Logout</a>
-
-        <a class="btn btn-outline-primary" asp-controller="UserPosition" asp-action="AllUserPositions">All Positions</a>
-
-        <a class="btn btn-outline-primary" asp-controller="UserRequest" asp-action="AllUserRequests">All Requests</a>
-
-        <a class="btn btn-outline-primary" asp-controller="UserRequest" asp-action="CreateUserRequest">Create Request</a>
     </li>
 }
 else
 {
     <li class="nav-item">
+
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Login</a>
 
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Signup">Register</a>

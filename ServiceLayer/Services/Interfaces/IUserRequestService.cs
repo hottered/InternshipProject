@@ -21,6 +21,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> DeleteUserRequestAsync(int id);
 
+        public Task<List<UserRequest>> GetAllRequestsForTheUserWithId(int id);
 
     }
 }

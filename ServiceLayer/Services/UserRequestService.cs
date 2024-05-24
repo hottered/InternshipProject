@@ -23,6 +23,12 @@ namespace ServiceLayer.Services
         {
             _userRequestRepository = userRequestRepository;
         }
+
+        public async Task<List<UserRequest>> GetAllRequestsForTheUserWithId(int id)
+        {
+            return await _userRequestRepository.AllRequestsForUserWithId(id);
+        }
+
         public async Task<bool> CreateUserRequestAsync(int userId,UserRequestCreateRequest userRequest)
         {
             var updatedUserRequest = userRequest with { UserId = userId };

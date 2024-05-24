@@ -18,6 +18,11 @@ namespace DataLayer.Repositories
 
         }
 
+        public async Task<List<UserRequest>> AllRequestsForUserWithId(int id)
+        {
+            return await _dbContext.Requests.Include(x => x.Employee).Where(y => y.EmployeeId == id).ToListAsync();
+        }
+
         public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
         {
             await _dbContext.Requests.AddAsync(userRequest);
