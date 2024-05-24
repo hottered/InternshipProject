@@ -19,5 +19,7 @@ namespace ServiceLayer.Services.Interfaces
         public Task<bool> DeleteUserPositionAsync(int id);
 
         public Task<bool> UpdateUserPositionAsync(UserPositionUpdateRequest userPosition);
+
+        public Task<List<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber);
     }
 }

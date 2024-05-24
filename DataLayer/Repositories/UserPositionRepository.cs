@@ -24,6 +24,11 @@ namespace DataLayer.Repositories
             return res > 0;
         }
 
+        public IQueryable<UserPosition> GetUserPositionsQueryable()
+        {
+            return _dbContext.Positions;
+        }
+
         public async Task<bool> UpdateUserPositionAsync(UserPosition userPosition)
         {
             _dbContext.Positions.Update(userPosition);

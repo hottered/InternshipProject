@@ -16,12 +16,12 @@ namespace InternshipProject.Controllers
             _userPositionService = userPositionService;
         }
 
-        [Route("AllUserPositions")]
-        public async Task<IActionResult> AllUserPositions()
+        [Route("AllUserPositions/{pageNumber}")]
+        public async Task<IActionResult> AllUserPositions(int pageNumber)
         {
-            var users = await _userPositionService.GetAllUserPositionsAsync();
+            var positions = await _userPositionService.GetUserPositionsBasedOnPage(pageNumber);
 
-            return View(users);
+            return View(positions);
         }
 
         [Route("CreateUserPosition")]

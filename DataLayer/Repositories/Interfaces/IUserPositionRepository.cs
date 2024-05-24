@@ -14,5 +14,7 @@ namespace DataLayer.Repositories.Interfaces
         public Task<bool> CreateUserPositionAsync(UserPosition userPosition);
 
         public Task<bool> UpdateUserPositionAsync(UserPosition userPosition);
+
+        public IQueryable<UserPosition> GetUserPositionsQueryable();
     }
 }
