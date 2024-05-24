@@ -59,7 +59,7 @@ namespace ServiceLayer.Services
             return await _userPositionRepository.GetByIdAsync(id);
         }
 
-        public async Task<List<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber)
+        public async Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber)
         {
             var userPositions = _userPositionRepository.GetUserPositionsQueryable();
 
@@ -70,9 +70,8 @@ namespace ServiceLayer.Services
 
             var pageSize = 3;
 
-            var userPositionsFiltered = await PaginatedList<UserPosition>.CreateAsync(userPositions, pageNumber, pageSize);
-
-            return userPositionsFiltered.Items.ToList();
+            return await PaginatedList<UserPosition>.CreateAsync(userPositions, pageNumber, pageSize);
+           
         }
 
 

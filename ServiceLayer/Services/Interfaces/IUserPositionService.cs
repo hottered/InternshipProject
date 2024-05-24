@@ -1,4 +1,5 @@
 ﻿using Contracts.Position;
+using DataLayer.Models.Pagination;
 using DataLayer.Models.Position;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,6 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> UpdateUserPositionAsync(UserPositionUpdateRequest userPosition);
 
-        public Task<List<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber);
+        public Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber);
     }
 }

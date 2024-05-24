@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DataLayer.Models.Position.UserPosition>
+﻿@* @model IEnumerable<DataLayer.Models.Position.UserPosition> *@
+@model DataLayer.Models.Pagination.PaginatedList<DataLayer.Models.Position.UserPosition>
 
 @{
     ViewData["Title"] = "AllUserPositions";
@@ -13,16 +14,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Caption)
+                Caption
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <tr>
                 <td>
@@ -32,10 +33,57 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "UpdateUserPosition", new { id = item.Id }) |
+                    @Html.ActionLink("Edit", "UpdateUserPosition", new { id = item.Id}) |
                     @Html.ActionLink("Delete", "DeleteUserPosition", new { id = item.Id })
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div class="col-md-6">
+    <nav>
+        <ul class="pagination justify-content-end">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link text-black" asp-route-pageNumber="1"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>First</span>
+                </a>
+            </li>
+
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>Previous</span>
+                </a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                    <a class="page-link text-black" asp-route-pageNumber="@i"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>Next</span>
+                </a>
+            </li>
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link text-black" asp-route-pageNumber="@Model.TotalPages"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>Last</span>
+                </a>
+            </li>
+
+
+        </ul>
+    </nav>
+</div>
