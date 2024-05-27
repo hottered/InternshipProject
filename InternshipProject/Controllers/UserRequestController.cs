@@ -6,6 +6,7 @@ using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
 using System.Security.Claims;
@@ -72,6 +73,48 @@ namespace InternshipProject.Controllers
         public async Task<IActionResult> DeleteUserRequest(int id)
         {
             await _userRequestService.DeleteUserRequestAsync(id);
+
+            return RedirectToAction("AllUserRequests", "UserRequest");
+        }
+
+        [Route("UpdateUserRequest")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateUserRequest(int id)
+        {
+            var request = await _userRequestService.GetUserRequestByIdAsync(id);
+
+            var result = request.ToUserRequestUpdateRequest();
+
+            return View(result);
+        }
+
+        [Route("UpdateUserRequest")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserRequest(UserRequestUpdateRequest updateRequest)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var result = await _userRequestService.UpdateUserRequestAsync(updateRequest);
+
+                if (!result)
+                {
+                    ModelState.AddModelError(string.Empty, Constants.UserPosisitonCUpdateErrorMessage);
+
+                    return View(updateRequest);
+                }
+
+                return RedirectToAction("AllUserRequests", "UserRequest");
+
+            }
+            return View();
+        }
+
+        [Route("ApproveUserRequest")]
+        [HttpGet]
+        public async Task<IActionResult> ApproveUserRequest(int id)
+        {
+            await _userRequestService.ApproveRequestByIdAsync(id);
 
             return RedirectToAction("AllUserRequests", "UserRequest");
         }

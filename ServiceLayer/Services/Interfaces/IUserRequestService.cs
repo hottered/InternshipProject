@@ -23,5 +23,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<List<UserRequest>> GetAllRequestsForTheUserWithId(int id);
 
+        public Task<bool> ApproveRequestByIdAsync(int id);
+
     }
 }

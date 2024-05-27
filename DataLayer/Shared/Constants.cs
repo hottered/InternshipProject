@@ -24,9 +24,6 @@ namespace DataLayer.Shared
         public const string PositionCaption = "Developer";
         public const string PositionDescription = "Description";
 
-        public const string LeaveTypeVacation1 = "Vacation";
-        public const string LeaveTypeVacation2 = "Sick";
-
         public const string CommentEmployee = "Leaving and never coming back";
         public const string CommentHR = "Goodbye!";
 

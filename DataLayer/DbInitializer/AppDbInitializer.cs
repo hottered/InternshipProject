@@ -111,16 +111,16 @@ namespace DataLayer.DbInitializer
 
                 //REQUESTS
 
-                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation1);
+                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == nameof(LeaveTypeEnum.Sick));
 
-                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation2);
+                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == nameof(LeaveTypeEnum.Vacation));
 
                 if (request1 is null && request2 is null)
                 {
                     
                     request1 = new UserRequest
                     {
-                        LeaveType = Constants.LeaveTypeVacation1,
+                        LeaveType = nameof(LeaveTypeEnum.Sick),
                         CommentEmployee = Constants.CommentEmployee,
                         CommentHR = Constants.CommentHR,
                         EmployeeId = user1.Id
@@ -128,7 +128,7 @@ namespace DataLayer.DbInitializer
 
                     request2 = new UserRequest
                     {
-                        LeaveType = Constants.LeaveTypeVacation2,
+                        LeaveType = nameof(LeaveTypeEnum.Vacation),
                         CommentEmployee = Constants.CommentEmployee,
                         CommentHR = Constants.CommentHR,
                         EmployeeId = user1.Id

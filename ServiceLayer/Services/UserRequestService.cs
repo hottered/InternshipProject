@@ -13,15 +13,20 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services
 {
     public class UserRequestService : IUserRequestService
     {
         private readonly IUserRequestRepository _userRequestRepository;
-        public UserRequestService(IUserRequestRepository userRequestRepository)
+        private readonly IAccountRepository _accountRepository;
+        public UserRequestService(
+            IUserRequestRepository userRequestRepository
+            , IAccountRepository accountRepository)
         {
             _userRequestRepository = userRequestRepository;
+            _accountRepository = accountRepository;
         }
 
         public async Task<List<UserRequest>> GetAllRequestsForTheUserWithId(int id)
@@ -29,8 +34,13 @@ namespace ServiceLayer.Services
             return await _userRequestRepository.AllRequestsForUserWithId(id);
         }
 
-        public async Task<bool> CreateUserRequestAsync(int userId,UserRequestCreateRequest userRequest)
+        public async Task<bool> CreateUserRequestAsync(int userId, UserRequestCreateRequest userRequest)
         {
+            if(userRequest.StartDate >= userRequest.EndDate) 
+            {
+                return false;
+            }
+
             var updatedUserRequest = userRequest with { UserId = userId };
 
             var request = updatedUserRequest.ToUserRequest();
@@ -71,7 +81,7 @@ namespace ServiceLayer.Services
 
             var existingRequest = await _userRequestRepository.GetByIdAsync(newUserRequest.Id);
 
-            if(existingRequest is null) 
+            if (existingRequest is null)
             {
                 return false;
             }
@@ -79,6 +89,40 @@ namespace ServiceLayer.Services
             var result = await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
 
             return result;
+        }
+
+        public async Task<bool> ApproveRequestByIdAsync(int id)
+        {
+            var request = await _userRequestRepository.GetByIdAsync(id);
+
+            if (request is null)
+            {
+                return false;
+            }
+
+            var user = await _accountRepository.GetUserByIdAsync(request.EmployeeId);
+
+            if (user is null)
+            {
+                return false;
+            }
+
+            TimeSpan difference = request.EndDate - request.StartDate;
+
+            int wholeDays = difference.Days;
+
+            if (wholeDays > user.DaysOffNumber)
+            {
+                return false;
+            }
+
+            user.DaysOffNumber = user.DaysOffNumber - wholeDays;
+            request.Approved = true;
+
+            await _accountRepository.UpdateUserAsync(user);
+            await _userRequestRepository.UpdateAsync(request);
+
+            return true;
         }
     }
 }
