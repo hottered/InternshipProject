@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLayer.Models.Request.UserRequest>
+﻿@model DataLayer.Models.Pagination.PaginatedList<DataLayer.Models.Request.UserRequest>
 @{
     ViewData["Title"] = "AllUserRequests";
 }
@@ -12,37 +12,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Items[0].Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.Items[0].StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.Items[0].EndDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LeaveType)
+                @Html.DisplayNameFor(model => model.Items[0].LeaveType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CommentEmployee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentHR)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Approved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
+                @Html.DisplayNameFor(model => model.Items[0].CommentEmployee)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.Items[0].CommentHR)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.Items[0].EmployeeId)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.Items[0].Approved)
+            </th>                                  
+            <th>                                   
+                @Html.DisplayNameFor(model => model.Items[0].IsDeleted)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Items) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
@@ -74,11 +74,56 @@
             <td>
                 @Html.ActionLink("Edit", "UpdateUserRequest", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "DeleteUserRequest", new { id = item.Id }) |
-                
-                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id });
-                
+                @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id });        
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div class="col-md-6">
+    <nav>
+        <ul class="pagination justify-content-end">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link text-black" asp-route-pageNumber="1"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>First</span>
+                </a>
+            </li>
+
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>Previous</span>
+                </a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                    <a class="page-link text-black" asp-route-pageNumber="@i"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>Next</span>
+                </a>
+            </li>
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link text-black" asp-route-pageNumber="@Model.TotalPages"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    <span>Last</span>
+                </a>
+            </li>
+
+
+        </ul>
+    </nav>
+</div>

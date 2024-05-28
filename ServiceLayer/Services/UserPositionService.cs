@@ -59,9 +59,15 @@ namespace ServiceLayer.Services
             return await _userPositionRepository.GetByIdAsync(id);
         }
 
-        public async Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber)
+        public async Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(string searchString, int pageNumber)
         {
+
             var userPositions = _userPositionRepository.GetUserPositionsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                userPositions = userPositions.Where(e => e.Caption!.Contains(searchString) || e.Description!.Contains(searchString));
+            }
 
             if (pageNumber < 1)
             {

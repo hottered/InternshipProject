@@ -3,6 +3,7 @@ using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 
@@ -17,10 +18,12 @@ namespace InternshipProject.Controllers
             _accountService = accountService;
         }
 
-        [Authorize, Route("allUsers")]
-        public async Task<IActionResult> AllUsers()
+        [Route("allUsers")]
+        public async Task<IActionResult> AllUsers(int pageNumber)
         {
-            var users = await _accountService.GetAllUsersAsync();
+            //var users = await _accountService.GetAllUsersAsync();
+
+            var users = await _accountService.GetUsersBasedOnPage(pageNumber);
 
             return View(users);
         }

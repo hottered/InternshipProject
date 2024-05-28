@@ -2,6 +2,7 @@
 using Contracts.Position;
 using DataLayer.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
@@ -17,9 +18,11 @@ namespace InternshipProject.Controllers
         }
 
         [Route("AllUserPositions")]
-        public async Task<IActionResult> AllUserPositions(int pageNumber)
+        public async Task<IActionResult> AllUserPositions(string searchString,int pageNumber)
         {
-            var positions = await _userPositionService.GetUserPositionsBasedOnPage(pageNumber);
+            ViewData["CurrentFilter"] = searchString;
+
+            var positions = await _userPositionService.GetUserPositionsBasedOnPage(searchString,pageNumber);
 
             return View(positions);
         }

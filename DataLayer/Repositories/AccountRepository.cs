@@ -47,5 +47,9 @@ namespace DataLayer.Repositories
             return await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
 
+        public IQueryable<Employee> GetUsersQueryable()
+        {
+            return _userManager.Users;
+        }
     }
 }

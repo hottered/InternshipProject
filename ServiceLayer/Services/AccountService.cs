@@ -1,5 +1,6 @@
 ﻿using Contracts.Employee;
 using DataLayer.Models;
+using DataLayer.Models.Pagination;
 using DataLayer.Repositories.Interfaces;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
@@ -66,6 +67,20 @@ namespace ServiceLayer.Services
         public async Task<Employee?> GetUserByIdAsync(int id)
         {
             return await _accountRepository.GetUserByIdAsync(id);
+        }
+
+        public async Task<PaginatedList<Employee>> GetUsersBasedOnPage(int pageNumber)
+        {
+            var usersQueryable = _accountRepository.GetUsersQueryable();
+
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            var pageSize = 3;
+
+            return await PaginatedList<Employee>.CreateAsync(usersQueryable, pageNumber, pageSize); 
         }
 
         public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)

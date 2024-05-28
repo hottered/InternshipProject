@@ -1,6 +1,7 @@
 ﻿using Contracts.Position;
 using Contracts.Request;
 using DataLayer.Models;
+using DataLayer.Models.Pagination;
 using DataLayer.Models.Request;
 using DataLayer.Repositories;
 using DataLayer.Repositories.Interfaces;
@@ -123,6 +124,19 @@ namespace ServiceLayer.Services
             await _userRequestRepository.UpdateAsync(request);
 
             return true;
+        }
+
+        public async Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(int pageNumber)
+        {
+            var requestsQueryable = _userRequestRepository.AllRequestsQueryable();
+
+            if(pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+            var pageSize = 3;
+
+            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable,pageNumber, pageSize);
         }
     }
 }

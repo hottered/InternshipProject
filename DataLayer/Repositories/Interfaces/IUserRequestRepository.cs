@@ -15,6 +15,8 @@ namespace DataLayer.Repositories.Interfaces
 
         public Task<bool> UpdateUserRequestAsync(UserRequest userRequest);
 
-        public Task<List<UserRequest>> AllRequestsForUserWithId(int id); 
+        public Task<List<UserRequest>> AllRequestsForUserWithId(int id);
+
+        public IQueryable<UserRequest> AllRequestsQueryable();
     }
 }

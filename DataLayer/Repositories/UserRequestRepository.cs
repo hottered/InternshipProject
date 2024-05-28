@@ -20,7 +20,12 @@ namespace DataLayer.Repositories
 
         public async Task<List<UserRequest>> AllRequestsForUserWithId(int id)
         {
-            return await _dbContext.Requests.Include(x => x.Employee).Where(y => y.EmployeeId == id).ToListAsync();
+            return await _dbContext.Requests.Where(x => x.EmployeeId == id).ToListAsync();
+        }
+
+        public IQueryable<UserRequest> AllRequestsQueryable()
+        {
+            return _dbContext.Requests;
         }
 
         public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)

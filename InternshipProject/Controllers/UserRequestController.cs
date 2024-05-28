@@ -6,6 +6,7 @@ using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
@@ -52,16 +53,16 @@ namespace InternshipProject.Controllers
 
         [HttpGet]
         [Route("AllUserRequests")]
-        public async Task<IActionResult> AllUserRequests()
+        public async Task<IActionResult> AllUserRequests(int pageNumber)
         {
-            var requests = await _userRequestService.GetAllRequestsAsync();
+            var requests = await _userRequestService.GetAllUserRequestsByPage(pageNumber);
 
             return View("AllUserRequests", requests);
         }
 
         [HttpGet]
-        [Route("AllUserRequests/{id}")]
-        public async Task<IActionResult> AllUserRequests(int id)
+        [Route("AllUserRequests/{id}/{pageNumber}")]
+        public async Task<IActionResult> AllUserRequests(int id,int pageNumber)
         {
             var requests = await _userRequestService.GetAllRequestsForTheUserWithId(id);
 

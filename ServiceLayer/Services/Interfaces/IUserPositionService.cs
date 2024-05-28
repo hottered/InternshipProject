@@ -21,6 +21,6 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> UpdateUserPositionAsync(UserPositionUpdateRequest userPosition);
 
-        public Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(int pageNumber);
+        public Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(string searchString,int pageNumber);
     }
 }
