@@ -30,8 +30,8 @@ namespace DataLayer.Repositories
         }
         public IQueryable<UserPosition> GetUserPositionsQuryableFiltered(string searchString,int pageNumber)
         {
-            return string.IsNullOrEmpty(searchString) 
-                ? _dbContext.Positions 
+            return string.IsNullOrEmpty(searchString)
+                ? _dbContext.Positions
                 : _dbContext.Positions.Where(e => e.Caption!.Contains(searchString) || e.Description!.Contains(searchString));
 
         }

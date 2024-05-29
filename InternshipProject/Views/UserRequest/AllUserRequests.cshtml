@@ -6,7 +6,7 @@
 <h1>AllUserRequests</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-controller="UserRequest" asp-action="CreateUserRequest">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -72,7 +72,7 @@
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>
             <td>
-                @Html.ActionLink("Edit", "UpdateUserRequest", new { id = item.Id }) |
+                @Html.ActionLink("Edit", "GetUserRequestById", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "DeleteUserRequest", new { id = item.Id }) |
                 @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id });        
             </td>

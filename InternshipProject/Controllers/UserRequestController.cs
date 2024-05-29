@@ -22,13 +22,12 @@ namespace InternshipProject.Controllers
             _userRequestService = userRequestService;
         }
 
-        [Route("CreateUserRequest")]
+        [Route("/user-requests/new")]
         public IActionResult CreateUserRequest()
         {
             return View();
         }
-        [Route("CreateUserRequest")]
-        [HttpPost]
+        [HttpPost("/user-requests/new")]
         public async Task<IActionResult> CreateUserRequest(UserRequestCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -51,8 +50,7 @@ namespace InternshipProject.Controllers
         }
 
 
-        [HttpGet]
-        [Route("AllUserRequests")]
+        [HttpGet("/user-requests/all")]
         public async Task<IActionResult> AllUserRequests(int pageNumber)
         {
             var requests = await _userRequestService.GetAllUserRequestsByPage(pageNumber);
@@ -60,8 +58,7 @@ namespace InternshipProject.Controllers
             return View("AllUserRequests", requests);
         }
 
-        [HttpGet]
-        [Route("AllUserRequests/{id}/{pageNumber}")]
+        [HttpGet("/user-requests/user/{id}/{pageNumber}")]
         public async Task<IActionResult> AllUserRequests(int id,int pageNumber)
         {
             var requests = await _userRequestService.GetAllRequestsForTheUserWithId(id);
@@ -69,8 +66,7 @@ namespace InternshipProject.Controllers
             return View("AllUserRequests",requests);
         }
 
-        [Route("DeleteUserRequest")]
-        [HttpGet]
+        [HttpGet("/user-requests/{id}/delete")]
         public async Task<IActionResult> DeleteUserRequest(int id)
         {
             await _userRequestService.DeleteUserRequestAsync(id);
@@ -78,19 +74,17 @@ namespace InternshipProject.Controllers
             return RedirectToAction("AllUserRequests", "UserRequest");
         }
 
-        [Route("UpdateUserRequest")]
-        [HttpGet]
-        public async Task<IActionResult> UpdateUserRequest(int id)
+        [HttpGet("/user-requests/{id}/edit")]
+        public async Task<IActionResult> GetUserRequestById(int id)
         {
             var request = await _userRequestService.GetUserRequestByIdAsync(id);
 
             var result = request.ToUserRequestUpdateRequest();
 
-            return View(result);
+            return View("UpdateUserRequest",result);
         }
 
-        [Route("UpdateUserRequest")]
-        [HttpPost]
+        [HttpPost("/user-requests")]
         public async Task<IActionResult> UpdateUserRequest(UserRequestUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -111,8 +105,7 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [Route("ApproveUserRequest")]
-        [HttpGet]
+        [HttpGet("/user-requests/{id}/approve")]
         public async Task<IActionResult> ApproveUserRequest(int id)
         {
             await _userRequestService.ApproveRequestByIdAsync(id);

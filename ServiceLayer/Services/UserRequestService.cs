@@ -39,7 +39,7 @@ namespace ServiceLayer.Services
 
         public async Task<bool> CreateUserRequestAsync(int userId, UserRequestCreateRequest userRequest)
         {
-            if(userRequest.StartDate >= userRequest.EndDate) 
+            if (userRequest.StartDate >= userRequest.EndDate)
             {
                 return false;
             }
@@ -84,9 +84,8 @@ namespace ServiceLayer.Services
 
             var existingRequest = await _userRequestRepository.GetByIdAsync(newUserRequest.Id);
 
-            return existingRequest is null
-                ? false
-                : await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
+            return existingRequest is not null
+                    && await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
 
         }
 
@@ -130,7 +129,7 @@ namespace ServiceLayer.Services
 
             var pageSize = 3;
 
-            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable,pageNumber, pageSize);
+            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable, pageNumber, pageSize);
         }
     }
 }

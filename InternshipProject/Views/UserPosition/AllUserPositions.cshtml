@@ -13,7 +13,6 @@
 <p>
     <a asp-controller="UserPosition" asp-action="CreateUserPosition">Create New</a>
 </p>
-
 <div class="row">
     <div class="col-md-6">
         <form class="d-flex" asp-action="AllUserPositions" asp-controller="UserPosition">
@@ -48,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "UpdateUserPosition", new { id = item.Id}) |
+                    @Html.ActionLink("Edit", "GetUserPositionById", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "DeleteUserPosition", new { id = item.Id })
                 </td>
             </tr>

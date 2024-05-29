@@ -18,23 +18,22 @@ namespace InternshipProject.Controllers
             _accountService = accountService;
         }
 
-        [Route("allUsers")]
+        [HttpGet("/users")]
         public async Task<IActionResult> AllUsers(int pageNumber)
         {
-            //var users = await _accountService.GetAllUsersAsync();
 
             var users = await _accountService.GetUsersBasedOnPage(pageNumber);
 
             return View(users);
         }
 
-        [Route("CreateUser")]
+        [HttpGet("/users/new")]
         public IActionResult CreateUser()
         {
             return View();
         }
-        [Route("CreateUser")]
-        [HttpPost]
+
+        [HttpPost("/users/new")]
         public async Task<IActionResult> CreateUser(EmployeeCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -54,26 +53,17 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [Route("UpdateUser")]
-        [HttpGet]
-        public async Task<IActionResult> UpdateUser(int id)
+        [HttpGet("/users/{id}/edit")]
+        public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _accountService.GetUserByIdAsync(id);
 
             var updateRequest = user.ToEmployeeUpdateRequest();
 
-            return View(updateRequest);
+            return View("UpdateUser",updateRequest);
         }
 
-
-        [Route("UpdateUser")]
-        public IActionResult UpdateUser()
-        {
-            return View();
-        }
-
-        [Route("UpdateUser")]
-        [HttpPost]
+        [HttpPost("/users")]
         public async Task<IActionResult> UpdateUser(EmployeeUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -95,8 +85,7 @@ namespace InternshipProject.Controllers
         }
 
 
-        [Route("DeleteUser")]
-        [HttpGet]
+        [HttpGet("/users/{id}/delete")]
         public async Task<IActionResult> DeleteUser(int id)
         {
 

@@ -23,12 +23,12 @@ namespace InternshipProject.Controllers
             _accountService = accountService;
         }
 
-        [Route("signup")]
+        [Route(nameof(Signup))]
         public IActionResult Signup()
         {
             return View();
         }
-        [Route("signup")]
+        [Route(nameof(Signup))]
         [HttpPost]
         public async Task<IActionResult> Signup(EmployeeCreateRequest createRequest)
         {
@@ -45,13 +45,13 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [Route("login")]
+        [Route(nameof(Login))]
         public IActionResult Login()
         {
             return View();
         }
 
-        [Route("login")]
+        [Route(nameof(Login))]
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
@@ -70,7 +70,7 @@ namespace InternshipProject.Controllers
             return View(loginModel);
         }
 
-        [Route("logout")]
+        [Route(nameof(Logout))]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
