@@ -6,6 +6,8 @@ using DataLayer.Models.Request;
 using DataLayer.Repositories;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
@@ -82,14 +84,10 @@ namespace ServiceLayer.Services
 
             var existingRequest = await _userRequestRepository.GetByIdAsync(newUserRequest.Id);
 
-            if (existingRequest is null)
-            {
-                return false;
-            }
+            return existingRequest is null
+                ? false
+                : await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
 
-            var result = await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
-
-            return result;
         }
 
         public async Task<bool> ApproveRequestByIdAsync(int id)
@@ -130,10 +128,6 @@ namespace ServiceLayer.Services
         {
             var requestsQueryable = _userRequestRepository.AllRequestsQueryable();
 
-            if(pageNumber < 1)
-            {
-                pageNumber = 1;
-            }
             var pageSize = 3;
 
             return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable,pageNumber, pageSize);

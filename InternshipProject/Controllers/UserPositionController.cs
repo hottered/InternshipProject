@@ -21,14 +21,8 @@ namespace InternshipProject.Controllers
         public async Task<IActionResult> AllUserPositions(string searchString,int pageNumber,string currentFilter)
         {
 
-            if (searchString != null)
-            {
-                pageNumber = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+            searchString = (searchString != null) ? searchString : currentFilter;
+
             ViewData["CurrentFilter"] = searchString;
 
             var positions = await _userPositionService.GetUserPositionsBasedOnPage(searchString,pageNumber);

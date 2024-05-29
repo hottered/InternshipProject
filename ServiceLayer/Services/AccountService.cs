@@ -73,11 +73,6 @@ namespace ServiceLayer.Services
         {
             var usersQueryable = _accountRepository.GetUsersQueryable();
 
-            if (pageNumber < 1)
-            {
-                pageNumber = 1;
-            }
-
             var pageSize = 3;
 
             return await PaginatedList<Employee>.CreateAsync(usersQueryable, pageNumber, pageSize); 

@@ -69,11 +69,6 @@ namespace ServiceLayer.Services
                 userPositions = userPositions.Where(e => e.Caption!.Contains(searchString) || e.Description!.Contains(searchString));
             }
 
-            if (pageNumber < 1)
-            {
-                pageNumber = 1;
-            }
-
             var pageSize = 3;
 
             return await PaginatedList<UserPosition>.CreateAsync(userPositions, pageNumber, pageSize);

@@ -1,5 +1,8 @@
-﻿@* @model IEnumerable<DataLayer.Models.Position.UserPosition> *@
-@model DataLayer.Models.Pagination.PaginatedList<DataLayer.Models.Position.UserPosition>
+﻿@model DataLayer.Models.Pagination.PaginatedList<DataLayer.Models.Position.UserPosition>
+
+@section Scripts {
+    <script src="~/js/searchButtonToggle.js"></script>
+}
 
 @{
     ViewData["Title"] = "AllUserPositions";
@@ -14,8 +17,8 @@
 <div class="row">
     <div class="col-md-6">
         <form class="d-flex" asp-action="AllUserPositions" asp-controller="UserPosition">
-            <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" value="@ViewData["CurrentFilter"]">
-            <button class="btn btn-dark" type="submit">Search by name</button>
+            <input id="searchInput" name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" value="@ViewData["CurrentFilter"]">
+            <button id="searchButton" class="btn btn-dark" type="submit" disabled>Search by name</button>
         </form>
     </div>
     <div class="col-md-6">
@@ -99,3 +102,5 @@
         </ul>
     </nav>
 </div>
+
+

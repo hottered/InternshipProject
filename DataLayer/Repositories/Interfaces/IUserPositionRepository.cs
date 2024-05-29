@@ -16,5 +16,9 @@ namespace DataLayer.Repositories.Interfaces
         public Task<bool> UpdateUserPositionAsync(UserPosition userPosition);
 
         public IQueryable<UserPosition> GetUserPositionsQueryable();
+
+        public IQueryable<UserPosition> GetUserPositionsQuryableFiltered(string searchString, int pageNumber);
+
+
     }
 }
