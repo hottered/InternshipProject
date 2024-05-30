@@ -43,7 +43,7 @@ namespace InternshipProject.Controllers
                     return View(createRequest);
                 }
 
-                return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller",""));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
 
             }
             return View();
@@ -62,8 +62,8 @@ namespace InternshipProject.Controllers
             return View(nameof(AllUserRequests), requests);
         }
 
-        [HttpGet("/user-requests/user/{id}/{pageNumber}")]
-        public async Task<IActionResult> AllUserRequests(int id,int pageNumber)
+        [HttpGet("/user-requests/user/{id}")]
+        public async Task<IActionResult> AllUserRequests(int id)
         {
             var requests = await _userRequestService.GetAllRequestsForTheUserWithId(id);
 
@@ -83,7 +83,7 @@ namespace InternshipProject.Controllers
         {
             var request = await _userRequestService.GetUserRequestByIdAsync(id);
 
-            var result = request.ToUserRequestUpdateRequest();
+            var result = request!.ToUserRequestUpdateRequest();
 
             return View(nameof(UpdateUserRequest),result);
         }
