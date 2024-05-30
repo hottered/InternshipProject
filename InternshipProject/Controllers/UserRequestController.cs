@@ -43,7 +43,7 @@ namespace InternshipProject.Controllers
                     return View(createRequest);
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller",""));
 
             }
             return View();
@@ -59,7 +59,7 @@ namespace InternshipProject.Controllers
 
             var requests = await _userRequestService.GetAllUserRequestsByPage(searchString, pageNumber);
 
-            return View("AllUserRequests", requests);
+            return View(nameof(AllUserRequests), requests);
         }
 
         [HttpGet("/user-requests/user/{id}/{pageNumber}")]
@@ -67,7 +67,7 @@ namespace InternshipProject.Controllers
         {
             var requests = await _userRequestService.GetAllRequestsForTheUserWithId(id);
 
-            return View("AllUserRequests",requests);
+            return View(nameof(AllUserRequests), requests);
         }
 
         [HttpGet("/user-requests/{id}/delete")]
@@ -75,7 +75,7 @@ namespace InternshipProject.Controllers
         {
             await _userRequestService.DeleteUserRequestAsync(id);
 
-            return RedirectToAction("AllUserRequests", "UserRequest");
+            return RedirectToAction(nameof(AllUserRequests), "UserRequest");
         }
 
         [HttpGet("/user-requests/{id}/edit")]
@@ -85,7 +85,7 @@ namespace InternshipProject.Controllers
 
             var result = request.ToUserRequestUpdateRequest();
 
-            return View("UpdateUserRequest",result);
+            return View(nameof(UpdateUserRequest),result);
         }
 
         [HttpPost("/user-requests")]
@@ -103,7 +103,7 @@ namespace InternshipProject.Controllers
                     return View(updateRequest);
                 }
 
-                return RedirectToAction("AllUserRequests", "UserRequest");
+                return RedirectToAction(nameof(AllUserRequests), "UserRequest");
 
             }
             return View();
@@ -114,7 +114,7 @@ namespace InternshipProject.Controllers
         {
             await _userRequestService.ApproveRequestByIdAsync(id);
 
-            return RedirectToAction("AllUserRequests", "UserRequest");
+            return RedirectToAction(nameof(AllUserRequests), "UserRequest");
         }
     }
 }

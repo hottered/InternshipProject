@@ -61,7 +61,7 @@ namespace InternshipProject.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
 
                 ModelState.AddModelError(string.Empty, Constants.LoginError);
@@ -75,7 +75,7 @@ namespace InternshipProject.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

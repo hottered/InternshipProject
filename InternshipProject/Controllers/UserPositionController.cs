@@ -49,7 +49,7 @@ namespace InternshipProject.Controllers
                     return View(createRequest);
                 }
 
-                return RedirectToAction("AllUserPositions", "UserPosition");
+                return RedirectToAction(nameof(AllUserPositions), "UserPosition");
 
 
             }
@@ -63,7 +63,7 @@ namespace InternshipProject.Controllers
 
             var updateRequest = position.ToEmployeeUpdateRequest();
 
-            return View("UpdateUserPosition", updateRequest);
+            return View(nameof(UpdateUserPosition), updateRequest);
         }
 
         [HttpPost("/user-positions")]
@@ -81,7 +81,7 @@ namespace InternshipProject.Controllers
                     return View(updateRequest);
                 }
 
-                return RedirectToAction("AllUserPositions", "UserPosition");
+                return RedirectToAction(nameof(AllUserPositions), "UserPosition");
 
             }
             return View();
@@ -92,7 +92,7 @@ namespace InternshipProject.Controllers
         {
             await _userPositionService.DeleteUserPositionAsync(id);
 
-            return RedirectToAction("AllUserPositions", "UserPosition");
+            return RedirectToAction(nameof(AllUserPositions), "UserPosition");
         }
 
     }

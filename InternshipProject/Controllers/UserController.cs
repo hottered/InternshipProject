@@ -50,7 +50,7 @@ namespace InternshipProject.Controllers
                     return View(createRequest);
                 }
 
-                return RedirectToAction("AllUsers", "User");
+                return RedirectToAction(nameof(AllUsers), "User");
 
             }
             return View();
@@ -63,7 +63,7 @@ namespace InternshipProject.Controllers
 
             var updateRequest = user.ToEmployeeUpdateRequest();
 
-            return View("UpdateUser",updateRequest);
+            return View(nameof(UpdateUser),updateRequest);
         }
 
         [HttpPost("/users")]
@@ -81,7 +81,7 @@ namespace InternshipProject.Controllers
                     return View(updateRequest);
                 }
 
-                return RedirectToAction("AllUsers", "User");
+                return RedirectToAction(nameof(AllUsers), "User");
 
             }
             return View();
@@ -94,7 +94,7 @@ namespace InternshipProject.Controllers
 
             await _accountService.DeleteUserAsync(id);
 
-            return RedirectToAction("AllUsers", "User");
+            return RedirectToAction(nameof(AllUsers), "User");
         }
     }
 }
