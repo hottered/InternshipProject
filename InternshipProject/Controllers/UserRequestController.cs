@@ -43,7 +43,7 @@ namespace InternshipProject.Controllers
                     return View(createRequest);
                 }
 
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(AllUserRequests), "UserRequest");
 
             }
             return View();
@@ -51,13 +51,13 @@ namespace InternshipProject.Controllers
 
 
         [Route("/user-requests/all")]
-        public async Task<IActionResult> AllUserRequests(string searchString, int pageNumber,string currentFilter)
+        public async Task<IActionResult> AllUserRequests(UserRequestFilter filter/*,string currentFilter*/)
         {
-            searchString = (searchString != null) ? searchString : currentFilter;
+            //filter.SearchString = (filter.SearchString != null) ? filter.SearchString : currentFilter;
 
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = filter;
 
-            var requests = await _userRequestService.GetAllUserRequestsByPage(searchString, pageNumber);
+            var requests = await _userRequestService.GetAllUserRequestsByPage(filter);
 
             return View(nameof(AllUserRequests), requests);
         }

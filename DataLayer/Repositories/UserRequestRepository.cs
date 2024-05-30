@@ -1,4 +1,6 @@
-﻿using DataLayer.Data;
+﻿using Contracts.Request;
+using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Models.Request;
 using DataLayer.Repositories.GenericRepository;
 using DataLayer.Repositories.Interfaces;
@@ -23,9 +25,20 @@ namespace DataLayer.Repositories
             return await _dbContext.Requests.Where(x => x.EmployeeId == id).ToListAsync();
         }
 
-        public IQueryable<UserRequest> AllRequestsQueryableBasedOnFilter(string comment)
+        public async Task<List<UserRequest>> AllRequestsQueryableBasedOnFilter(UserRequestFilter filter)
         {
-            return _dbContext.Requests.Where(x => x.CommentEmployee.Contains(comment) || x.LeaveType.Contains(comment));
+
+            return await _dbContext.Requests
+                .Filter(filter)
+                .Paginate(filter)
+                .ToListAsync();
+            //return _dbContext.Requests.Where(x => x.CommentEmployee.Contains(comment) || x.LeaveType.Contains(comment));
+        }
+        public async Task<long> GetAllRequestsCountAsync(UserRequestFilter filter)
+        {
+            return await _dbContext.Requests
+                .Filter(filter)
+                .CountAsync();
         }
         public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
         {

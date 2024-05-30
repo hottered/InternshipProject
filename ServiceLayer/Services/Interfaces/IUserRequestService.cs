@@ -26,7 +26,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> ApproveRequestByIdAsync(int id);
 
-        public Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(string comment,int pageNumber);
+        public Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(UserRequestFilter filter);
 
     }
 }

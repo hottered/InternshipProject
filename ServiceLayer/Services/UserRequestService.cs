@@ -123,15 +123,14 @@ namespace ServiceLayer.Services
             return true;
         }
 
-        public async Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(string comment,int pageNumber)
+        public async Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(UserRequestFilter filter)
         {
-            comment ??= string.Empty;
 
-            var requestsQueryable = _userRequestRepository.AllRequestsQueryableBasedOnFilter(comment);
+            var count = await _userRequestRepository.GetAllRequestsCountAsync(filter);
 
-            var pageSize = 3;
+            var requestsQueryable = await _userRequestRepository.AllRequestsQueryableBasedOnFilter(filter);
 
-            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable, pageNumber, pageSize);
+            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable,count, (int)filter.PageNumber!, (int)filter.PageSize!);
         }
 
     }

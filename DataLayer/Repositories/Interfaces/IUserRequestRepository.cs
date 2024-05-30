@@ -1,4 +1,5 @@
-﻿using DataLayer.Models.Request;
+﻿using Contracts.Request;
+using DataLayer.Models.Request;
 using DataLayer.Repositories.GenericRepository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,9 @@ namespace DataLayer.Repositories.Interfaces
 
         public Task<List<UserRequest>> AllRequestsForUserWithId(int id);
 
-        public IQueryable<UserRequest> AllRequestsQueryableBasedOnFilter(string comment);
+        public Task<List<UserRequest>> AllRequestsQueryableBasedOnFilter(UserRequestFilter filter);
+
+        public Task<long> GetAllRequestsCountAsync(UserRequestFilter filter);
 
 
     }

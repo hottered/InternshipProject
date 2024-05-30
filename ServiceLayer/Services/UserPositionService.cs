@@ -61,16 +61,12 @@ namespace ServiceLayer.Services
 
         public async Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(string searchString, int pageNumber)
         {
-            if (searchString == null)
-            {
-                searchString = string.Empty;
-            }
-
+            
             var userPositions = _userPositionRepository.GetUserPositionsQuryableFiltered(searchString, pageNumber);
 
             var pageSize = 3;
 
-            return await PaginatedList<UserPosition>.CreateAsync(userPositions, pageNumber, pageSize);
+            return await PaginatedList<UserPosition>.CreateAsync(userPositions.ToList(),4, pageNumber, pageSize);
            
         }
 

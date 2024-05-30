@@ -15,22 +15,27 @@ namespace DataLayer.Models.Pagination
         public bool HasPreviousPage => PageIndex > 1;
         public bool HasNextPage => PageIndex < TotalPages;
 
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        public PaginatedList(List<T> items, long count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             Items = items;
         }
 
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
+        public static async Task<PaginatedList<T>> CreateAsync(List<T> source,long count, int pageNumber, int pageSize)
         {
             if(pageNumber < 1)
             {
                 pageNumber = 1;
             }
-            var count = await source.CountAsync();
-            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            return new PaginatedList<T>(items, count, pageNumber, pageSize);
+            
+            //var taskCount = source.CountAsync();
+            //var taskItems = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            //await Task.WhenAll(taskCount, taskItems); // 200
+
+            //var count = await source.CountAsync();
+            //var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(); 
+            return new PaginatedList<T>(source, count, pageNumber, pageSize);
         }
     }
 }

@@ -77,7 +77,7 @@ namespace ServiceLayer.Services
 
             var pageSize = 3;
 
-            return await PaginatedList<Employee>.CreateAsync(usersQueryable, pageNumber, pageSize); 
+            return await PaginatedList<Employee>.CreateAsync(usersQueryable.ToList(),4, pageNumber, pageSize); 
         }
 
         public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)
