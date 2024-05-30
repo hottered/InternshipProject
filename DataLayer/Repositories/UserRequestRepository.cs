@@ -23,11 +23,10 @@ namespace DataLayer.Repositories
             return await _dbContext.Requests.Where(x => x.EmployeeId == id).ToListAsync();
         }
 
-        public IQueryable<UserRequest> AllRequestsQueryable()
+        public IQueryable<UserRequest> AllRequestsQueryableBasedOnFilter(string comment)
         {
-            return _dbContext.Requests;
+            return _dbContext.Requests.Where(x => x.CommentEmployee.Contains(comment) || x.LeaveType.Contains(comment));
         }
-
         public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
         {
             await _dbContext.Requests.AddAsync(userRequest);

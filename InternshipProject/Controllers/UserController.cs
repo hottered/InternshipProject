@@ -18,11 +18,14 @@ namespace InternshipProject.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("/users")]
-        public async Task<IActionResult> AllUsers(int pageNumber)
+        [Route("/users/all")]
+        public async Task<IActionResult> AllUsers(string searchString, int pageNumber,string currentFilter)
         {
+            searchString = (searchString != null) ? searchString : currentFilter;
 
-            var users = await _accountService.GetUsersBasedOnPage(pageNumber);
+            ViewData["CurrentFilter"] = searchString;
+
+            var users = await _accountService.GetUsersBasedOnPage(searchString,pageNumber);
 
             return View(users);
         }

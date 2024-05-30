@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Repositories
 {
-    public class UserPositionRepository : BaseRepository<UserPosition>,IUserPositionRepository
+    public class UserPositionRepository : BaseRepository<UserPosition>, IUserPositionRepository
     {
         public UserPositionRepository(AppDbContext context) : base(context) { }
 
@@ -24,15 +24,9 @@ namespace DataLayer.Repositories
             return res > 0;
         }
 
-        public IQueryable<UserPosition> GetUserPositionsQueryable()
+        public IQueryable<UserPosition> GetUserPositionsQuryableFiltered(string searchString, int pageNumber)
         {
-            return _dbContext.Positions;
-        }
-        public IQueryable<UserPosition> GetUserPositionsQuryableFiltered(string searchString,int pageNumber)
-        {
-            return string.IsNullOrEmpty(searchString)
-                ? _dbContext.Positions
-                : _dbContext.Positions.Where(e => e.Caption!.Contains(searchString) || e.Description!.Contains(searchString));
+            return _dbContext.Positions.Where(e => e.Caption!.Contains(searchString) || e.Description!.Contains(searchString));
 
         }
 

@@ -17,6 +17,8 @@ namespace DataLayer.Repositories.Interfaces
 
         public Task<List<UserRequest>> AllRequestsForUserWithId(int id);
 
-        public IQueryable<UserRequest> AllRequestsQueryable();
+        public IQueryable<UserRequest> AllRequestsQueryableBasedOnFilter(string comment);
+
+
     }
 }

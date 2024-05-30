@@ -50,10 +50,14 @@ namespace InternshipProject.Controllers
         }
 
 
-        [HttpGet("/user-requests/all")]
-        public async Task<IActionResult> AllUserRequests(int pageNumber)
+        [Route("/user-requests/all")]
+        public async Task<IActionResult> AllUserRequests(string searchString, int pageNumber,string currentFilter)
         {
-            var requests = await _userRequestService.GetAllUserRequestsByPage(pageNumber);
+            searchString = (searchString != null) ? searchString : currentFilter;
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var requests = await _userRequestService.GetAllUserRequestsByPage(searchString, pageNumber);
 
             return View("AllUserRequests", requests);
         }

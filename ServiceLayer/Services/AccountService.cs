@@ -69,9 +69,11 @@ namespace ServiceLayer.Services
             return await _accountRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<PaginatedList<Employee>> GetUsersBasedOnPage(int pageNumber)
+        public async Task<PaginatedList<Employee>> GetUsersBasedOnPage(string searchString,int pageNumber)
         {
-            var usersQueryable = _accountRepository.GetUsersQueryable();
+            searchString ??= string.Empty;
+
+            var usersQueryable = _accountRepository.GetUsersQueryableBasedOnFilter(searchString);
 
             var pageSize = 3;
 

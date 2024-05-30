@@ -24,7 +24,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> UpdateUserAsync(EmployeeUpdateRequest employee);
 
-        public Task<PaginatedList<Employee>> GetUsersBasedOnPage(int pageNumber);
+        public Task<PaginatedList<Employee>> GetUsersBasedOnPage(string searchString, int pageNumber);
 
     }
 }

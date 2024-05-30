@@ -61,6 +61,10 @@ namespace ServiceLayer.Services
 
         public async Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(string searchString, int pageNumber)
         {
+            if (searchString == null)
+            {
+                searchString = string.Empty;
+            }
 
             var userPositions = _userPositionRepository.GetUserPositionsQuryableFiltered(searchString, pageNumber);
 

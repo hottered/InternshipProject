@@ -19,7 +19,7 @@ namespace DataLayer.Repositories.Interfaces
         public Task<Employee?> GetUserByEmailAsync(string username);
         public Task<bool> UpdateUserAsync(Employee employee);
         public Task AssignRoleAsync(Employee employee, string role);
-        public IQueryable<Employee> GetUsersQueryable();
+        public IQueryable<Employee> GetUsersQueryableBasedOnFilter(string searchString);
 
     }
 }
