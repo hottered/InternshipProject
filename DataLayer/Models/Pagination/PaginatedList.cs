@@ -29,12 +29,6 @@ namespace DataLayer.Models.Pagination
                 pageNumber = 1;
             }
             
-            //var taskCount = source.CountAsync();
-            //var taskItems = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            //await Task.WhenAll(taskCount, taskItems); // 200
-
-            //var count = await source.CountAsync();
-            //var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(); 
             return new PaginatedList<T>(source, count, pageNumber, pageSize);
         }
     }
