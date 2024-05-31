@@ -1,6 +1,10 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using Contracts.Request;
+using DataLayer.Extensions;
+using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
+using DataLayer.Models.Request;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,10 +50,18 @@ namespace DataLayer.Repositories
         {
             return await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
-
-        public IQueryable<Employee> GetUsersQueryableBasedOnFilter(string searchString)
+        public async Task<long> GetAllUsersCountAsync(EmployeeFilter filter)
         {
-            return _userManager.Users.Where(x=>x.FirstName!.Contains(searchString) || x.LastName!.Contains(searchString));
+            return await _userManager.Users
+                .Filter(filter)
+                .CountAsync();
+        }
+        public async Task<List<Employee>> GetAllUsersAsync(EmployeeFilter filter)
+        {
+            return await _userManager.Users
+                .Filter(filter)
+                .Paginate(filter)
+                .ToListAsync();
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using DataLayer.Data;
+﻿using Contracts.Position;
+using Contracts.Request;
+using DataLayer.Data;
+using DataLayer.Extensions;
 using DataLayer.Models.Position;
+using DataLayer.Models.Request;
 using DataLayer.Repositories.GenericRepository;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +27,20 @@ namespace DataLayer.Repositories
 
             return res > 0;
         }
-
-        public IQueryable<UserPosition> GetUserPositionsQuryableFiltered(string searchString, int pageNumber)
+        public async Task<List<UserPosition>> GetAllUserPositionsAsync(UserPositionFilter filter)
         {
-            return _dbContext.Positions.Where(e => e.Caption!.Contains(searchString) || e.Description!.Contains(searchString));
 
+            return await _dbContext.Positions
+                .Filter(filter)
+                .Paginate(filter)
+                .ToListAsync();
         }
-
+        public async Task<long> GetAllUserPositionsCountAsync(UserPositionFilter filter)
+        {
+            return await _dbContext.Positions
+                .Filter(filter)
+                .CountAsync();
+        }
         public async Task<bool> UpdateUserPositionAsync(UserPosition userPosition)
         {
             _dbContext.Positions.Update(userPosition);

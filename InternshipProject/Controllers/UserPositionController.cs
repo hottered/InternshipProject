@@ -18,14 +18,12 @@ namespace InternshipProject.Controllers
         }
 
         [Route("/user-positions/all")]
-        public async Task<IActionResult> AllUserPositions(string searchString, int pageNumber, string currentFilter)
+        public async Task<IActionResult> AllUserPositions(UserPositionFilter filter)
         {
 
-            searchString = (searchString != null) ? searchString : currentFilter;
+            ViewData["CurrentFilter"] = filter;
 
-            ViewData["CurrentFilter"] = searchString;
-
-            var positions = await _userPositionService.GetUserPositionsBasedOnPage(searchString, pageNumber);
+            var positions = await _userPositionService.GetAllUserPositionsAsync(filter);
 
             return View(positions);
         }

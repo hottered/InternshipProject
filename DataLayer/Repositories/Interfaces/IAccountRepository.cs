@@ -1,4 +1,5 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,8 @@ namespace DataLayer.Repositories.Interfaces
         public Task<Employee?> GetUserByEmailAsync(string username);
         public Task<bool> UpdateUserAsync(Employee employee);
         public Task AssignRoleAsync(Employee employee, string role);
-        public IQueryable<Employee> GetUsersQueryableBasedOnFilter(string searchString);
+        public Task<List<Employee>> GetAllUsersAsync(EmployeeFilter filter);
+        public Task<long> GetAllUsersCountAsync(EmployeeFilter filter);
 
     }
 }

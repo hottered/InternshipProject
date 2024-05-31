@@ -51,9 +51,8 @@ namespace InternshipProject.Controllers
 
 
         [Route("/user-requests/all")]
-        public async Task<IActionResult> AllUserRequests(UserRequestFilter filter/*,string currentFilter*/)
+        public async Task<IActionResult> AllUserRequests(UserRequestFilter filter)
         {
-            //filter.SearchString = (filter.SearchString != null) ? filter.SearchString : currentFilter;
 
             ViewData["CurrentFilter"] = filter;
 

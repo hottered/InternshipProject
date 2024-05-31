@@ -27,12 +27,10 @@ namespace DataLayer.Repositories
 
         public async Task<List<UserRequest>> AllRequestsQueryableBasedOnFilter(UserRequestFilter filter)
         {
-
             return await _dbContext.Requests
                 .Filter(filter)
                 .Paginate(filter)
                 .ToListAsync();
-            //return _dbContext.Requests.Where(x => x.CommentEmployee.Contains(comment) || x.LeaveType.Contains(comment));
         }
         public async Task<long> GetAllRequestsCountAsync(UserRequestFilter filter)
         {

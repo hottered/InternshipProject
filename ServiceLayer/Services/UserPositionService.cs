@@ -4,6 +4,7 @@ using DataLayer.Models.Pagination;
 using DataLayer.Models.Position;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
@@ -59,14 +60,14 @@ namespace ServiceLayer.Services
             return await _userPositionRepository.GetByIdAsync(id);
         }
 
-        public async Task<PaginatedList<UserPosition>> GetUserPositionsBasedOnPage(string searchString, int pageNumber)
+        public async Task<PaginatedList<UserPosition>> GetAllUserPositionsAsync(UserPositionFilter filter)
         {
-            
-            var userPositions = _userPositionRepository.GetUserPositionsQuryableFiltered(searchString, pageNumber);
 
-            var pageSize = 3;
+            var count = await _userPositionRepository.GetAllUserPositionsCountAsync(filter);
 
-            return await PaginatedList<UserPosition>.CreateAsync(userPositions.ToList(),4, pageNumber, pageSize);
+            var userPositions = await _userPositionRepository.GetAllUserPositionsAsync(filter);
+
+            return await PaginatedList<UserPosition>.CreateAsync(userPositions,count, (int)filter.PageNumber!, (int)filter.PageSize!);
            
         }
 

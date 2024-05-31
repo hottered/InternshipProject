@@ -19,13 +19,12 @@ namespace InternshipProject.Controllers
         }
 
         [Route("/users/all")]
-        public async Task<IActionResult> AllUsers(string searchString, int pageNumber,string currentFilter)
+        public async Task<IActionResult> AllUsers(EmployeeFilter filter)
         {
-            searchString = (searchString != null) ? searchString : currentFilter;
 
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = filter;
 
-            var users = await _accountService.GetUsersBasedOnPage(searchString,pageNumber);
+            var users = await _accountService.GetAllUsersAsync(filter);
 
             return View(users);
         }
