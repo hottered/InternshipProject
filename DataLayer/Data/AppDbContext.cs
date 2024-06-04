@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using DataLayer.Models;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
-using DataLayer.Domain;
+using Contracts.Enums;
 
 namespace DataLayer.Data
 {

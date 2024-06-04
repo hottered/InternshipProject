@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contracts.Enums;
 using Contracts.Filter;
 
 namespace Contracts.Request
@@ -13,6 +14,6 @@ namespace Contracts.Request
 
         public string? CommentEmployee {  get; set; }
 
-        public string? LeaveType { get; set; }
+        public LeaveTypeEnum? LeaveType { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Contracts.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +18,7 @@ namespace DataLayer.Models.Request
         public DateTime EndDate { get; set; } = DateTime.Now;
 
         [MaxLength(50)]
-        public string LeaveType { get; set; } = default!;
+        public LeaveTypeEnum LeaveType { get; set; } = default!;
 
         [MaxLength(512)]
         public string CommentEmployee { get; set; } = default!;

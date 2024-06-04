@@ -1,5 +1,5 @@
 ﻿using Contracts.Employee;
-using DataLayer.Domain;
+using Contracts.Enums;
 using DataLayer.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 

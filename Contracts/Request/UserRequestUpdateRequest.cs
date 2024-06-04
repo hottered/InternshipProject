@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Contracts.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Contracts.Request
         int Id,
         DateTime StartDate,
         DateTime EndDate,
-        string LeaveType,
+        LeaveTypeEnum LeaveType,
         string CommentEmployee,
         string CommentHR,
         bool Approved
