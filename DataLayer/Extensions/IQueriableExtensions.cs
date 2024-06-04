@@ -1,5 +1,5 @@
-﻿using Contracts;
-using Contracts.Employee;
+﻿using Contracts.Employee;
+using Contracts.Filter;
 using Contracts.Position;
 using Contracts.Request;
 using DataLayer.Models;
@@ -21,7 +21,6 @@ namespace DataLayer.Extensions
             {
                 return queryable;
             }
-
             return queryable
                 .Where(x => x.CommentEmployee.ToLower().Contains(filter.SearchString!.ToLower()));
         }

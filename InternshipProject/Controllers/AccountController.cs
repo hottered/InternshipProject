@@ -3,11 +3,11 @@ using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using DataLayer.Repositories.Interfaces;
-using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
 
 namespace InternshipProject.Controllers
 {

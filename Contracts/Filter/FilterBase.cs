@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contracts
+namespace Contracts.Filter
 {
     public class FilterBase
     {
-        public string? Sort {  get; set; }
+        public string? Sort { get; set; }
 
         public int? PageSize { get; set; } = 3;
 

@@ -49,6 +49,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IUserPositionService, UserPositionService>();
 builder.Services.AddScoped<IUserRequestService, UserRequestService>();
 
+//HttpClient
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

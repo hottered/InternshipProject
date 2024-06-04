@@ -1,11 +1,11 @@
 ﻿using Contracts.Employee;
 using Contracts.Position;
-using DataLayer.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
 
 namespace InternshipProject.Controllers
 {

@@ -2,7 +2,6 @@
 using Contracts.Request;
 using DataLayer.Domain;
 using DataLayer.Models;
-using DataLayer.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,7 @@ using Microsoft.Identity.Client;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
 using System.Security.Claims;
 
 namespace InternshipProject.Controllers

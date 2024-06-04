@@ -1,4 +1,4 @@
-﻿using Contracts.Shared;
+﻿using SharedDll;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

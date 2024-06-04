@@ -1,21 +1,47 @@
 ﻿using Contracts.Employee;
-using DataLayer.Shared;
+using DataLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
 
 namespace InternshipProject.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IAccountService _accountService;
+        //https://localhost:7082/api/Users
 
-        public UserController(IAccountService accountService)
+        private readonly IAccountService _accountService;
+        private readonly HttpClient _httpClient;
+
+        Uri baseAddress = new Uri("https://localhost:7082/api");
+        public UserController(
+            IAccountService accountService,
+            HttpClient httpClient)
         {
             _accountService = accountService;
+            _httpClient = httpClient;
+
+            _httpClient.BaseAddress = baseAddress;
+        }
+
+        [HttpGet]
+        [Route("/test")]
+        public async Task<IActionResult> RetriveUsers()
+        {
+            var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data  = response.Content.ReadAsStringAsync().Result; 
+                var users = JsonConvert.DeserializeObject<List<Employee>>(data);
+            }
+
+            return View();
         }
 
         [Route("/users/all")]
