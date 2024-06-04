@@ -31,13 +31,13 @@ namespace InternshipProject.Controllers
 
         [HttpGet]
         [Route("/test")]
-        public async Task<IActionResult> RetriveUsers()
+        public async Task<IActionResult> RetrieveUsers()
         {
             var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
 
             if (response.IsSuccessStatusCode)
             {
-                string data  = response.Content.ReadAsStringAsync().Result; 
+                string data  = await response.Content.ReadAsStringAsync(); 
                 var users = JsonConvert.DeserializeObject<List<Employee>>(data);
             }
 

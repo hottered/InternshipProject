@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiSystem.FakeData;
 using WebApiSystem.Models;
 
 namespace WebApiSystem.Controllers
@@ -8,14 +9,17 @@ namespace WebApiSystem.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetUsers()
+        private readonly DataGenerator _dataGenerator;
+
+        public UsersController(DataGenerator dataGenerator)
         {
-            var users = new List<Employee>
-            {
-                new Employee { Id = 1, Name = "John Doe", Email = "john.doe@example.com" },
-                new Employee { Id = 2, Name = "Jane Smith", Email = "jane.smith@example.com" }
-            };
+            _dataGenerator = dataGenerator;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        {
+            var users = _dataGenerator.GenerateEmployees(50);
 
             return Ok(users);
         }

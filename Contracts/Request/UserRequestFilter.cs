@@ -12,8 +12,6 @@ namespace Contracts.Request
     {
         public string? SearchString { get; set; }
 
-        public string? CommentEmployee {  get; set; }
-
         public LeaveTypeEnum? LeaveType { get; set; }
     }
 }

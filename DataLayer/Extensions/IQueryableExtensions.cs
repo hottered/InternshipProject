@@ -13,16 +13,18 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Extensions
 {
-    public static class IQueriableExtensions
+    public static class IQueryableExtensions
     {
         public static IQueryable<UserRequest> Filter(this IQueryable<UserRequest> queryable, UserRequestFilter filter)
         {
-            if(filter.SearchString is null)
+            if (filter.SearchString is null)
             {
                 return queryable;
             }
             return queryable
-                .Where(x => x.CommentEmployee.ToLower().Contains(filter.SearchString!.ToLower()));
+                .Where(x =>
+                            x.CommentEmployee.Contains(filter.SearchString!, StringComparison.CurrentCultureIgnoreCase) ||
+                            x.LeaveType == filter.LeaveType);
         }
         public static IQueryable<Employee> Filter(this IQueryable<Employee> queryable, EmployeeFilter filter)
         {
@@ -32,7 +34,7 @@ namespace DataLayer.Extensions
             }
 
             return queryable
-                .Where(x => x.FirstName!.ToLower().Contains(filter.SearchString!.ToLower()) || x.LastName!.ToLower().Contains(filter.SearchString!.ToLower()));
+                .Where(x => x.FirstName!.Contains(filter.SearchString!, StringComparison.CurrentCultureIgnoreCase) || x.LastName!.ToLower().Contains(filter.SearchString!.ToLower()));
         }
         public static IQueryable<UserPosition> Filter(this IQueryable<UserPosition> queryable, UserPositionFilter filter)
         {
@@ -42,7 +44,7 @@ namespace DataLayer.Extensions
             }
 
             return queryable
-                .Where(x => x.Caption!.ToLower().Contains(filter.SearchString!.ToLower()) || x.Description!.ToLower().Contains(filter.SearchString!.ToLower()));
+                .Where(x => x.Caption!.Contains(filter.SearchString!, StringComparison.CurrentCultureIgnoreCase) || x.Description!.ToLower().Contains(filter.SearchString!.ToLower()));
         }
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, FilterBase filter)
         {

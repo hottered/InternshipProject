@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "..\ServiceL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "..\Contracts\Contracts.csproj", "{4A69DA5D-3BE4-4C88-98FC-8EE7BC2BCDF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSystem", "..\WebApiSystem\WebApiSystem.csproj", "{7B7CEC9F-FA9D-4749-9BE5-E7361B6514F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSystem", "..\WebApiSystem\WebApiSystem.csproj", "{7B7CEC9F-FA9D-4749-9BE5-E7361B6514F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedDll", "..\SharedDll\SharedDll.csproj", "{F790C919-16D8-4BB0-86D9-ABC4FF6EB555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedDll", "..\SharedDll\SharedDll.csproj", "{F790C919-16D8-4BB0-86D9-ABC4FF6EB555}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
