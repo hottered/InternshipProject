@@ -28,13 +28,6 @@ namespace InternshipProject.Controllers
         [Route("/random-users/add")]
         public async Task<IActionResult> RetrieveUsers()
         {
-            //var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string data  = await response.Content.ReadAsStringAsync(); 
-            //    var users = JsonConvert.DeserializeObject<List<Employee>>(data);
-            //}
             var result = await _accountService.CreateUsersFromOldSystem();
 
             if (!result)

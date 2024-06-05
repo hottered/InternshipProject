@@ -21,11 +21,14 @@ namespace DataLayer.Extensions
             {
                 return queryable;
             }
-            return queryable
-                .Where(x =>
-                            x.CommentEmployee.Contains(filter.SearchString!, StringComparison.CurrentCultureIgnoreCase) ||
-                            x.LeaveType == filter.LeaveType);
+
+            var searchString = filter.SearchString.ToLower();
+
+            return queryable.Where(x =>
+                x.CommentEmployee.ToLower().Contains(searchString) ||
+                x.LeaveType == filter.LeaveType);
         }
+
         public static IQueryable<Employee> Filter(this IQueryable<Employee> queryable, EmployeeFilter filter)
         {
             if (filter.SearchString is null)
@@ -33,9 +36,13 @@ namespace DataLayer.Extensions
                 return queryable;
             }
 
-            return queryable
-                .Where(x => x.FirstName!.Contains(filter.SearchString!, StringComparison.CurrentCultureIgnoreCase) || x.LastName!.ToLower().Contains(filter.SearchString!.ToLower()));
+            var searchString = filter.SearchString.ToLower();
+
+            return queryable.Where(x =>
+                x.FirstName!.ToLower().Contains(searchString) ||
+                x.LastName!.ToLower().Contains(searchString));
         }
+
         public static IQueryable<UserPosition> Filter(this IQueryable<UserPosition> queryable, UserPositionFilter filter)
         {
             if (filter.SearchString is null)
@@ -43,8 +50,11 @@ namespace DataLayer.Extensions
                 return queryable;
             }
 
-            return queryable
-                .Where(x => x.Caption!.Contains(filter.SearchString!, StringComparison.CurrentCultureIgnoreCase) || x.Description!.ToLower().Contains(filter.SearchString!.ToLower()));
+            var searchString = filter.SearchString.ToLower();
+
+            return queryable.Where(x =>
+                x.Caption!.ToLower().Contains(searchString) ||
+                x.Description!.ToLower().Contains(searchString));
         }
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, FilterBase filter)
         {
