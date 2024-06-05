@@ -1,5 +1,4 @@
 ﻿using Contracts.Employee;
-using Contracts.Enums;
 using DataLayer.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -76,6 +75,14 @@ namespace ServiceLayer.Mappers
                 (DateTime)employee.EmploymentEndDate
             );
         }
+        public static List<Employee> ToEmployeeList(this List<EmployeeCreateRequest> employeeCreateRequests)
+        {
+            if (employeeCreateRequests == null)
+            {
+                return null;
+            }
 
+            return employeeCreateRequests.Select(e => e.ToEmployee()).ToList();
+        }
     }
 }

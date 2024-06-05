@@ -1,4 +1,4 @@
-﻿using Contracts.Enums;
+﻿using SharedDll.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

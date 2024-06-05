@@ -17,9 +17,9 @@ namespace WebApiSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<List<Employee>>> GetEmployees()
         {
-            var users = _dataGenerator.GenerateEmployees(50);
+            var users = _dataGenerator.GenerateEmployees(3);
 
             return Ok(users);
         }

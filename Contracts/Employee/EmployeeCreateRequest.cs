@@ -22,9 +22,9 @@ namespace Contracts.Employee
     [StringLength(100, ErrorMessage = Constants.AddressErrorMessage)]
     string Address,
 
-    [Required(ErrorMessage = Constants.IdNumberRequired)]
-    [StringLength(20, ErrorMessage = Constants.IdNumberErrorMessage)]
-    string IdNumber,
+    //[Required(ErrorMessage = Constants.IdNumberRequired)]
+    //[StringLength(20, ErrorMessage = Constants.IdNumberErrorMessage)]
+    string? IdNumber,
 
     [Required(ErrorMessage = Constants.PositionIdRequired)]
     [Range(1, int.MaxValue, ErrorMessage = Constants.PositionIdRangeErrorMessage)]

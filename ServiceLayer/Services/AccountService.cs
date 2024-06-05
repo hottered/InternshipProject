@@ -2,6 +2,7 @@
 using DataLayer.Models;
 using DataLayer.Models.Pagination;
 using DataLayer.Repositories.Interfaces;
+using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
@@ -17,12 +18,49 @@ namespace ServiceLayer.Services
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-
-        public AccountService(IAccountRepository accountRepository)
+        private readonly HttpClient _httpClient;
+        public AccountService(
+            IAccountRepository accountRepository,
+            HttpClient httpClient)
         {
             _accountRepository = accountRepository;
-        }
+            _httpClient = httpClient;
 
+            Uri baseAddress = new Uri("https://localhost:7082/api");
+            _httpClient.BaseAddress = baseAddress;
+
+        }
+        public async Task<bool> CreateUsersFromOldSystem()
+        {
+            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+                
+            }
+
+            string data = await response.Content.ReadAsStringAsync();
+
+            var employees = JsonConvert.DeserializeObject<List<EmployeeCreateRequest>>(data);
+
+            bool result = false;
+
+            foreach(var employee in employees)
+            {
+                var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
+
+                if (existingUser is not null)
+                {
+                    return false;
+                }
+
+                var employeeDto = employee.ToEmployee();
+
+                result = await _accountRepository.CreateUserAsync(employeeDto, employee.Password);
+            }
+            return result;
+        }
         public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {
             

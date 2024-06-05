@@ -30,6 +30,16 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddIdentity<Employee, IdentityRole<int>>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6; // Minimum length of the password
+    options.Password.RequiredUniqueChars = 0; // Number of unique characters required in the password
+});
+
 //Cookie
 builder.Services.ConfigureApplicationCookie(config =>
 {

@@ -9,7 +9,7 @@ namespace WebApiSystem.FakeData
 
         public DataGenerator()
         {
-            Randomizer.Seed = new Random(8675309);
+            //Randomizer.Seed = new Random(8675309);
 
             employeeModelFake = new Faker<Employee>()
                 .RuleFor(e => e.Id, f => f.IndexFaker + 1)
@@ -21,7 +21,14 @@ namespace WebApiSystem.FakeData
                 .RuleFor(e => e.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(e => e.Gender, f => f.PickRandom(new[] { "Male", "Female" }))
                 .RuleFor(e => e.Address, f => f.Address.FullAddress())
-                .RuleFor(e => e.Joined, f => f.Date.Past(10));
+                .RuleFor(e => e.Joined, f => f.Date.Past(10))
+                .RuleFor(e => e.PositionId, f => 1)
+                .RuleFor(e => e.IdNumber, f =>
+                {
+                    int randomInt = f.Random.Int(1000, 9999);
+                    string randomString = randomInt.ToString();
+                    return randomString;
+                });
 
 
         }

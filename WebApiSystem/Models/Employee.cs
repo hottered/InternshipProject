@@ -11,6 +11,8 @@
         public string Phone { get; set; }
         public string Gender { get; set; }
         public string Address { get; set; }
+        public int PositionId { get; set; }
+        public string IdNumber { get; set; }
         public DateTime Joined { get; set; }
     }
 }

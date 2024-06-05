@@ -13,35 +13,36 @@ namespace InternshipProject.Controllers
 {
     public class UserController : Controller
     {
-        //https://localhost:7082/api/Users
 
         private readonly IAccountService _accountService;
         private readonly HttpClient _httpClient;
-
-        Uri baseAddress = new Uri("https://localhost:7082/api");
+        
         public UserController(
             IAccountService accountService,
             HttpClient httpClient)
         {
             _accountService = accountService;
             _httpClient = httpClient;
-
-            _httpClient.BaseAddress = baseAddress;
         }
 
-        [HttpGet]
-        [Route("/test")]
+        [Route("/random-users/add")]
         public async Task<IActionResult> RetrieveUsers()
         {
-            var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
+            //var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
 
-            if (response.IsSuccessStatusCode)
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    string data  = await response.Content.ReadAsStringAsync(); 
+            //    var users = JsonConvert.DeserializeObject<List<Employee>>(data);
+            //}
+            var result = await _accountService.CreateUsersFromOldSystem();
+
+            if (!result)
             {
-                string data  = await response.Content.ReadAsStringAsync(); 
-                var users = JsonConvert.DeserializeObject<List<Employee>>(data);
+                ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
             }
 
-            return View();
+            return RedirectToAction(nameof(AllUsers), "User");
         }
 
         [Route("/users/all")]

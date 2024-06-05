@@ -1,6 +1,5 @@
 ﻿using Contracts.Position;
 using Contracts.Request;
-using Contracts.Enums;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

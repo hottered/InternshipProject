@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contracts.Enums
+namespace SharedDll.Enums
 {
-    public enum LeaveTypeEnum
+    public enum RolesEnum
     {
-        Sick,
-        Vacation,
+        Admin,
+        HR
     }
 }

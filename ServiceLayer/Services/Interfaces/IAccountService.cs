@@ -26,5 +26,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<PaginatedList<Employee>> GetAllUsersAsync(EmployeeFilter filter);
 
+        public Task<bool> CreateUsersFromOldSystem();
+
     }
 }
