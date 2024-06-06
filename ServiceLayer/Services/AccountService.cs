@@ -5,6 +5,7 @@ using DataLayer.Repositories.Interfaces;
 using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,13 @@ namespace ServiceLayer.Services
             _accountRepository = accountRepository;
             _httpClient = httpClient;
 
-            Uri baseAddress = new Uri("https://localhost:7082/api");
+            Uri baseAddress = new Uri(Constants.BaseAddress);
             _httpClient.BaseAddress = baseAddress;
 
         }
         public async Task<bool> CreateUsersFromOldSystem()
         {
-            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + "/Users");
+            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + Constants.RandomUsers);
 
             if (!response.IsSuccessStatusCode)
             {

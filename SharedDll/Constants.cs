@@ -8,6 +8,10 @@ namespace SharedDll
 {
     public static class Constants
     {
+
+        public const string BaseAddress = "https://localhost:7082/api";
+        public const string RandomUsers = "/Users";
+
         public const string AdminEmail = "admin@test.rs";
         public const string AdminAddress = "AdminAddress";
 
@@ -69,6 +73,9 @@ namespace SharedDll
 
         public const string DaysOffNumberRequired = "Days Off Number is required.";
         public const string DaysOffNumberRangeErrorMessage = "Days Off Number must be between 0 and 365.";
+
+
+
 
 
     }
