@@ -105,16 +105,25 @@ namespace ServiceLayer.Services
                 return false;
             }
 
-            TimeSpan difference = request.EndDate - request.StartDate;
 
-            int wholeDays = difference.Days;
+            //weeddays calculate
+            DateTime startDate = request.StartDate;
+            DateTime endDate = request.EndDate;
 
-            if (wholeDays > user.DaysOffNumber)
+            int weekdays = Enumerable
+                .Range(0, (endDate - startDate).Days + 1)
+                .Count(d =>
+                {
+                    DateTime currentDate = startDate.AddDays(d);
+                    return currentDate.DayOfWeek != DayOfWeek.Saturday && currentDate.DayOfWeek != DayOfWeek.Sunday;
+                });
+
+            if (weekdays > user.DaysOffNumber)
             {
                 return false;
             }
 
-            user.DaysOffNumber = user.DaysOffNumber - wholeDays;
+            user.DaysOffNumber -= weekdays;
             request.Approved = true;
 
             await _accountRepository.UpdateUserAsync(user);
