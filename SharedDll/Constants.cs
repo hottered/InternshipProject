@@ -9,8 +9,7 @@ namespace SharedDll
     public static class Constants
     {
 
-        public const string BaseAddress = "https://localhost:7082/api";
-        public const string RandomUsers = "/Users";
+
 
         public const string AdminEmail = "admin@test.rs";
         public const string AdminAddress = "AdminAddress";

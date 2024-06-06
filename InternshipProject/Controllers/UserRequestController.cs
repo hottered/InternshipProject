@@ -9,6 +9,7 @@ using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
+using SharedDll.ApiRoutes;
 using System.Security.Claims;
 
 namespace InternshipProject.Controllers
@@ -21,12 +22,12 @@ namespace InternshipProject.Controllers
             _userRequestService = userRequestService;
         }
 
-        [Route("/user-requests/new")]
+        [Route(ApiRoutes.CreateUserRequest)]
         public IActionResult CreateUserRequest()
         {
             return View();
         }
-        [HttpPost("/user-requests/new")]
+        [HttpPost(ApiRoutes.CreateUserRequest)]
         public async Task<IActionResult> CreateUserRequest(UserRequestCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -49,7 +50,7 @@ namespace InternshipProject.Controllers
         }
 
 
-        [Route("/user-requests/all")]
+        [Route(ApiRoutes.AllUserRequests)]
         public async Task<IActionResult> AllUserRequests(UserRequestFilter filter)
         {
 
@@ -60,7 +61,7 @@ namespace InternshipProject.Controllers
             return View(nameof(AllUserRequests), requests);
         }
 
-        [HttpGet("/user-requests/user/{id}")]
+        [HttpGet(ApiRoutes.AllUserRequestsForUser)]
         public async Task<IActionResult> AllUserRequests(int id)
         {
             var requests = await _userRequestService.GetAllRequestsForTheUserWithId(id);
@@ -68,7 +69,7 @@ namespace InternshipProject.Controllers
             return View(nameof(AllUserRequests), requests);
         }
 
-        [HttpGet("/user-requests/{id}/delete")]
+        [HttpGet(ApiRoutes.DeleteUserRequest)]
         public async Task<IActionResult> DeleteUserRequest(int id)
         {
             await _userRequestService.DeleteUserRequestAsync(id);
@@ -76,7 +77,7 @@ namespace InternshipProject.Controllers
             return RedirectToAction(nameof(AllUserRequests), "UserRequest");
         }
 
-        [HttpGet("/user-requests/{id}/edit")]
+        [HttpGet(ApiRoutes.EditUserRequest)]
         public async Task<IActionResult> GetUserRequestById(int id)
         {
             var request = await _userRequestService.GetUserRequestByIdAsync(id);
@@ -86,7 +87,7 @@ namespace InternshipProject.Controllers
             return View(nameof(UpdateUserRequest),result);
         }
 
-        [HttpPost("/user-requests")]
+        [HttpPost(ApiRoutes.AllUserRequests)]
         public async Task<IActionResult> UpdateUserRequest(UserRequestUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -107,7 +108,7 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [HttpGet("/user-requests/{id}/approve")]
+        [HttpGet(ApiRoutes.ApproveUserRequest)]
         public async Task<IActionResult> ApproveUserRequest(int id)
         {
             await _userRequestService.ApproveRequestByIdAsync(id);

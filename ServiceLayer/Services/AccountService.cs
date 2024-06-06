@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
+using SharedDll.ApiRoutes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +28,12 @@ namespace ServiceLayer.Services
             _accountRepository = accountRepository;
             _httpClient = httpClient;
 
-            Uri baseAddress = new Uri(Constants.BaseAddress);
-            _httpClient.BaseAddress = baseAddress;
+            _httpClient.BaseAddress = new Uri(ApiRoutes.BaseAddress);
 
         }
         public async Task<bool> CreateUsersFromOldSystem()
         {
-            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + Constants.RandomUsers);
+            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + ApiRoutes.RandomUsers);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -45,22 +45,44 @@ namespace ServiceLayer.Services
 
             var employees = JsonConvert.DeserializeObject<List<EmployeeCreateRequest>>(data);
 
-            bool result = false;
-
-            foreach(var employee in employees)
+            if (employees == null)
             {
-                var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
-
-                if (existingUser is not null)
-                {
-                    return false;
-                }
-
-                var employeeDto = employee.ToEmployee();
-
-                result = await _accountRepository.CreateUserAsync(employeeDto, employee.Password);
+                return false;
             }
-            return result;
+
+            using (var transaction = await _accountRepository.BeginTransactionAsync())
+            {
+                try
+                {
+                    foreach (var employee in employees)
+                    {
+                        var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
+
+                        if (existingUser is not null)
+                        {
+                            await _accountRepository.RollbackTransactionAsync(transaction);
+                            return false;
+                        }
+
+                        var employeeDto = employee.ToEmployee();
+
+                        var result = await _accountRepository.CreateUserAsync(employeeDto, employee.Password);
+                        if (!result)
+                        {
+                            await _accountRepository.RollbackTransactionAsync(transaction);
+                            return false;
+                        }
+                    }
+
+                    await _accountRepository.CommitTransactionAsync(transaction);
+                    return true;
+                }
+                catch
+                {
+                    await _accountRepository.RollbackTransactionAsync(transaction);
+                    throw;
+                }
+            }
         }
         public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {

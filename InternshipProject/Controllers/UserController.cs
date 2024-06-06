@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
+using SharedDll.ApiRoutes;
 
 namespace InternshipProject.Controllers
 {
@@ -25,7 +26,7 @@ namespace InternshipProject.Controllers
             _httpClient = httpClient;
         }
 
-        [Route("/random-users/add")]
+        [Route(ApiRoutes.RetrieveUsers)]
         public async Task<IActionResult> RetrieveUsers()
         {
             var result = await _accountService.CreateUsersFromOldSystem();
@@ -34,11 +35,11 @@ namespace InternshipProject.Controllers
             {
                 ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
             }
-
+           
             return RedirectToAction(nameof(AllUsers), "User");
         }
 
-        [Route("/users/all")]
+        [Route(ApiRoutes.AllUsers)]
         public async Task<IActionResult> AllUsers(EmployeeFilter filter)
         {
 
@@ -49,13 +50,13 @@ namespace InternshipProject.Controllers
             return View(users);
         }
 
-        [HttpGet("/users/new")]
+        [HttpGet(ApiRoutes.CreateUser)]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        [HttpPost("/users/new")]
+        [HttpPost(ApiRoutes.CreateUser)]
         public async Task<IActionResult> CreateUser(EmployeeCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -75,7 +76,7 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [HttpGet("/users/{id}/edit")]
+        [HttpGet(ApiRoutes.EditUser)]
         public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _accountService.GetUserByIdAsync(id);
@@ -85,7 +86,7 @@ namespace InternshipProject.Controllers
             return View(nameof(UpdateUser),updateRequest);
         }
 
-        [HttpPost("/users")]
+        [HttpPost(ApiRoutes.EditUserById)]
         public async Task<IActionResult> UpdateUser(EmployeeUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -107,7 +108,7 @@ namespace InternshipProject.Controllers
         }
 
 
-        [HttpGet("/users/{id}/delete")]
+        [HttpGet(ApiRoutes.DeleteUser)]
         public async Task<IActionResult> DeleteUser(int id)
         {
 

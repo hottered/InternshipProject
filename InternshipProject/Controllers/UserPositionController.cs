@@ -6,6 +6,7 @@ using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
+using SharedDll.ApiRoutes;
 
 namespace InternshipProject.Controllers
 {
@@ -17,7 +18,7 @@ namespace InternshipProject.Controllers
             _userPositionService = userPositionService;
         }
 
-        [Route("/user-positions/all")]
+        [Route(ApiRoutes.AllUserPositions)]
         public async Task<IActionResult> AllUserPositions(UserPositionFilter filter)
         {
 
@@ -28,12 +29,12 @@ namespace InternshipProject.Controllers
             return View(positions);
         }
 
-        [HttpGet("/user-positions/new")]
+        [HttpGet(ApiRoutes.CreateUserPosition)]
         public IActionResult CreateUserPosition()
         {
             return View();
         }
-        [HttpPost("/user-positions/new")]
+        [HttpPost(ApiRoutes.CreateUserPosition)]
         public async Task<IActionResult> CreateUserPosition(UserPositionCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -54,7 +55,7 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [HttpGet("/user-positions/{id}/edit")]
+        [HttpGet(ApiRoutes.EditUserPosition)]
         public async Task<IActionResult> GetUserPositionById(int id)
         {
             var position = await _userPositionService.GetUserPositionByIdAsync(id);
@@ -64,7 +65,7 @@ namespace InternshipProject.Controllers
             return View(nameof(UpdateUserPosition), updateRequest);
         }
 
-        [HttpPost("/user-positions")]
+        [HttpPost(ApiRoutes.EditUserPositionById)]
         public async Task<IActionResult> UpdateUserPosition(UserPositionUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -85,7 +86,7 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        [HttpGet("/user-positions{id}/delete")]
+        [HttpGet(ApiRoutes.DeleteUserPosition)]
         public async Task<IActionResult> DeleteUserPosition(int id)
         {
             await _userPositionService.DeleteUserPositionAsync(id);

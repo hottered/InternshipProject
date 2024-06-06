@@ -9,7 +9,7 @@ namespace WebApiSystem.FakeData
 
         public DataGenerator()
         {
-            //Randomizer.Seed = new Random(8675309);
+            Randomizer.Seed = new Random(8675309);
 
             employeeModelFake = new Faker<Employee>()
                 .RuleFor(e => e.Id, f => f.IndexFaker + 1)
