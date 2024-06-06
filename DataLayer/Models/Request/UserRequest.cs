@@ -17,7 +17,6 @@ namespace DataLayer.Models.Request
 
         public DateTime EndDate { get; set; } = DateTime.Now;
 
-        [MaxLength(50)]
         public LeaveTypeEnum LeaveType { get; set; } = default!;
 
         [MaxLength(512)]

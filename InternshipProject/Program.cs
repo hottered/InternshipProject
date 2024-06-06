@@ -22,7 +22,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 //Database
 builder.Services.AddDbContext<AppDbContext>(
-
         options => options.UseSqlServer(connectionString)
     );
 
