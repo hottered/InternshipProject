@@ -33,56 +33,72 @@ namespace ServiceLayer.Services
         }
         public async Task<bool> CreateUsersFromOldSystem()
         {
-            var response = await _httpClient.GetAsync(_httpClient.BaseAddress + ApiRoutes.RandomUsers);
-
-            if (!response.IsSuccessStatusCode)
+            using var cts  = new CancellationTokenSource();
+            try
             {
-                return false;
-                
-            }
+                using var response = await _httpClient.GetAsync(_httpClient.BaseAddress + ApiRoutes.RandomUsers);
 
-            string data = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();
 
-            var employees = JsonConvert.DeserializeObject<List<EmployeeCreateRequest>>(data);
+                string data = await response.Content.ReadAsStringAsync();
 
-            if (employees == null)
-            {
-                return false;
-            }
+                var employees = JsonConvert.DeserializeObject<List<EmployeeCreateRequest>>(data);
 
-            using (var transaction = await _accountRepository.BeginTransactionAsync())
-            {
-                try
+                if (employees == null)
                 {
-                    foreach (var employee in employees)
+                    return false;
+                }
+
+                using (var transaction = await _accountRepository.BeginTransactionAsync())
+                {
+                    try
                     {
-                        var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
-
-                        if (existingUser is not null)
+                        foreach (var employee in employees)
                         {
-                            await _accountRepository.RollbackTransactionAsync(transaction);
-                            return false;
+                            var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
+
+                            if (existingUser is not null)
+                            {
+                                await _accountRepository.RollbackTransactionAsync(transaction);
+                                return false;
+                            }
+
+                            var employeeDto = employee.ToEmployee();
+
+                            var result = await _accountRepository.CreateUserAsync(employeeDto, employee.Password);
+                            if (!result)
+                            {
+                                await _accountRepository.RollbackTransactionAsync(transaction);
+                                return false;
+                            }
                         }
 
-                        var employeeDto = employee.ToEmployee();
-
-                        var result = await _accountRepository.CreateUserAsync(employeeDto, employee.Password);
-                        if (!result)
-                        {
-                            await _accountRepository.RollbackTransactionAsync(transaction);
-                            return false;
-                        }
+                        await _accountRepository.CommitTransactionAsync(transaction);
+                        return true;
                     }
-
-                    await _accountRepository.CommitTransactionAsync(transaction);
-                    return true;
-                }
-                catch
-                {
-                    await _accountRepository.RollbackTransactionAsync(transaction);
-                    throw;
+                    catch
+                    {
+                        await _accountRepository.RollbackTransactionAsync(transaction);
+                        throw;
+                    }
                 }
             }
+            catch(OperationCanceledException ex) when (cts.IsCancellationRequested) 
+            {
+                Console.WriteLine($"Request was canceled due to : {ex.Message}");
+                return false;
+            }
+            catch (OperationCanceledException ex) when (ex.InnerException is TimeoutException tex)
+            {
+                Console.WriteLine($"Request timed out: {ex.Message}, {tex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                return false;
+            }
+
         }
         public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {
