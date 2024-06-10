@@ -98,7 +98,6 @@ namespace ServiceLayer.Services
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
                 return false;
             }
-
         }
         public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {

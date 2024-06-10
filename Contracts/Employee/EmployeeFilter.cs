@@ -9,6 +9,7 @@ namespace Contracts.Employee
 {
     public class EmployeeFilter : FilterBase
     {
-        public string? SearchString { get; set; }
+        //public string? SearchString { get; set; }
+
     }
 }

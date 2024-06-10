@@ -8,6 +8,8 @@ using DataLayer.Models.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,18 +45,61 @@ namespace DataLayer.Extensions
                 x.LastName!.ToLower().Contains(searchString));
         }
 
-        public static IQueryable<UserPosition> Filter(this IQueryable<UserPosition> queryable, UserPositionFilter filter)
+        //public static IQueryable<UserPosition> Filter(this IQueryable<UserPosition> queryable, UserPositionFilter filter)
+        //{
+        //    if (filter.SearchString is null)
+        //    {
+        //        return queryable;
+        //    }
+
+        //    var searchString = filter.SearchString.ToLower();
+
+        //    return queryable.Where(x =>
+        //        x.Caption!.ToLower().Contains(searchString) ||
+        //        x.Description!.ToLower().Contains(searchString));
+        //}
+        public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, FilterBase filter) where T : class
         {
-            if (filter.SearchString is null)
+            if (filter == null || string.IsNullOrEmpty(filter.SearchString))
             {
                 return queryable;
             }
 
-            var searchString = filter.SearchString.ToLower();
+            var classToFilterType = typeof(T);
+            var propertiesOfClass = classToFilterType.GetProperties();
 
-            return queryable.Where(x =>
-                x.Caption!.ToLower().Contains(searchString) ||
-                x.Description!.ToLower().Contains(searchString));
+            var parameter = Expression.Parameter(classToFilterType, "x");
+
+            Expression? combinedExpression = null;
+
+            foreach (var classProperty in propertiesOfClass)
+            {
+                if (classProperty.PropertyType != typeof(string)) continue;
+
+                var left = Expression.Property(parameter, classProperty);
+                var right = Expression.Constant(filter.SearchString);
+
+                var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                var expression = Expression.Call(left, method, right);
+
+                if (combinedExpression == null)
+                {
+                    combinedExpression = expression;
+                }
+                else
+                {
+                    combinedExpression = Expression.OrElse(combinedExpression, expression);
+                }
+            }
+
+            if (combinedExpression == null)
+            {
+                return queryable;
+            }
+
+            var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
+
+            return queryable.Where(lambda);
         }
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, FilterBase filter)
         {
