@@ -31,7 +31,7 @@ namespace DataLayer.Repositories
         {
 
             return await _dbContext.Positions
-                .Filter(filter)
+                .Filter(filter,x=>x.Caption,x=>x.Description)
                 .Paginate(filter)
                 .ToListAsync();
         }

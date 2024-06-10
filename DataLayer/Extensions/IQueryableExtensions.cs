@@ -58,37 +58,38 @@ namespace DataLayer.Extensions
         //        x.Caption!.ToLower().Contains(searchString) ||
         //        x.Description!.ToLower().Contains(searchString));
         //}
-        public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, FilterBase filter) where T : class
+        public static IQueryable<TEntity> Filter<TEntity, TFilter>(this IQueryable<TEntity> queryable,
+            TFilter filter,
+            params Expression<Func<TEntity, string>>[] propertySelectors)
+            where TEntity : class
+            where TFilter : FilterBase
         {
-            if (filter == null || string.IsNullOrEmpty(filter.SearchString))
+            if (filter.SearchString is null)
             {
                 return queryable;
             }
 
-            var classToFilterType = typeof(T);
-            var propertiesOfClass = classToFilterType.GetProperties();
-
-            var parameter = Expression.Parameter(classToFilterType, "x");
-
+            var searchString = filter.SearchString.ToLower();
             Expression? combinedExpression = null;
+            var parameter = Expression.Parameter(typeof(TEntity), "entity");
 
-            foreach (var classProperty in propertiesOfClass)
+            foreach (var selector in propertySelectors)
             {
-                if (classProperty.PropertyType != typeof(string)) continue;
+                var propertyAccess = Expression.Invoke(selector, parameter);
+                var toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+                var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
-                var left = Expression.Property(parameter, classProperty);
-                var right = Expression.Constant(filter.SearchString);
-
-                var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                var expression = Expression.Call(left, method, right);
+                var toLowerExpression = Expression.Call(propertyAccess, toLowerMethod);
+                var searchStringExpression = Expression.Constant(searchString);
+                var containsExpression = Expression.Call(toLowerExpression, containsMethod, searchStringExpression);
 
                 if (combinedExpression == null)
                 {
-                    combinedExpression = expression;
+                    combinedExpression = containsExpression;
                 }
                 else
                 {
-                    combinedExpression = Expression.OrElse(combinedExpression, expression);
+                    combinedExpression = Expression.OrElse(combinedExpression, containsExpression);
                 }
             }
 
@@ -97,10 +98,54 @@ namespace DataLayer.Extensions
                 return queryable;
             }
 
-            var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
+            var lambda = Expression.Lambda<Func<TEntity, bool>>(combinedExpression, parameter);
 
             return queryable.Where(lambda);
         }
+
+        //public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, FilterBase filter) where T : class
+        //{
+        //    if (filter == null || string.IsNullOrEmpty(filter.SearchString))
+        //    {
+        //        return queryable;
+        //    }
+
+        //    var classToFilterType = typeof(T);
+        //    var propertiesOfClass = classToFilterType.GetProperties();
+
+        //    var parameter = Expression.Parameter(classToFilterType, "x");
+
+        //    Expression? combinedExpression = null;
+
+        //    foreach (var classProperty in propertiesOfClass)
+        //    {
+        //        if (classProperty.PropertyType != typeof(string)) continue;
+
+        //        var left = Expression.Property(parameter, classProperty);
+        //        var right = Expression.Constant(filter.SearchString);
+
+        //        var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+        //        var expression = Expression.Call(left, method, right);
+
+        //        if (combinedExpression == null)
+        //        {
+        //            combinedExpression = expression;
+        //        }
+        //        else
+        //        {
+        //            combinedExpression = Expression.OrElse(combinedExpression, expression);
+        //        }
+        //    }
+
+        //    if (combinedExpression == null)
+        //    {
+        //        return queryable;
+        //    }
+
+        //    var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
+
+        //    return queryable.Where(lambda);
+        ////}
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, FilterBase filter)
         {
             filter.PageNumber = filter.PageNumber is null ? 1 : filter.PageNumber;
