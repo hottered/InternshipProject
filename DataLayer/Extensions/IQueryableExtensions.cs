@@ -45,19 +45,6 @@ namespace DataLayer.Extensions
                 x.LastName!.ToLower().Contains(searchString));
         }
 
-        //public static IQueryable<UserPosition> Filter(this IQueryable<UserPosition> queryable, UserPositionFilter filter)
-        //{
-        //    if (filter.SearchString is null)
-        //    {
-        //        return queryable;
-        //    }
-
-        //    var searchString = filter.SearchString.ToLower();
-
-        //    return queryable.Where(x =>
-        //        x.Caption!.ToLower().Contains(searchString) ||
-        //        x.Description!.ToLower().Contains(searchString));
-        //}
         public static IQueryable<TEntity> Filter<TEntity, TFilter>(this IQueryable<TEntity> queryable,
             TFilter filter,
             params Expression<Func<TEntity, string>>[] propertySelectors)
@@ -103,49 +90,6 @@ namespace DataLayer.Extensions
             return queryable.Where(lambda);
         }
 
-        //public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, FilterBase filter) where T : class
-        //{
-        //    if (filter == null || string.IsNullOrEmpty(filter.SearchString))
-        //    {
-        //        return queryable;
-        //    }
-
-        //    var classToFilterType = typeof(T);
-        //    var propertiesOfClass = classToFilterType.GetProperties();
-
-        //    var parameter = Expression.Parameter(classToFilterType, "x");
-
-        //    Expression? combinedExpression = null;
-
-        //    foreach (var classProperty in propertiesOfClass)
-        //    {
-        //        if (classProperty.PropertyType != typeof(string)) continue;
-
-        //        var left = Expression.Property(parameter, classProperty);
-        //        var right = Expression.Constant(filter.SearchString);
-
-        //        var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-        //        var expression = Expression.Call(left, method, right);
-
-        //        if (combinedExpression == null)
-        //        {
-        //            combinedExpression = expression;
-        //        }
-        //        else
-        //        {
-        //            combinedExpression = Expression.OrElse(combinedExpression, expression);
-        //        }
-        //    }
-
-        //    if (combinedExpression == null)
-        //    {
-        //        return queryable;
-        //    }
-
-        //    var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
-
-        //    return queryable.Where(lambda);
-        ////}
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, FilterBase filter)
         {
             filter.PageNumber = filter.PageNumber is null ? 1 : filter.PageNumber;
