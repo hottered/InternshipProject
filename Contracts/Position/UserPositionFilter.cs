@@ -9,6 +9,5 @@ namespace Contracts.Position
 {
     public class UserPositionFilter : FilterBase
     {
-        //public string? SearchString { get; set; }
     }
 }
