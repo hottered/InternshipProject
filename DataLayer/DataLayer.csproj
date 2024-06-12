@@ -24,6 +24,12 @@
 	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Contracts\Contracts.csproj" />
+	  <ProjectReference Include="..\SharedDll\SharedDll.csproj" />
+	</ItemGroup>
+
 	
 
 </Project>

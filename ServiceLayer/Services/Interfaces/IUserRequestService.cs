@@ -1,4 +1,5 @@
 ﻿using Contracts.Request;
+using DataLayer.Models.Pagination;
 using DataLayer.Models.Request;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> DeleteUserRequestAsync(int id);
 
+        public Task<List<UserRequest>> GetAllRequestsForTheUserWithId(int id);
+
+        public Task<bool> ApproveRequestByIdAsync(int id);
+
+        public Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(UserRequestFilter filter);
 
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Contracts.Employee;
 using DataLayer.Models;
+using DataLayer.Models.Pagination;
+using DataLayer.Models.Position;
 using DataLayer.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,8 +23,10 @@ namespace ServiceLayer.Services.Interfaces
         public Task<bool> DeleteUserAsync(int id);
 
         public Task<bool> UpdateUserAsync(EmployeeUpdateRequest employee);
-        
 
+        public Task<PaginatedList<Employee>> GetAllUsersAsync(EmployeeFilter filter);
+
+        public Task<bool> CreateUsersFromOldSystem();
 
     }
 }

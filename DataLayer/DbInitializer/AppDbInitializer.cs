@@ -1,5 +1,4 @@
 ﻿using DataLayer.Data;
-using DataLayer.Domain;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
 using DataLayer.Models;
@@ -12,7 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DataLayer.Shared;
+using SharedDll;
+using SharedDll.Enums;
 
 namespace DataLayer.DbInitializer
 {
@@ -111,16 +111,16 @@ namespace DataLayer.DbInitializer
 
                 //REQUESTS
 
-                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation1);
+                var request1 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == LeaveTypeEnum.Sick);
 
-                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == Constants.LeaveTypeVacation2);
+                var request2 = await _context.Requests.FirstOrDefaultAsync(x => x.LeaveType == LeaveTypeEnum.Vacation);
 
                 if (request1 is null && request2 is null)
                 {
                     
                     request1 = new UserRequest
                     {
-                        LeaveType = Constants.LeaveTypeVacation1,
+                        LeaveType = LeaveTypeEnum.Sick,
                         CommentEmployee = Constants.CommentEmployee,
                         CommentHR = Constants.CommentHR,
                         EmployeeId = user1.Id
@@ -128,7 +128,7 @@ namespace DataLayer.DbInitializer
 
                     request2 = new UserRequest
                     {
-                        LeaveType = Constants.LeaveTypeVacation2,
+                        LeaveType = LeaveTypeEnum.Vacation,
                         CommentEmployee = Constants.CommentEmployee,
                         CommentHR = Constants.CommentHR,
                         EmployeeId = user1.Id

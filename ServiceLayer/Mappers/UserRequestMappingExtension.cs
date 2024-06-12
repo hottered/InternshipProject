@@ -28,7 +28,7 @@ namespace ServiceLayer.Mappers
 
             return request;
         }
-        public static UserRequestUpdateRequest ToEmployeeUpdateRequest(this UserRequest request)
+        public static UserRequestUpdateRequest ToUserRequestUpdateRequest(this UserRequest request)
         {
             if (request == null) { return null; }
 

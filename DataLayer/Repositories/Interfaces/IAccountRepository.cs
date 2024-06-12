@@ -1,7 +1,9 @@
-﻿using DataLayer.Models;
+﻿using Contracts.Employee;
+using DataLayer.Models;
 using DataLayer.Models.Login;
 using DataLayer.Models.Register;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,10 @@ namespace DataLayer.Repositories.Interfaces
         public Task<Employee?> GetUserByEmailAsync(string username);
         public Task<bool> UpdateUserAsync(Employee employee);
         public Task AssignRoleAsync(Employee employee, string role);
-
+        public Task<List<Employee>> GetAllUsersAsync(EmployeeFilter filter);
+        public Task<long> GetAllUsersCountAsync(EmployeeFilter filter);
+        public Task<IDbContextTransaction> BeginTransactionAsync();
+        public Task CommitTransactionAsync(IDbContextTransaction transaction);
+        public Task RollbackTransactionAsync(IDbContextTransaction transaction);
     }
 }

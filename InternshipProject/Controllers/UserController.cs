@@ -1,37 +1,62 @@
 ﻿using Contracts.Employee;
-using DataLayer.Shared;
+using DataLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
+using SharedDll.ApiRoutes;
 
 namespace InternshipProject.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IAccountService _accountService;
 
-        public UserController(IAccountService accountService)
+        private readonly IAccountService _accountService;
+        private readonly HttpClient _httpClient;
+        
+        public UserController(
+            IAccountService accountService,
+            HttpClient httpClient)
         {
             _accountService = accountService;
+            _httpClient = httpClient;
         }
 
-        [Authorize, Route("allUsers")]
-        public async Task<IActionResult> AllUsers()
+        [Route(ApiRoutes.RetrieveUsers)]
+        public async Task<IActionResult> RetrieveUsers()
         {
-            var users = await _accountService.GetAllUsersAsync();
+            var result = await _accountService.CreateUsersFromOldSystem();
+
+            if (!result)
+            {
+                ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
+            }
+           
+            return RedirectToAction(nameof(AllUsers), "User");
+        }
+
+        [Route(ApiRoutes.AllUsers)]
+        public async Task<IActionResult> AllUsers(EmployeeFilter filter)
+        {
+
+            ViewData["CurrentFilter"] = filter;
+
+            var users = await _accountService.GetAllUsersAsync(filter);
 
             return View(users);
         }
 
-        [Route("CreateUser")]
+        [HttpGet(ApiRoutes.CreateUser)]
         public IActionResult CreateUser()
         {
             return View();
         }
-        [Route("CreateUser")]
-        [HttpPost]
+
+        [HttpPost(ApiRoutes.CreateUser)]
         public async Task<IActionResult> CreateUser(EmployeeCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -45,32 +70,23 @@ namespace InternshipProject.Controllers
                     return View(createRequest);
                 }
 
-                return RedirectToAction("AllUsers", "User");
+                return RedirectToAction(nameof(AllUsers), "User");
 
             }
             return View();
         }
 
-        [Route("UpdateUser")]
-        [HttpGet]
-        public async Task<IActionResult> UpdateUser(int id)
+        [HttpGet(ApiRoutes.EditUser)]
+        public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _accountService.GetUserByIdAsync(id);
 
             var updateRequest = user.ToEmployeeUpdateRequest();
 
-            return View(updateRequest);
+            return View(nameof(UpdateUser),updateRequest);
         }
 
-
-        [Route("UpdateUser")]
-        public IActionResult UpdateUser()
-        {
-            return View();
-        }
-
-        [Route("UpdateUser")]
-        [HttpPost]
+        [HttpPost(ApiRoutes.EditUserById)]
         public async Task<IActionResult> UpdateUser(EmployeeUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -85,21 +101,20 @@ namespace InternshipProject.Controllers
                     return View(updateRequest);
                 }
 
-                return RedirectToAction("AllUsers", "User");
+                return RedirectToAction(nameof(AllUsers), "User");
 
             }
             return View();
         }
 
 
-        [Route("DeleteUser")]
-        [HttpGet]
+        [HttpGet(ApiRoutes.DeleteUser)]
         public async Task<IActionResult> DeleteUser(int id)
         {
 
             await _accountService.DeleteUserAsync(id);
 
-            return RedirectToAction("AllUsers", "User");
+            return RedirectToAction(nameof(AllUsers), "User");
         }
     }
 }

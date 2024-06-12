@@ -1,10 +1,12 @@
 ﻿using Contracts.Employee;
 using Contracts.Position;
-using DataLayer.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
+using SharedDll.ApiRoutes;
 
 namespace InternshipProject.Controllers
 {
@@ -16,21 +18,23 @@ namespace InternshipProject.Controllers
             _userPositionService = userPositionService;
         }
 
-        [Route("AllUserPositions")]
-        public async Task<IActionResult> AllUserPositions()
+        [Route(ApiRoutes.AllUserPositions)]
+        public async Task<IActionResult> AllUserPositions(UserPositionFilter filter)
         {
-            var users = await _userPositionService.GetAllUserPositionsAsync();
 
-            return View(users);
+            ViewData["CurrentFilter"] = filter;
+
+            var positions = await _userPositionService.GetAllUserPositionsAsync(filter);
+
+            return View(positions);
         }
 
-        [Route("CreateUserPosition")]
+        [HttpGet(ApiRoutes.CreateUserPosition)]
         public IActionResult CreateUserPosition()
         {
             return View();
         }
-        [Route("CreateUserPosition")]
-        [HttpPost]
+        [HttpPost(ApiRoutes.CreateUserPosition)]
         public async Task<IActionResult> CreateUserPosition(UserPositionCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -39,39 +43,29 @@ namespace InternshipProject.Controllers
 
                 if (!result)
                 {
-                    ModelState.AddModelError(string.Empty,Constants.UserPosisitonCreateErrorMessage);
+                    ModelState.AddModelError(string.Empty, Constants.UserPosisitonCreateErrorMessage);
 
                     return View(createRequest);
                 }
 
-                return RedirectToAction("AllUserPositions", "UserPosition");
+                return RedirectToAction(nameof(AllUserPositions), "UserPosition");
 
 
             }
             return View();
         }
-         
 
-        [Route("UpdateUserPosition")]
-        [HttpGet]
-        public async Task<IActionResult> UpdateUserPosition(int id)
+        [HttpGet(ApiRoutes.EditUserPosition)]
+        public async Task<IActionResult> GetUserPositionById(int id)
         {
             var position = await _userPositionService.GetUserPositionByIdAsync(id);
 
             var updateRequest = position.ToEmployeeUpdateRequest();
 
-            return View(updateRequest);
+            return View(nameof(UpdateUserPosition), updateRequest);
         }
 
-
-        [Route("UpdateUserPosition")]
-        public IActionResult UpdateUserPosition()
-        {
-            return View();
-        }
-
-        [Route("UpdateUserPosition")]
-        [HttpPost]
+        [HttpPost(ApiRoutes.EditUserPositionById)]
         public async Task<IActionResult> UpdateUserPosition(UserPositionUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -86,19 +80,18 @@ namespace InternshipProject.Controllers
                     return View(updateRequest);
                 }
 
-                return RedirectToAction("AllUserPositions", "UserPosition");
+                return RedirectToAction(nameof(AllUserPositions), "UserPosition");
 
             }
             return View();
         }
 
-        [Route("DeleteUserPosition")]
-        [HttpGet]
+        [HttpGet(ApiRoutes.DeleteUserPosition)]
         public async Task<IActionResult> DeleteUserPosition(int id)
         {
             await _userPositionService.DeleteUserPositionAsync(id);
 
-            return RedirectToAction("AllUserPositions", "UserPosition");
+            return RedirectToAction(nameof(AllUserPositions), "UserPosition");
         }
 
     }

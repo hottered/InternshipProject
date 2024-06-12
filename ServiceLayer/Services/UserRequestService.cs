@@ -1,10 +1,13 @@
 ﻿using Contracts.Position;
 using Contracts.Request;
 using DataLayer.Models;
+using DataLayer.Models.Pagination;
 using DataLayer.Models.Request;
 using DataLayer.Repositories;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
@@ -13,18 +16,34 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services
 {
     public class UserRequestService : IUserRequestService
     {
         private readonly IUserRequestRepository _userRequestRepository;
-        public UserRequestService(IUserRequestRepository userRequestRepository)
+        private readonly IAccountRepository _accountRepository;
+        public UserRequestService(
+            IUserRequestRepository userRequestRepository
+            , IAccountRepository accountRepository)
         {
             _userRequestRepository = userRequestRepository;
+            _accountRepository = accountRepository;
         }
-        public async Task<bool> CreateUserRequestAsync(int userId,UserRequestCreateRequest userRequest)
+
+        public async Task<List<UserRequest>> GetAllRequestsForTheUserWithId(int id)
         {
+            return await _userRequestRepository.AllRequestsForUserWithId(id);
+        }
+
+        public async Task<bool> CreateUserRequestAsync(int userId, UserRequestCreateRequest userRequest)
+        {
+            if (userRequest.StartDate >= userRequest.EndDate)
+            {
+                return false;
+            }
+
             var updatedUserRequest = userRequest with { UserId = userId };
 
             var request = updatedUserRequest.ToUserRequest();
@@ -65,14 +84,63 @@ namespace ServiceLayer.Services
 
             var existingRequest = await _userRequestRepository.GetByIdAsync(newUserRequest.Id);
 
-            if(existingRequest is null) 
+            return existingRequest is not null
+                    && await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
+
+        }
+
+        public async Task<bool> ApproveRequestByIdAsync(int id)
+        {
+            var request = await _userRequestRepository.GetByIdAsync(id);
+
+            if (request is null)
             {
                 return false;
             }
 
-            var result = await _userRequestRepository.UpdateUserRequestAsync(existingRequest.ToUserRequest(newUserRequest));
+            var user = await _accountRepository.GetUserByIdAsync(request.EmployeeId);
 
-            return result;
+            if (user is null)
+            {
+                return false;
+            }
+
+
+            //weeddays calculate
+            DateTime startDate = request.StartDate;
+            DateTime endDate = request.EndDate;
+
+            int weekdays = Enumerable
+                .Range(0, (endDate - startDate).Days + 1)
+                .Count(d =>
+                {
+                    DateTime currentDate = startDate.AddDays(d);
+                    return currentDate.DayOfWeek != DayOfWeek.Saturday && currentDate.DayOfWeek != DayOfWeek.Sunday;
+                });
+
+            if (weekdays > user.DaysOffNumber)
+            {
+                return false;
+            }
+
+            user.DaysOffNumber -= weekdays;
+            request.Approved = true;
+
+            await _accountRepository.UpdateUserAsync(user);
+            await _userRequestRepository.UpdateAsync(request);
+
+            return true;
         }
+
+        public async Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(UserRequestFilter filter)
+        {
+
+            var count = await _userRequestRepository.GetAllRequestsCountAsync(filter);
+
+            var requestsQueryable = await _userRequestRepository.AllRequestsQueryableBasedOnFilter(filter);
+
+            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable,count, (int)filter.PageNumber!, (int)filter.PageSize!);
+        }
+
     }
 }

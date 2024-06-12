@@ -1,8 +1,12 @@
 ﻿using Contracts.Employee;
 using DataLayer.Models;
+using DataLayer.Models.Pagination;
 using DataLayer.Repositories.Interfaces;
+using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
+using SharedDll;
+using SharedDll.ApiRoutes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +20,85 @@ namespace ServiceLayer.Services
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-
-        public AccountService(IAccountRepository accountRepository)
+        private readonly HttpClient _httpClient;
+        public AccountService(
+            IAccountRepository accountRepository,
+            HttpClient httpClient)
         {
             _accountRepository = accountRepository;
-        }
+            _httpClient = httpClient;
 
+            _httpClient.BaseAddress = new Uri(ApiRoutes.BaseAddress);
+
+        }
+        public async Task<bool> CreateUsersFromOldSystem()
+        {
+            using var cts  = new CancellationTokenSource();
+            try
+            {
+                using var response = await _httpClient.GetAsync(_httpClient.BaseAddress + ApiRoutes.RandomUsers);
+
+                response.EnsureSuccessStatusCode();
+
+                string data = await response.Content.ReadAsStringAsync();
+
+                var employees = JsonConvert.DeserializeObject<List<EmployeeCreateRequest>>(data);
+
+                if (employees == null)
+                {
+                    return false;
+                }
+
+                using (var transaction = await _accountRepository.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        foreach (var employee in employees)
+                        {
+                            var existingUser = await _accountRepository.GetUserByEmailAsync(employee.Email);
+
+                            if (existingUser is not null)
+                            {
+                                await _accountRepository.RollbackTransactionAsync(transaction);
+                                return false;
+                            }
+
+                            var employeeDto = employee.ToEmployee();
+
+                            var result = await _accountRepository.CreateUserAsync(employeeDto, employee.Password);
+                            if (!result)
+                            {
+                                await _accountRepository.RollbackTransactionAsync(transaction);
+                                return false;
+                            }
+                        }
+
+                        await _accountRepository.CommitTransactionAsync(transaction);
+                        return true;
+                    }
+                    catch
+                    {
+                        await _accountRepository.RollbackTransactionAsync(transaction);
+                        throw;
+                    }
+                }
+            }
+            catch(OperationCanceledException ex) when (cts.IsCancellationRequested) 
+            {
+                Console.WriteLine($"Request was canceled due to : {ex.Message}");
+                return false;
+            }
+            catch (OperationCanceledException ex) when (ex.InnerException is TimeoutException tex)
+            {
+                Console.WriteLine($"Request timed out: {ex.Message}, {tex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                return false;
+            }
+        }
         public async Task<bool> CreateUserAsync(EmployeeCreateRequest employee, string password)
         {
             
@@ -66,6 +143,15 @@ namespace ServiceLayer.Services
         public async Task<Employee?> GetUserByIdAsync(int id)
         {
             return await _accountRepository.GetUserByIdAsync(id);
+        }
+
+        public async Task<PaginatedList<Employee>> GetAllUsersAsync(EmployeeFilter filter)
+        {
+            var count = await _accountRepository.GetAllUsersCountAsync(filter);
+
+            var usersQueryable = await _accountRepository.GetAllUsersAsync(filter);
+
+            return await PaginatedList<Employee>.CreateAsync(usersQueryable,count, (int)filter.PageNumber!, (int)filter.PageSize!); 
         }
 
         public async Task<bool> UpdateUserAsync(EmployeeUpdateRequest updateRequest)
