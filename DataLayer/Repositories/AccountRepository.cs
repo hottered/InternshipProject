@@ -84,5 +84,9 @@ namespace DataLayer.Repositories
                 .Paginate(filter)
                 .ToListAsync();
         }
+        public async Task<bool> IsInRoleAsync(Employee employee, string role)
+        {
+            return await _userManager.IsInRoleAsync(employee, role);
+        }
     }
 }

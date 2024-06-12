@@ -28,5 +28,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> CreateUsersFromOldSystem();
 
+        public Task<bool> SignedInAsAdmin(string username);
+
     }
 }

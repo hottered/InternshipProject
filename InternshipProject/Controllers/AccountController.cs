@@ -61,6 +61,13 @@ namespace InternshipProject.Controllers
 
                 if (result.Succeeded)
                 {
+                    var isAdmin = await _accountService.SignedInAsAdmin(loginModel.Email);
+
+                    if (isAdmin)
+                    {
+                        return RedirectToAction(nameof(AdminController.AdminPage),"Admin");
+                    }
+
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
 
