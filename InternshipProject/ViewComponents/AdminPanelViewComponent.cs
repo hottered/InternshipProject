@@ -23,10 +23,11 @@ namespace InternshipProject.ViewComponents
 
             var countUsers = await _accountRepository.GetAllUsersCountAsync(new Contracts.Employee.EmployeeFilter());
             var countRequests = await _userRequestRepository.GetAllRequestsCountAsync(new Contracts.Request.UserRequestFilter());
+            var countRequestsOnStandby = await _userRequestRepository.GetAllStandbyRequestsCountAsync();
 
             adminPanel.LeaveRequests = countRequests;
             adminPanel.Employees = countUsers;
-            adminPanel.LeaveRequestsOnWait = countRequests;
+            adminPanel.LeaveRequestsOnWait = countRequestsOnStandby;
 
             return View(adminPanel);
         }

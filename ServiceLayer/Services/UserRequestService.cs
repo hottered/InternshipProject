@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
+using SharedDll.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,7 +125,7 @@ namespace ServiceLayer.Services
             }
 
             user.DaysOffNumber -= weekdays;
-            request.Approved = true;
+            request.Approved = RequestApprovalEnum.Approved;
 
             await _accountRepository.UpdateUserAsync(user);
             await _userRequestRepository.UpdateAsync(request);

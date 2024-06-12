@@ -29,8 +29,9 @@ namespace DataLayer.Models.Request
 
         public int EmployeeId { get; set; }
 
-        public bool Approved { get; set; }  = false;
+        public RequestApprovalEnum Approved { get; set; }  = default!;
 
         public bool IsDeleted { get; set; } = false;
+
     }
 }

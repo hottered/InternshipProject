@@ -5,9 +5,11 @@ using DataLayer.Models.Request;
 using DataLayer.Repositories.GenericRepository;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using SharedDll.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +38,12 @@ namespace DataLayer.Repositories
         {
             return await _dbContext.Requests
                 .Filter(filter)
+                .CountAsync();
+        }
+        public async Task<long> GetAllStandbyRequestsCountAsync()
+        {
+            return await _dbContext.Requests
+                .Where(x => x.Approved == RequestApprovalEnum.StandBy)
                 .CountAsync();
         }
         public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
