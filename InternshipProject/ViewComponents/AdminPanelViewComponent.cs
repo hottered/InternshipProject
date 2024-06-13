@@ -21,13 +21,9 @@ namespace InternshipProject.ViewComponents
         {
             var adminPanel = new AdminDashboardCount();
 
-            var countUsers = await _accountRepository.GetAllUsersCountAsync(new Contracts.Employee.EmployeeFilter());
-            var countRequests = await _userRequestRepository.GetAllRequestsCountAsync(new Contracts.Request.UserRequestFilter());
-            var countRequestsOnStandby = await _userRequestRepository.GetAllStandbyRequestsCountAsync();
-
-            adminPanel.LeaveRequests = countRequests;
-            adminPanel.Employees = countUsers;
-            adminPanel.LeaveRequestsOnWait = countRequestsOnStandby;
+            adminPanel.LeaveRequests = await _userRequestRepository.GetAllRequestsCountAsync(new Contracts.Request.UserRequestFilter());
+            adminPanel.Employees = await _accountRepository.GetAllUsersCountAsync(new Contracts.Employee.EmployeeFilter());
+            adminPanel.LeaveRequestsOnWait = await _userRequestRepository.GetAllStandbyRequestsCountAsync(); ;
 
             return View(adminPanel);
         }
