@@ -7,6 +7,7 @@ using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
 using SharedDll.ApiRoutes;
+using SharedDll.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,12 @@ namespace ServiceLayer.Services
 
             _httpClient.BaseAddress = new Uri(ApiRoutes.BaseAddress);
 
+        }
+        public async Task<bool> SignedInAsAdmin(string username)
+        {
+            var employee = await _accountRepository.GetUserByEmailAsync(username);
+
+            return employee is null ? false : await _accountRepository.IsInRoleAsync(employee, nameof(RolesEnum.Admin));
         }
         public async Task<bool> CreateUsersFromOldSystem()
         {

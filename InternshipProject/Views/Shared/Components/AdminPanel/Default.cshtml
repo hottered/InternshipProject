@@ -1,0 +1,83 @@
+﻿@model Contracts.AdminPanel.AdminDashboardCount
+
+<div class="dashboard">
+    <h2>Hi, Welcome back</h2>
+    <div class="dashboard-cards">
+        <div class="dashboard-card card-green">
+            <div class="card-content">
+                <span class="card-icon"><i class="fas fa-pencil-alt"></i></span>
+                <div class="card-info">
+                    <h3>@Model.LeaveRequests</h3>
+                    <p>Leave requests</p>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-card card-blue">
+            <div class="card-content">
+                <span class="card-icon"><i class="fas fa-users"></i></span>
+                <div class="card-info">
+                    <h3>@Model.Employees</h3>
+                    <p>Employees</p>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-card card-yellow">
+            <div class="card-content">
+                <span class="card-icon"><i class="fas fa-pencil-alt"></i></span>
+                <div class="card-info">
+                    <h3>@Model.LeaveRequestsOnWait</h3>
+                    <p>Leave requests on wait</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard {
+        padding: 20px;
+    }
+    .dashboard h2 {
+        margin-bottom: 20px;
+    }
+    .dashboard-cards {
+        display: flex;
+        gap: 20px;
+    }
+    .dashboard-card {
+        flex: 1;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .card-green {
+        background-color: #a8e6cf;
+    }
+    .card-blue {
+        background-color: #a0c4ff;
+    }
+    .card-yellow {
+        background-color: #ffd166;
+    }
+    .card-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction:column;
+    }
+    .card-icon {
+        font-size: 40px;
+    }
+    .card-info h3 {
+        margin: 0;
+        font-size: 40px;
+    }
+    .card-info p {
+        margin: 0;
+        font-size: 18px;
+    }
+</style>

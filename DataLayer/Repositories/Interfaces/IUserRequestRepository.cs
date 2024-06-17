@@ -22,6 +22,8 @@ namespace DataLayer.Repositories.Interfaces
 
         public Task<long> GetAllRequestsCountAsync(UserRequestFilter filter);
 
+        public Task<long> GetAllStandbyRequestsCountAsync();
+
 
     }
 }

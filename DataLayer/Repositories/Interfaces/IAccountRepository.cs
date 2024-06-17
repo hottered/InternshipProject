@@ -26,5 +26,6 @@ namespace DataLayer.Repositories.Interfaces
         public Task<IDbContextTransaction> BeginTransactionAsync();
         public Task CommitTransactionAsync(IDbContextTransaction transaction);
         public Task RollbackTransactionAsync(IDbContextTransaction transaction);
+        public Task<bool> IsInRoleAsync(Employee employee, string role);
     }
 }

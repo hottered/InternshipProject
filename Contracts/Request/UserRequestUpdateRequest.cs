@@ -14,6 +14,6 @@ namespace Contracts.Request
         LeaveTypeEnum LeaveType,
         string CommentEmployee,
         string CommentHR,
-        bool Approved
+        RequestApprovalEnum Approved
         );
 }
