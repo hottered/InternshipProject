@@ -135,7 +135,22 @@ namespace ServiceLayer.Services
 
             return true;
         }
+        public async Task<bool> RejectRequestByIdAsync(int id)
+        {
+            var request = await _userRequestRepository.GetByIdAsync(id);
 
+            if (request is null)
+            {
+                return false;
+            }
+
+            request.Approved = RequestApprovalEnum.Rejected;
+
+            await _userRequestRepository.UpdateAsync(request);
+
+            return true;
+
+        }
         public async Task<PaginatedList<UserRequestGetResponse>> GetAllUserRequestsByPage(UserRequestFilter filter)
         {
 

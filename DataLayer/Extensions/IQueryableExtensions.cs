@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SharedDll.Enums;
 
 namespace DataLayer.Extensions
 {
@@ -23,7 +24,10 @@ namespace DataLayer.Extensions
             {
                 filter.SearchString = string.Empty;
             }
-
+            if (filter.LeaveType is null)
+            {
+                filter.LeaveType = LeaveTypeEnum.Sick;
+            }
             var searchString = filter.SearchString.ToLower();
 
             return queryable.Where(x =>

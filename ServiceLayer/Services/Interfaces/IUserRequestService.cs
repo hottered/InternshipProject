@@ -30,5 +30,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<List<UserRequest>> GetAllRequestsForUsersAsync();
 
+        public Task<bool> RejectRequestByIdAsync(int id);
+
     }
 }

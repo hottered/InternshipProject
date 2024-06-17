@@ -49,10 +49,12 @@ namespace ServiceLayer.Mappers
             if (userRequest == null) { return null; }
 
             return new UserRequestGetResponse(
+                    userRequest.Id,
                     userRequest.Employee.FirstName,
                     userRequest.StartDate,
                     userRequest.EndDate,
                     userRequest.LeaveType,
+                    userRequest.Approved,
                     userRequest.EmployeeId
                 );
         }

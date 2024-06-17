@@ -10,6 +10,6 @@ namespace Contracts.Request
 {
     public class UserRequestFilter : FilterBase
     {
-        public LeaveTypeEnum? LeaveType { get; set; }
+        public LeaveTypeEnum? LeaveType { get; set; } 
     }
 }

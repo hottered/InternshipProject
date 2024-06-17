@@ -35,5 +35,6 @@ namespace SharedDll.ApiRoutes
         public const string DeleteUserRequest = "/user-requests/{id}/delete";
         public const string EditUserRequest = "/user-requests/{id}/edit";
         public const string ApproveUserRequest = "/user-requests/{id}/approve";
+        public const string RejectUserRequest = "/user-requests/{id}/reject";
     }
 }

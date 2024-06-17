@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 namespace Contracts.Request
 {
     public record UserRequestGetResponse(
+        int Id,
         string EmployeeFirstName,
         DateTime StartDate,
         DateTime EndDate,
         LeaveTypeEnum LeaveType,
+        RequestApprovalEnum Approval,
         int UserId
         );
 }

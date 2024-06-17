@@ -4,6 +4,9 @@
 @{
     ViewData["Title"] = "AllUserRequests";
     var filter = ViewData["CurrentFilter"] as UserRequestFilter;
+    var selectedLeaveType = filter?.LeaveType;
+
+
 
     var queryParams = string.Empty;
     if (filter != null)
@@ -24,10 +27,6 @@
     }
 }
 
-@* @section Scripts {
-    <script src="~/js/searchButtonToggle.js"></script>
-
-} *@
 
 <h1>AllUserRequests</h1>
 
@@ -36,25 +35,35 @@
 </p>
 
 <div>
-    <form asp-action="AllUserRequests" asp-controller="UserRequest" method="get">
+    <form  asp-action="AllUserRequests" asp-controller="UserRequest" method="get">
 
-@*         <div class="search-section">
-            <input id="searchInput" name="@nameof(UserRequestFilter.SearchString)" class="form-control me-1" type="search" placeholder="Search"
-                   aria-label="Search" value="@filter?.SearchString">
+        @*         <div class="search-section">
+        <input id="searchInput" name="@nameof(UserRequestFilter.SearchString)" class="form-control me-1" type="search" placeholder="Search"
+        aria-label="Search" value="@filter?.SearchString">
 
-            <button id="searchButton" class="btn btn-dark" type="submit">Search by name</button>
+        <button id="searchButton" class="btn btn-dark" type="submit">Search by name</button>
 
-            <a asp-action="AllUserRequests" class="text-dark">Back to Full List</a>
+        <a asp-action="AllUserRequests" class="text-dark">Back to Full List</a>
 
         </div> *@
 
-        <select name="LeaveType" class="dropdown-container">
+        <select name="LeaveType" class="dropdown-container" onchange="this.form.submit()">
             @{
-                foreach (var option in Enum.GetValues(typeof(LeaveTypeEnum)))
+
+                @foreach (var option in Enum.GetValues(typeof(LeaveTypeEnum)))
                 {
-                    <option value="@option">@option</option>
+                    if (option.Equals(selectedLeaveType))
+                    {
+                        <option value="@option" selected>@option</option>
+                    }
+                    else
+                    {
+                        <option value="@option">@option</option>
+                    }
                 }
+
             }
+
         </select>
 
     </form>
@@ -81,9 +90,18 @@
                 <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.LeaveType)</td>
                 <td>
-                    @Html.ActionLink("Edit", "GetUserRequestById", new { id = item.UserId }) |
-                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.UserId }) |
-                    @Html.ActionLink("Reject", "DeleteUserRequest", new { id = item.UserId })
+                    <span class="card-icon"><i class="fas fa-pencil-alt"></i></span>
+                    @Html.ActionLink("Edit", "GetUserRequestById", new { id = item.Id }) |
+
+                    <span class="card-icon"><i class="fas fa-check"></i></span>
+                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id}) |
+
+
+                    @if(item.Approval.Equals(RequestApprovalEnum.StandBy))
+                    {
+                        <span class="card-icon"><b>X</b></span>
+                        @Html.ActionLink("Reject", "RejectUserRequest", new { id = item.Id })
+                    }
                 </td>
             </tr>
         }
@@ -106,15 +124,17 @@
 
 <style>
 
-    .search-section{
-        display:flex;
-        width:50%;
+    .search-section {
+        display: flex;
+        width: 50%;
     }
+
     .text-dark {
-        margin-left:10px
+        margin-left: 10px
     }
-    #searchButton{
-        margin-left:10px;
+
+    #searchButton {
+        margin-left: 10px;
     }
 
     body {
@@ -212,11 +232,11 @@
             background-color: #333;
         }
 
-/*     .dropdown-container {
-        margin-top: 20px;
-        height: 40px;
-        width: 100px;
-        border: 2px solid black;
-    } */
+        .dropdown-container {
+                margin-top: 20px;
+                height: 40px;
+                width: 100px;
+                border: 2px solid black;
+            }
 
 </style>

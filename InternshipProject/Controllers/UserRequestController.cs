@@ -117,5 +117,12 @@ namespace InternshipProject.Controllers
 
             return RedirectToAction(nameof(AllUserRequests), "UserRequest");
         }
+        [HttpGet(ApiRoutes.RejectUserRequest)]
+        public async Task<IActionResult> RejectUserRequest(int id)
+        {
+            await _userRequestService.RejectRequestByIdAsync(id);
+
+            return RedirectToAction(nameof(AllUserRequests), "UserRequest");
+        }
     }
 }
