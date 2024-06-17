@@ -21,13 +21,13 @@ namespace DataLayer.Extensions
         {
             if (filter.SearchString is null)
             {
-                return queryable;
+                filter.SearchString = string.Empty;
             }
 
             var searchString = filter.SearchString.ToLower();
 
             return queryable.Where(x =>
-                x.CommentEmployee.ToLower().Contains(searchString) ||
+                x.CommentEmployee.ToLower().Contains(searchString) &&
                 x.LeaveType == filter.LeaveType);
         }
 

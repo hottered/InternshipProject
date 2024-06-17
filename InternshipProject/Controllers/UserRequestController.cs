@@ -58,6 +58,8 @@ namespace InternshipProject.Controllers
 
             var requests = await _userRequestService.GetAllUserRequestsByPage(filter);
 
+            //var allrequestst = await _userRequestService.GetAllRequestsForUsersAsync();
+
             return View(nameof(AllUserRequests), requests);
         }
 

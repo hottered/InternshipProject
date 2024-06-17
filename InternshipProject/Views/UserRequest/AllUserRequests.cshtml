@@ -1,5 +1,6 @@
-﻿@model DataLayer.Models.Pagination.PaginatedList<DataLayer.Models.Request.UserRequest>
+﻿@model DataLayer.Models.Pagination.PaginatedList<Contracts.Request.UserRequestGetResponse>
 @using Contracts.Request
+@using SharedDll.Enums
 @{
     ViewData["Title"] = "AllUserRequests";
     var filter = ViewData["CurrentFilter"] as UserRequestFilter;
@@ -23,9 +24,10 @@
     }
 }
 
-@section Scripts {
+@* @section Scripts {
     <script src="~/js/searchButtonToggle.js"></script>
-}
+
+} *@
 
 <h1>AllUserRequests</h1>
 
@@ -33,89 +35,188 @@
     <a asp-controller="UserRequest" asp-action="CreateUserRequest">Create New</a>
 </p>
 
-<div class="row">
-    <div class="col-md-6">
-        <form class="d-flex" asp-action="AllUserRequests" asp-controller="UserRequest" method="get">
-            <input id="searchInput" name="SearchString" class="form-control me-1" type="search" placeholder="Search"
+<div>
+    <form asp-action="AllUserRequests" asp-controller="UserRequest" method="get">
+
+@*         <div class="search-section">
+            <input id="searchInput" name="@nameof(UserRequestFilter.SearchString)" class="form-control me-1" type="search" placeholder="Search"
                    aria-label="Search" value="@filter?.SearchString">
-            <button id="searchButton" class="btn btn-dark" type="submit" disabled>Search by name</button>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <a asp-action="AllUserRequests" class="text-dark">Back to Full List</a>
-    </div>
+
+            <button id="searchButton" class="btn btn-dark" type="submit">Search by name</button>
+
+            <a asp-action="AllUserRequests" class="text-dark">Back to Full List</a>
+
+        </div> *@
+
+        <select name="LeaveType" class="dropdown-container">
+            @{
+                foreach (var option in Enum.GetValues(typeof(LeaveTypeEnum)))
+                {
+                    <option value="@option">@option</option>
+                }
+            }
+        </select>
+
+    </form>
 </div>
+
+
 
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Items[0].EmployeeFirstName)</th>
             <th>@Html.DisplayNameFor(model => model.Items[0].StartDate)</th>
             <th>@Html.DisplayNameFor(model => model.Items[0].EndDate)</th>
             <th>@Html.DisplayNameFor(model => model.Items[0].LeaveType)</th>
-            <th>@Html.DisplayNameFor(model => model.Items[0].CommentEmployee)</th>
-            <th>@Html.DisplayNameFor(model => model.Items[0].CommentHR)</th>
-            <th>@Html.DisplayNameFor(model => model.Items[0].EmployeeId)</th>
-            <th>@Html.DisplayNameFor(model => model.Items[0].Approved)</th>
-            <th>@Html.DisplayNameFor(model => model.Items[0].IsDeleted)</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Items)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.EmployeeFirstName)</td>
                 <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.LeaveType)</td>
-                <td>@Html.DisplayFor(modelItem => item.CommentEmployee)</td>
-                <td>@Html.DisplayFor(modelItem => item.CommentHR)</td>
-                <td>@Html.DisplayFor(modelItem => item.EmployeeId)</td>
-                <td>@Html.DisplayFor(modelItem => item.Approved)</td>
-                <td>@Html.DisplayFor(modelItem => item.IsDeleted)</td>
                 <td>
-                    @Html.ActionLink("Edit", "GetUserRequestById", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "DeleteUserRequest", new { id = item.Id }) |
-                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id })
+                    @Html.ActionLink("Edit", "GetUserRequestById", new { id = item.UserId }) |
+                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.UserId }) |
+                    @Html.ActionLink("Reject", "DeleteUserRequest", new { id = item.UserId })
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<div class="col-md-6">
-    <nav>
-        <ul class="pagination justify-content-end">
-            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
-                <a class="page-link text-black" href="?pageNumber=1&@queryParams">
-                    <span>First</span>
-                </a>
-            </li>
+<div class="pagination">
+    <a class="page-link @(Model.PageIndex == 1 ? "disabled" : "")" href="?pageNumber=1&@queryParams"><<</a>
+    <a class="page-link @(Model.HasPreviousPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams"><</a>
 
-            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                <a class="page-link text-black" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams">
-                    <span>Previous</span>
-                </a>
-            </li>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a class="page-link @(Model.PageIndex == i ? "active" : "")" href="?pageNumber=@i&@queryParams">@i</a>
+    }
 
-            @for (int i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(Model.PageIndex == i ? "active" : "")">
-                    <a class="page-link text-black" href="?pageNumber=@i&@queryParams">@i</a>
-                </li>
+    <a class="page-link @(Model.HasNextPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">></a>
+    <a class="page-link @(Model.PageIndex == Model.TotalPages ? "disabled" : "")" href="?pageNumber=@Model.TotalPages&@queryParams">>></a>
+</div>
+
+
+<style>
+
+    .search-section{
+        display:flex;
+        width:50%;
+    }
+    .text-dark {
+        margin-left:10px
+    }
+    #searchButton{
+        margin-left:10px;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        border: solid;
+        text-align: center;
+    }
+
+        .table th, .table td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            border-right: solid;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    .pagination {
+        display: flex;
+        justify-content: right;
+        margin-top: 20px;
+    }
+
+        .pagination .page-link {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #dddddd;
+            margin: 0 4px;
+        }
+
+            .pagination .page-link:hover {
+                background-color: #ddd;
             }
 
-            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                <a class="page-link text-black" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">
-                    <span>Next</span>
-                </a>
-            </li>
-            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
-                <a class="page-link text-black" href="?pageNumber=@Model.TotalPages&@queryParams">
-                    <span>Last</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+            .pagination .page-link.active {
+                background-color: lightskyblue;
+                color: black;
+                border: 1px solid lightskyblue;
+            }
+
+            .pagination .page-link.disabled {
+                color: #cccccc;
+                pointer-events: none;
+            }
+
+    .edit-action, .approve-action, .reject-action {
+        margin-right: 8px;
+        text-decoration: none;
+        color: blue;
+    }
+
+        .edit-action:hover, .approve-action:hover, .reject-action:hover {
+            text-decoration: underline;
+        }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .btn-dark {
+        background-color: black;
+        color: white;
+        border: none;
+    }
+
+        .btn-dark:hover {
+            background-color: #333;
+        }
+
+/*     .dropdown-container {
+        margin-top: 20px;
+        height: 40px;
+        width: 100px;
+        border: 2px solid black;
+    } */
+
+</style>

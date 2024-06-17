@@ -37,7 +37,10 @@ namespace ServiceLayer.Services
         {
             return await _userRequestRepository.AllRequestsForUserWithId(id);
         }
-
+        public async Task<List<UserRequest>> GetAllRequestsForUsersAsync()
+        {
+            return await _userRequestRepository.GetAllRequestsForUsersAsync();
+        }
         public async Task<bool> CreateUserRequestAsync(int userId, UserRequestCreateRequest userRequest)
         {
             if (userRequest.StartDate >= userRequest.EndDate)
@@ -133,14 +136,16 @@ namespace ServiceLayer.Services
             return true;
         }
 
-        public async Task<PaginatedList<UserRequest>> GetAllUserRequestsByPage(UserRequestFilter filter)
+        public async Task<PaginatedList<UserRequestGetResponse>> GetAllUserRequestsByPage(UserRequestFilter filter)
         {
 
             var count = await _userRequestRepository.GetAllRequestsCountAsync(filter);
 
             var requestsQueryable = await _userRequestRepository.AllRequestsQueryableBasedOnFilter(filter);
 
-            return await PaginatedList<UserRequest>.CreateAsync(requestsQueryable,count, (int)filter.PageNumber!, (int)filter.PageSize!);
+            var requestGetResponseDto = requestsQueryable.ToUserRequestGetResponseList();
+
+            return await PaginatedList<UserRequestGetResponse>.CreateAsync(requestGetResponseDto, count, (int)filter.PageNumber!, (int)filter.PageSize!);
         }
 
     }
