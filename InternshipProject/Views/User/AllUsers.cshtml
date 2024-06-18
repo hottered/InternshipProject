@@ -1,4 +1,4 @@
-﻿@model DataLayer.Models.Pagination.PaginatedList<DataLayer.Models.Employee>
+﻿@model DataLayer.Models.Pagination.PaginatedList<Contracts.Employee.EmployeeGetResponse>
 @using Contracts.Employee
 @{
     ViewData["Title"] = "AllUsers";
@@ -41,42 +41,24 @@
         <a asp-action="AllUsers" class="text-dark">Back to Full List</a>
     </div>
 </div>
-@if (User.Identity.IsAuthenticated)
-{
-    <table class="table table-bordered">
-        @foreach (var claim in User.Claims)
-        {
-            <tr>
-                <td>
-                    @claim.Type
-                </td>
-                <td>
-                    @claim.Value
-                </td>
-            </tr>
-        }
-    </table>
-}
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Items[0].Id)
+                User
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Items[0].UserName)
+                Position
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Items[0].FirstName)
+                Start Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Items[0].LastName)
+                End Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Items[0].IDNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Items[0].Email)
+                Actions
             </th>
         </tr>
     </thead>
@@ -85,66 +67,49 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.IDNumber)
                 </td>
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => item.EmploymentStartDate)
                 </td>
+
                 <td>
-                    @Html.ActionLink("Edit", "GetUserById", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
+                    @Html.DisplayFor(modelItem => item.EmploymentEndDate)
+                </td>
+
+                <td>
+                    @Html.ActionLink(
+                             "",
+                             "GetUserById",
+                             new { id = item.Id },
+                             new { @class = "fa fa-edit", title = "Edit" } ) |
+                    @Html.ActionLink(
+                             "",
+                             "DeleteUser",
+                             new { id = item.Id },
+                             new { @class = "fa fa-trash", title = "Delete" } )
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<div class="col-md-6">
-    <nav>
-        <ul class="pagination justify-content-end">
-            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
-                <a class="page-link text-black" href="?pageNumber=1&@queryParams">
-                    <span>First</span>
-                </a>
-            </li>
+<div class="pagination">
+    <a class="page-link @(Model.PageIndex == 1 ? "disabled" : "")" href="?pageNumber=1&@queryParams">&laquo;&laquo;</a>
+    <a class="page-link @(Model.HasPreviousPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams">&laquo;</a>
 
-            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                <a class="page-link text-black" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams">
-                    <span>Previous</span>
-                </a>
-            </li>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a class="page-link @(Model.PageIndex == i ? "active" : "")" href="?pageNumber=@i&@queryParams">@i</a>
+    }
 
-            @for (int i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(Model.PageIndex == i ? "active" : "")">
-                    <a class="page-link text-black" href="?pageNumber=@i&@queryParams">@i</a>
-                </li>
-            }
-
-            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                <a class="page-link text-black" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">
-                    <span>Next</span>
-                </a>
-            </li>
-            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
-                <a class="page-link text-black" href="?pageNumber=@Model.TotalPages&@queryParams">
-                    <span>Last</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <a class="page-link @(Model.HasNextPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">&raquo;</a>
+    <a class="page-link @(Model.PageIndex == Model.TotalPages ? "disabled" : "")" href="?pageNumber=@Model.TotalPages&@queryParams">&raquo;&raquo;</a>
 </div>
 
 <div class="row mt-3">

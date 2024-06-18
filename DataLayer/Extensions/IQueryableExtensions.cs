@@ -35,19 +35,19 @@ namespace DataLayer.Extensions
                 x.LeaveType == filter.LeaveType);
         }
 
-        public static IQueryable<Employee> Filter(this IQueryable<Employee> queryable, EmployeeFilter filter)
-        {
-            if (filter.SearchString is null)
-            {
-                return queryable;
-            }
+        //public static IQueryable<Employee> Filter(this IQueryable<Employee> queryable, EmployeeFilter filter)
+        //{
+        //    if (filter.SearchString is null)
+        //    {
+        //        return queryable;
+        //    }
 
-            var searchString = filter.SearchString.ToLower();
+        //    var searchString = filter.SearchString.ToLower();
 
-            return queryable.Where(x =>
-                x.FirstName!.ToLower().Contains(searchString) ||
-                x.LastName!.ToLower().Contains(searchString));
-        }
+        //    return queryable.Where(x =>
+        //        x.FirstName!.ToLower().Contains(searchString) ||
+        //        x.LastName!.ToLower().Contains(searchString));
+        //}
 
         public static IQueryable<TEntity> Filter<TEntity, TFilter>(this IQueryable<TEntity> queryable,
             TFilter filter,

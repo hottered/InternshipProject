@@ -65,12 +65,13 @@ namespace ServiceLayer.Mappers
             }
 
             return new EmployeeGetResponse(
+                employee.Id,
                 employee.FirstName,
                 employee.LastName,
                 employee.Address,
                 employee.IDNumber,
-                (int)employee.DaysOffNumber,
-                (int)employee.PositionId,
+                employee.DaysOffNumber ?? 0,
+                employee.PositionId ?? 0,
                 employee.EmploymentStartDate,
                 (DateTime)employee.EmploymentEndDate
             );
@@ -83,6 +84,16 @@ namespace ServiceLayer.Mappers
             }
 
             return employeeCreateRequests.Select(e => e.ToEmployee()).ToList();
+        }
+
+        public static List<EmployeeGetResponse> ToEmployeeGetResponseList(this List<Employee> employeeCreateRequests)
+        {
+            if (employeeCreateRequests == null)
+            {
+                return null;
+            }
+
+            return employeeCreateRequests.Select(e => e.ToEmployeeGetResponse()).ToList();
         }
     }
 }

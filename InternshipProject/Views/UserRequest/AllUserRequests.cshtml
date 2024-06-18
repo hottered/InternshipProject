@@ -35,7 +35,7 @@
 </p>
 
 <div>
-    <form  asp-action="AllUserRequests" asp-controller="UserRequest" method="get">
+    <form asp-action="AllUserRequests" asp-controller="UserRequest" method="get">
 
         @*         <div class="search-section">
         <input id="searchInput" name="@nameof(UserRequestFilter.SearchString)" class="form-control me-1" type="search" placeholder="Search"
@@ -94,10 +94,10 @@
                     @Html.ActionLink("Edit", "GetUserRequestById", new { id = item.Id }) |
 
                     <span class="card-icon"><i class="fas fa-check"></i></span>
-                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id}) |
+                    @Html.ActionLink("Approve", "ApproveUserRequest", new { id = item.Id }) |
 
 
-                    @if(item.Approval.Equals(RequestApprovalEnum.StandBy))
+                    @if (item.Approval.Equals(RequestApprovalEnum.StandBy))
                     {
                         <span class="card-icon"><b>X</b></span>
                         @Html.ActionLink("Reject", "RejectUserRequest", new { id = item.Id })
@@ -109,134 +109,15 @@
 </table>
 
 <div class="pagination">
-    <a class="page-link @(Model.PageIndex == 1 ? "disabled" : "")" href="?pageNumber=1&@queryParams"><<</a>
-    <a class="page-link @(Model.HasPreviousPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams"><</a>
+    <a class="page-link @(Model.PageIndex == 1 ? "disabled" : "")" href="?pageNumber=1&@queryParams">&laquo;&laquo;</a>
+    <a class="page-link @(Model.HasPreviousPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams">&laquo;</a>
 
     @for (int i = 1; i <= Model.TotalPages; i++)
     {
         <a class="page-link @(Model.PageIndex == i ? "active" : "")" href="?pageNumber=@i&@queryParams">@i</a>
     }
 
-    <a class="page-link @(Model.HasNextPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">></a>
-    <a class="page-link @(Model.PageIndex == Model.TotalPages ? "disabled" : "")" href="?pageNumber=@Model.TotalPages&@queryParams">>></a>
+    <a class="page-link @(Model.HasNextPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">&raquo;</a>
+    <a class="page-link @(Model.PageIndex == Model.TotalPages ? "disabled" : "")" href="?pageNumber=@Model.TotalPages&@queryParams">&raquo;&raquo;</a>
 </div>
 
-
-<style>
-
-    .search-section {
-        display: flex;
-        width: 50%;
-    }
-
-    .text-dark {
-        margin-left: 10px
-    }
-
-    #searchButton {
-        margin-left: 10px;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-    }
-
-    .table {
-        width: 100%;
-        margin-top: 20px;
-        border: solid;
-        text-align: center;
-    }
-
-        .table th, .table td {
-            border: 1px solid #dddddd;
-            padding: 8px;
-            border-right: solid;
-        }
-
-        .table th {
-            background-color: #f2f2f2;
-        }
-
-        .table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-    .pagination {
-        display: flex;
-        justify-content: right;
-        margin-top: 20px;
-    }
-
-        .pagination .page-link {
-            color: black;
-            padding: 8px 16px;
-            text-decoration: none;
-            border: 1px solid #dddddd;
-            margin: 0 4px;
-        }
-
-            .pagination .page-link:hover {
-                background-color: #ddd;
-            }
-
-            .pagination .page-link.active {
-                background-color: lightskyblue;
-                color: black;
-                border: 1px solid lightskyblue;
-            }
-
-            .pagination .page-link.disabled {
-                color: #cccccc;
-                pointer-events: none;
-            }
-
-    .edit-action, .approve-action, .reject-action {
-        margin-right: 8px;
-        text-decoration: none;
-        color: blue;
-    }
-
-        .edit-action:hover, .approve-action:hover, .reject-action:hover {
-            text-decoration: underline;
-        }
-
-    .row {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
-
-    .form-control {
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    .btn {
-        padding: 8px 16px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    .btn-dark {
-        background-color: black;
-        color: white;
-        border: none;
-    }
-
-        .btn-dark:hover {
-            background-color: #333;
-        }
-
-        .dropdown-container {
-                margin-top: 20px;
-                height: 40px;
-                width: 100px;
-                border: 2px solid black;
-            }
-
-</style>

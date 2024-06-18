@@ -24,7 +24,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<bool> UpdateUserAsync(EmployeeUpdateRequest employee);
 
-        public Task<PaginatedList<Employee>> GetAllUsersAsync(EmployeeFilter filter);
+        public Task<PaginatedList<EmployeeGetResponse>> GetAllUsersAsync(EmployeeFilter filter);
 
         public Task<bool> CreateUsersFromOldSystem();
 

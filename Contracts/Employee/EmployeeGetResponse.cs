@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace Contracts.Employee
 {
     public record EmployeeGetResponse(
+            int Id,
             string FirstName,
-            string LastName,
-            string Address,
-            string IDNumber,
-            int DaysOffNumber,
-            int PositionID,
-            //dodaj requests dto:
-            DateTime EmploymentStartDate,
-            DateTime EmploymentEndDate
+            string? LastName,
+            string? Address,
+            string? IDNumber,
+            int? DaysOffNumber,
+            int? PositionID,
+            DateTime? EmploymentStartDate,
+            DateTime? EmploymentEndDate
         );
 }
