@@ -1,0 +1,21 @@
+﻿@using DataLayer.Models
+@using System.Security.Claims
+@inject Microsoft.AspNetCore.Identity.SignInManager<Employee> _signInManager
+
+
+@if (_signInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Logout">Logout</a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Login</a>
+
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Signup">Register</a>
+
+    </li>
+}
