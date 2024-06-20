@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SharedDll.Enums;
 
 namespace DataLayer.Extensions
 {
@@ -21,29 +22,32 @@ namespace DataLayer.Extensions
         {
             if (filter.SearchString is null)
             {
-                return queryable;
+                filter.SearchString = string.Empty;
             }
-
+            if (filter.LeaveType is null)
+            {
+                filter.LeaveType = LeaveTypeEnum.Sick;
+            }
             var searchString = filter.SearchString.ToLower();
 
             return queryable.Where(x =>
-                x.CommentEmployee.ToLower().Contains(searchString) ||
+                x.CommentEmployee.ToLower().Contains(searchString) &&
                 x.LeaveType == filter.LeaveType);
         }
 
-        public static IQueryable<Employee> Filter(this IQueryable<Employee> queryable, EmployeeFilter filter)
-        {
-            if (filter.SearchString is null)
-            {
-                return queryable;
-            }
+        //public static IQueryable<Employee> Filter(this IQueryable<Employee> queryable, EmployeeFilter filter)
+        //{
+        //    if (filter.SearchString is null)
+        //    {
+        //        return queryable;
+        //    }
 
-            var searchString = filter.SearchString.ToLower();
+        //    var searchString = filter.SearchString.ToLower();
 
-            return queryable.Where(x =>
-                x.FirstName!.ToLower().Contains(searchString) ||
-                x.LastName!.ToLower().Contains(searchString));
-        }
+        //    return queryable.Where(x =>
+        //        x.FirstName!.ToLower().Contains(searchString) ||
+        //        x.LastName!.ToLower().Contains(searchString));
+        //}
 
         public static IQueryable<TEntity> Filter<TEntity, TFilter>(this IQueryable<TEntity> queryable,
             TFilter filter,

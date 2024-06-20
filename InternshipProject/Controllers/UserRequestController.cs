@@ -58,6 +58,8 @@ namespace InternshipProject.Controllers
 
             var requests = await _userRequestService.GetAllUserRequestsByPage(filter);
 
+            //var allrequestst = await _userRequestService.GetAllRequestsForUsersAsync();
+
             return View(nameof(AllUserRequests), requests);
         }
 
@@ -112,6 +114,13 @@ namespace InternshipProject.Controllers
         public async Task<IActionResult> ApproveUserRequest(int id)
         {
             await _userRequestService.ApproveRequestByIdAsync(id);
+
+            return RedirectToAction(nameof(AllUserRequests), "UserRequest");
+        }
+        [HttpGet(ApiRoutes.RejectUserRequest)]
+        public async Task<IActionResult> RejectUserRequest(int id)
+        {
+            await _userRequestService.RejectRequestByIdAsync(id);
 
             return RedirectToAction(nameof(AllUserRequests), "UserRequest");
         }

@@ -80,7 +80,7 @@ namespace DataLayer.Repositories
         public async Task<List<Employee>> GetAllUsersAsync(EmployeeFilter filter)
         {
             return await _userManager.Users
-                .Filter(filter)
+                .Filter(filter, x => x.FirstName, x => x.LastName)
                 .Paginate(filter)
                 .ToListAsync();
         }

@@ -31,6 +31,7 @@ namespace DataLayer.Repositories
         {
             return await _dbContext.Requests
                 .Filter(filter)
+                .Include(x=>x.Employee)
                 .Paginate(filter)
                 .ToListAsync();
         }
@@ -45,6 +46,10 @@ namespace DataLayer.Repositories
             return await _dbContext.Requests
                 .Where(x => x.Approved == RequestApprovalEnum.StandBy)
                 .CountAsync();
+        }
+        public async Task<List<UserRequest>> GetAllRequestsForUsersAsync()
+        {
+            return await _dbContext.Requests.Include(x => x.Employee).ToListAsync();
         }
         public async Task<bool> CreateUserRequestAsync(UserRequest userRequest)
         {

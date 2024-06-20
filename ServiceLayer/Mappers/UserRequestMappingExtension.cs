@@ -1,4 +1,5 @@
-﻿using Contracts.Position;
+﻿using Azure.Core;
+using Contracts.Position;
 using Contracts.Request;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
@@ -42,6 +43,28 @@ namespace ServiceLayer.Mappers
                     request.Approved
                 );
 
+        }
+        public static UserRequestGetResponse ToUserRequestGetResponse(this UserRequest userRequest)
+        {
+            if (userRequest == null) { return null; }
+
+            return new UserRequestGetResponse(
+                    userRequest.Id,
+                    userRequest.Employee.FirstName,
+                    userRequest.StartDate,
+                    userRequest.EndDate,
+                    userRequest.LeaveType,
+                    userRequest.Approved,
+                    userRequest.EmployeeId
+                );
+        }
+        public static List<UserRequestGetResponse> ToUserRequestGetResponseList(this List<UserRequest> userRequests)
+        {
+            if (userRequests == null) { return null; }
+
+            return userRequests
+                    .Select(userRequest => userRequest.ToUserRequestGetResponse())
+                    .ToList();
         }
         public static UserRequest ToUserRequest(this UserRequestCreateRequest userRequest)
         {
