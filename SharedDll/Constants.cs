@@ -73,7 +73,8 @@ namespace SharedDll
         public const string DaysOffNumberRequired = "Days Off Number is required.";
         public const string DaysOffNumberRangeErrorMessage = "Days Off Number must be between 0 and 365.";
 
-
+        public const string DateStartRequiered = "Start date is requiered";
+        public const string DateEndRequiered = "End date is requiered";
 
 
 

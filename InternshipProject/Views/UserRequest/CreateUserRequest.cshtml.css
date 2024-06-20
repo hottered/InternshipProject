@@ -1,1 +1,65 @@
-﻿
+﻿.content {
+    margin-top: 50px;
+}
+
+.container {
+    width: 65%;
+    border: 3px solid black;
+    padding: 30px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-top: 13px;
+}
+
+.control-label {
+    width: 200px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.form-control {
+    border: 3px solid black;
+    width: 70%;
+}
+
+label {
+    color: black;
+}
+
+
+#last-label {
+    align-self: baseline;
+}
+
+#last-input {
+    height: 100px;
+}
+
+.leave-request-title {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.bottom-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    border: 2px solid black;
+    box-shadow: inherit;
+    font-weight: bold;
+}
+
+
+    .btn:hover {
+        box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.6);
+    }
