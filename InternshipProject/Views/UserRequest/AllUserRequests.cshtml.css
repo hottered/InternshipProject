@@ -1,5 +1,4 @@
-﻿/*body {
-}*/
+﻿
 .search-section {
     display: flex;
     width: 50%;
@@ -12,10 +11,6 @@
 #searchButton {
     margin-left: 10px;
 }
-
-/*body {
-    font-family: Arial, sans-serif;
-}*/
 
 .table {
     width: 100%;
