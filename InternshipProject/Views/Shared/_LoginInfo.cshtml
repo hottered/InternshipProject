@@ -11,7 +11,10 @@
         <a class="nav-link text-dark" asp-controller="User" asp-action="AllUsers">Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="UserPosition" asp-action="AllUserPositions">Positions</a>
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="UserPosition" asp-action="AllUserPositions">Positions</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="UserPosition" asp-action="CreateUserPosition">AdminArea</a>
     </li>
 @*     <li class="nav-item">
         <a class="nav-link asp-contro asp-action="AllUserRequests" asp-route-id="@userId">All requests For logged in user</a>
