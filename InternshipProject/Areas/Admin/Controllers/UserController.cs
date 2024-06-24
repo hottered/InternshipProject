@@ -1,23 +1,18 @@
 ﻿using Contracts.Employee;
-using DataLayer.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Newtonsoft.Json;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
 using SharedDll.ApiRoutes;
 
-namespace InternshipProject.Controllers
+namespace InternshipProject.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class UserController : Controller
     {
-
         private readonly IAccountService _accountService;
         private readonly HttpClient _httpClient;
-        
+
         public UserController(
             IAccountService accountService,
             HttpClient httpClient)
@@ -26,7 +21,7 @@ namespace InternshipProject.Controllers
             _httpClient = httpClient;
         }
 
-        //[Route(ApiRoutes.RetrieveUsers)]
+        [Route(ApiRoutes.RetrieveUsers)]
         public async Task<IActionResult> RetrieveUsers()
         {
             var result = await _accountService.CreateUsersFromOldSystem();
@@ -35,11 +30,11 @@ namespace InternshipProject.Controllers
             {
                 ModelState.AddModelError(string.Empty, Constants.UserCreateErrorMessage);
             }
-           
+
             return RedirectToAction(nameof(AllUsers), "User");
         }
 
-        //[Route(ApiRoutes.AllUsers)]
+        [Route(ApiRoutes.AllUsers)]
         public async Task<IActionResult> AllUsers(EmployeeFilter filter)
         {
 
@@ -50,13 +45,13 @@ namespace InternshipProject.Controllers
             return View(users);
         }
 
-        //[HttpGet(ApiRoutes.CreateUser)]
+        [HttpGet(ApiRoutes.CreateUser)]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        //[HttpPost(ApiRoutes.CreateUser)]
+        [HttpPost(ApiRoutes.CreateUser)]
         public async Task<IActionResult> CreateUser(EmployeeCreateRequest createRequest)
         {
             if (ModelState.IsValid)
@@ -76,17 +71,17 @@ namespace InternshipProject.Controllers
             return View();
         }
 
-        //[HttpGet(ApiRoutes.EditUser)]
+        [HttpGet(ApiRoutes.EditUser)]
         public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _accountService.GetUserByIdAsync(id);
 
             var updateRequest = user.ToEmployeeUpdateRequest();
 
-            return View(nameof(UpdateUser),updateRequest);
+            return View(nameof(UpdateUser), updateRequest);
         }
 
-        //[HttpPost(ApiRoutes.EditUserById)]
+        [HttpPost(ApiRoutes.EditUserById)]
         public async Task<IActionResult> UpdateUser(EmployeeUpdateRequest updateRequest)
         {
             if (ModelState.IsValid)
@@ -108,7 +103,7 @@ namespace InternshipProject.Controllers
         }
 
 
-        //[HttpGet(ApiRoutes.DeleteUser)]
+        [HttpGet(ApiRoutes.DeleteUser)]
         public async Task<IActionResult> DeleteUser(int id)
         {
 

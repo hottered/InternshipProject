@@ -1,5 +1,6 @@
 ﻿using Contracts.Position;
 using InternshipProject.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
@@ -9,6 +10,7 @@ using SharedDll.ApiRoutes;
 namespace InternshipProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserPositionController : Controller
     {
 
