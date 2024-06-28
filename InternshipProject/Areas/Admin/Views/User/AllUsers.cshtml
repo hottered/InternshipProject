@@ -1,0 +1,121 @@
+﻿@model DataLayer.Models.Pagination.PaginatedList<Contracts.Employee.EmployeeGetResponse>
+@using Contracts.Employee
+@{
+    ViewData["Title"] = "AllUsers";
+    var filter = ViewData["CurrentFilter"] as EmployeeFilter;
+
+    var queryParams = string.Empty;
+    if (filter != null)
+    {
+        var properties = filter.GetType().GetProperties();
+        var queryList = new List<string>();
+
+        foreach (var prop in properties)
+        {
+            var value = prop.GetValue(filter);
+            if (value != null)
+            {
+                queryList.Add($"{prop.Name}={Uri.EscapeDataString(value.ToString())}");
+            }
+        }
+
+        queryParams = string.Join("&", queryList);
+    }
+}
+@section Scripts {
+    <script src="~/js/searchButtonToggle.js"></script>
+}
+<h1>AllUsers</h1>
+
+<p>
+    <a asp-controller="User" asp-area="Admin" asp-action="CreateUser">Create New User</a>
+</p>
+<div class="row">
+    <div class="col-md-6">
+        <form class="d-flex" asp-area="Admin" asp-action="AllUsers" asp-controller="User">
+            <input id="searchInput" name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" value="@filter?.SearchString">
+            <button id="searchButton" class="btn btn-dark" type="submit" disabled>Search by name</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <a asp-area="Admin" asp-action="AllUsers" asp-controller="User" class="text-dark">Back to Full List</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User
+            </th>
+            <th>
+                Position
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDNumber)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmploymentStartDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmploymentEndDate)
+                </td>
+
+                <td>
+                    @Html.ActionLink(
+                             "",
+                             "GetUserById",
+                             new { id = item.Id },
+                             new { @class = "fa fa-edit", title = "Edit" } ) |
+                    @Html.ActionLink(
+                             "",
+                             "DeleteUser",
+                             new { id = item.Id },
+                             new { @class = "fa fa-trash", title = "Delete" } )
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination">
+    <a class="page-link @(Model.PageIndex == 1 ? "disabled" : "")" href="?pageNumber=1&@queryParams">&laquo;&laquo;</a>
+    <a class="page-link @(Model.HasPreviousPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex - 1)&@queryParams">&laquo;</a>
+
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a class="page-link @(Model.PageIndex == i ? "active" : "")" href="?pageNumber=@i&@queryParams">@i</a>
+    }
+
+    <a class="page-link @(Model.HasNextPage ? "" : "disabled")" href="?pageNumber=@(Model.PageIndex + 1)&@queryParams">&raquo;</a>
+    <a class="page-link @(Model.PageIndex == Model.TotalPages ? "disabled" : "")" href="?pageNumber=@Model.TotalPages&@queryParams">&raquo;&raquo;</a>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <form asp-area="Admin" asp-controller="User" asp-action="RetrieveUsers">
+            <button type="submit" class="btn btn-primary">Retrieve Users</button>
+        </form>
+    </div>
+</div>

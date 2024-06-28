@@ -10,6 +10,7 @@ using DataLayer.Models;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
 using SharedDll.Enums;
+using DataLayer.Models.Contract;
 
 namespace DataLayer.Data
 {
@@ -18,7 +19,10 @@ namespace DataLayer.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<UserPosition> Positions { get; set; }
+
         public DbSet<UserRequest> Requests { get; set; }
+
+        public DbSet<UserContract> Contracts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Employee>().HasQueryFilter(user => !user.IsDeleted);
