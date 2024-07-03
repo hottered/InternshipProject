@@ -9,7 +9,5 @@ namespace ServiceLayer.Services.Interfaces
 {
     public interface IContractService
     {
-        public Task SaveContractAsync(UserContract contract);
-        public Task<byte[]> GetContractFileAsync(int id);
     }
 }

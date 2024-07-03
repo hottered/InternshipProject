@@ -21,10 +21,5 @@ namespace DataLayer.Models.Contract
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        [Required]
-        [NotMapped]
-        public IFormFile ContractPdf { get; set; }
-
-        public string ContractPdfUrl { get; set; } = string.Empty;
     }
 }

@@ -17,29 +17,6 @@ namespace ServiceLayer.Services
         {
             _contractRepository = contractRepository;   
         }
-        public async Task SaveContractAsync(UserContract contract)
-        {
-            if (contract.ContractPdf != null)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await contract.ContractPdf.CopyToAsync(memoryStream);
-
-                    contract.ContractPdfUrl = Convert.ToBase64String(memoryStream.ToArray());
-                }
-            }
-            await _contractRepository.CreateAsync(contract);
-        }
-        public async Task<byte[]> GetContractFileAsync(int id)
-        {
-            var contract = await _contractRepository.GetByIdAsync(id);
-
-            if (contract == null || string.IsNullOrEmpty(contract.ContractPdfUrl))
-            {
-                return null;
-            }
-
-            return Convert.FromBase64String(contract.ContractPdfUrl);
-        }
+        
     }
 }

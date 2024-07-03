@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace ServiceLayer.Services.Interfaces
 
         public Task<IEnumerable<string>> ListBlobsAsync();
 
-        public Task UploadFileBlobAsync(string filePath,string fileName);
+        public Task<string> UploadFileBlobAsync(IFormFile file);
 
         public Task DeleteBlobAsync(string blobName);
     }

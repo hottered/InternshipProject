@@ -31,5 +31,24 @@ namespace InternshipProject.Areas.Admin.Controllers
 
             return File(stream, "application/octet-stream", blobName);
         }
+        public IActionResult Upload()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is not selected.");
+            }
+
+            var result = await _blobService.UploadFileBlobAsync(file);
+            ViewBag.Message = "File uploaded successfully.";
+            ViewBag.Url = result;
+            return View();
+        }
     }
 }

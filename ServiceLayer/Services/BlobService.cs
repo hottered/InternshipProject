@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Http;
 using ServiceLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -38,9 +39,18 @@ namespace ServiceLayer.Services
             throw new NotImplementedException();
         }
 
-        public Task UploadFileBlobAsync(string filePath, string fileName)
+        public async Task<string> UploadFileBlobAsync(IFormFile file)
         {
-            throw new NotImplementedException();
+            var containerClient = _blobServiceClient.GetBlobContainerClient("files");
+
+            var blobClient = containerClient.GetBlobClient(file.FileName);
+
+            using (var stream = file.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+            }
+
+            return blobClient.Uri.ToString();
         }
     }
 }
