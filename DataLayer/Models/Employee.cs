@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using DataLayer.Models.Contract;
 using DataLayer.Models.Position;
 using DataLayer.Models.Request;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +36,8 @@ namespace DataLayer.Models
         public int? PositionId { get; set; } = null!;
 
         public List<UserRequest>? Request { get; set; } = new();
+
+        public UserContract? UserContract { get; set; } = null!;
 
         public DateTime EmploymentStartDate { get; set; } = DateTime.UtcNow;
 

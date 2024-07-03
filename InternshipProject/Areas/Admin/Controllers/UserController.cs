@@ -1,9 +1,12 @@
 ﻿using Contracts.Employee;
+using DataLayer.Models.Contract;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Mappers;
+using ServiceLayer.Services;
 using ServiceLayer.Services.Interfaces;
 using SharedDll;
 using SharedDll.ApiRoutes;
+using System.Diagnostics.Contracts;
 
 namespace InternshipProject.Areas.Admin.Controllers
 {
@@ -11,14 +14,21 @@ namespace InternshipProject.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly IAccountService _accountService;
+        private readonly IBlobService _blobService;
+        private readonly IContractService _contractService;
         private readonly HttpClient _httpClient;
 
         public UserController(
             IAccountService accountService,
-            HttpClient httpClient)
+            HttpClient httpClient,
+            IBlobService blobService,
+            IContractService contractService
+            )
         {
             _accountService = accountService;
             _httpClient = httpClient;
+            _blobService = blobService;
+            _contractService = contractService;
         }
 
         [Route(ApiRoutes.RetrieveUsers)]
@@ -110,6 +120,40 @@ namespace InternshipProject.Areas.Admin.Controllers
             await _accountService.DeleteUserAsync(id);
 
             return RedirectToAction(nameof(AllUsers), "User");
+        }
+
+
+        public IActionResult AddContract(int id)
+        {
+            var contractViewModel = new UserContractViewModel
+            {
+                EmployeeId = id
+            };
+
+            return View(contractViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContract(UserContractViewModel contractViewModel, IFormFile file)
+        {
+
+            if (file == null || file.Length == 0)
+            {
+                ModelState.AddModelError("ContractPdf", "File is required.");
+                return View(contractViewModel);
+            }
+
+            var result = await _blobService.UploadFileBlobAsync(file);
+
+            await _contractService.AddContractAsync(contractViewModel);
+
+            ViewBag.Message = "File uploaded successfully.";
+
+            ViewBag.Url = result;
+
+            return View();
+
+
         }
     }
 }

@@ -33,7 +33,6 @@ namespace InternshipProject.Areas.Admin.Controllers
         }
         public IActionResult Upload()
         {
-
             return View();
         }
 

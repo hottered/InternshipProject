@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLayer.Models.Contract
 {
-    public class UserContract
+    public class UserContractViewModel
     {
-        public int Id { get; set; }
+        public int EmployeeId { get; set; }
 
         public string ContractNumber { get; set; } = string.Empty;
 
@@ -20,10 +17,5 @@ namespace DataLayer.Models.Contract
         public DateTime EndDate { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
-
-        public Employee? Employee { get; set; }
-
-        public int? EmployeeId { get; set; }
-
     }
 }
