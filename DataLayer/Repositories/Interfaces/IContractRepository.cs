@@ -1,5 +1,7 @@
-﻿using DataLayer.Models.Contract;
+﻿using Contracts.Contract;
+using DataLayer.Models.Contract;
 using DataLayer.Repositories.GenericRepository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace DataLayer.Repositories.Interfaces
 {
     public interface IContractRepository : IRepository<UserContract>
     {
-        //public Task AddContractAsync(UserContract contract);
+        public Task<UserContract> GetContractByContractNumberAsync(string contractNumber,int EmployeeId);
+        public Task<List<UserContract>> GetAllUserContractsAsync(UserContractFilter filter);
+        public Task<long> GetAllUserContractsCountAsync(UserContractFilter filter);
     }
 }

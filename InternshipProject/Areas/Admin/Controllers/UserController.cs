@@ -136,23 +136,31 @@ namespace InternshipProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddContract(UserContractViewModel contractViewModel, IFormFile file)
         {
-
-            if (file == null || file.Length == 0)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("ContractPdf", "File is required.");
-                return View(contractViewModel);
+                if (file == null || file.Length == 0)
+                {
+                    ModelState.AddModelError("Contract", "File is required.");
+                    return View(contractViewModel);
+                }
+
+                var resultAddContractSql = await _contractService.AddContractAsync(contractViewModel);
+
+                if (!resultAddContractSql)
+                {
+                    ModelState.AddModelError("Contract", "Contract already exist with that number");
+
+                    return View(contractViewModel);
+                }
+
+                var result = await _blobService.UploadFileBlobAsync(file);
+
+                ViewBag.Message = "File uploaded successfully.";
+
+                ViewBag.Url = result;
             }
 
-            var result = await _blobService.UploadFileBlobAsync(file);
-
-            await _contractService.AddContractAsync(contractViewModel);
-
-            ViewBag.Message = "File uploaded successfully.";
-
-            ViewBag.Url = result;
-
             return View();
-
 
         }
     }

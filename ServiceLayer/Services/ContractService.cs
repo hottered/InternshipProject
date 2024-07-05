@@ -1,6 +1,9 @@
-﻿using DataLayer.Models.Contract;
+﻿using Contracts.Contract;
+using DataLayer.Models.Contract;
+using DataLayer.Models.Pagination;
 using DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using ServiceLayer.Mappers;
 using ServiceLayer.Services.Interfaces;
 using System;
@@ -19,9 +22,18 @@ namespace ServiceLayer.Services
             _contractRepository = contractRepository;   
         }
 
-        public async Task AddContractAsync(UserContractViewModel contract)
+        public async Task<bool> AddContractAsync(UserContractViewModel contract)
         {
-            await _contractRepository.CreateAsync(contract.ToUserContract());
+            var contractByNumber = await _contractRepository.GetContractByContractNumberAsync(contract.ContractNumber,contract.EmployeeId);
+
+            if (contractByNumber is not null)
+            {
+                return false;
+            }
+            
+            var result = await _contractRepository.CreateAsync(contract.ToUserContract());
+
+            return result is not null;
         }
 
         public Task DeleteContractAsync(int id)
@@ -29,9 +41,14 @@ namespace ServiceLayer.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<UserContract>> GetAllContractsAsync()
+        public async Task<PaginatedList<UserContract>> GetAllContractsAsync(UserContractFilter filter)
         {
-            return await _contractRepository.GetAllAsync();
+            var count = await _contractRepository.GetAllUserContractsCountAsync(filter);
+
+            var contractsQueryable = await _contractRepository.GetAllUserContractsAsync(filter);
+
+            return await PaginatedList<UserContract>.CreateAsync(contractsQueryable, count, (int)filter.PageNumber!, (int)filter.PageSize!);
+
         }
 
         public async Task<UserContract> GetContractByIdAsync(int id)

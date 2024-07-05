@@ -1,4 +1,6 @@
-﻿using DataLayer.Models.Contract;
+﻿using Contracts.Contract;
+using Contracts.Request;
+using DataLayer.Models.Contract;
 using InternshipProject.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services;
@@ -18,6 +20,15 @@ namespace InternshipProject.Areas.Admin.Controllers
         {
             _contractService = contractService;
             _blobService = blobService;
+        }
+        public async Task<IActionResult> AllUserContracts(UserContractFilter filter)
+        {
+
+            ViewData["CurrentFilter"] = filter;
+
+            var requests = await _contractService.GetAllContractsAsync(filter);
+
+            return View(nameof(AllUserContracts), requests);
         }
     }
 }
