@@ -11,6 +11,8 @@ using DataLayer.Repositories.GenericRepository.Interfaces;
 using DataLayer.Models.Request;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using DataLayer.Repositories.GenericRepository;
+using System.Configuration;
+using Azure.Storage.Blobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(
         options => options.UseSqlServer(connectionString)
     );
+
+//Cloud
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
 
 //Identity
 builder.Services.AddIdentity<Employee, IdentityRole<int>>()
@@ -57,6 +62,9 @@ builder.Services.AddScoped<IUserRequestRepository, UserRequestRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IUserPositionService, UserPositionService>();
 builder.Services.AddScoped<IUserRequestService, UserRequestService>();
+builder.Services.AddScoped<IContractRepository, ContractRepository>();
+builder.Services.AddScoped<IContractService, ContractService>();
+builder.Services.AddSingleton<IBlobService, BlobService>();
 
 //HttpClient
 builder.Services.AddHttpClient();
@@ -83,6 +91,11 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+            name: "areas",
+            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+          );
 
 app.MapControllerRoute(
     name: "default",

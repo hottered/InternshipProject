@@ -4,6 +4,7 @@ using DataLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240627101334_UploadFile")]
+    partial class UploadFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,11 +37,12 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContractPdfUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -47,10 +51,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId")
-                        .IsUnique()
-                        .HasFilter("[EmployeeId] IS NOT NULL");
 
                     b.ToTable("Contracts");
                 });
@@ -377,15 +377,6 @@ namespace DataLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Contract.UserContract", b =>
-                {
-                    b.HasOne("DataLayer.Models.Employee", "Employee")
-                        .WithOne("UserContract")
-                        .HasForeignKey("DataLayer.Models.Contract.UserContract", "EmployeeId");
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("DataLayer.Models.Employee", b =>
                 {
                     b.HasOne("DataLayer.Models.Position.UserPosition", "Position")
@@ -460,8 +451,6 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Employee", b =>
                 {
                     b.Navigation("Request");
-
-                    b.Navigation("UserContract");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Position.UserPosition", b =>

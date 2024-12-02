@@ -8,20 +8,24 @@
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="User" asp-action="AllUsers">Users</a>
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="AllUsers">Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="UserPosition" asp-action="AllUserPositions">Positions</a>
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="UserPosition" asp-action="AllUserPositions">Positions</a>
     </li>
-@*     <li class="nav-item">
-        <a class="nav-link asp-contro asp-action="AllUserRequests" asp-route-id="@userId">All requests For logged in user</a>
-        <a class="nav-link text-dark" asp-controller="UserRequest" asp-action="AllUserRequests">All Requests</a>
-    </li> *@
     <li class="nav-item">
         <a class="nav-link text-dark" asp-controller="UserRequest" asp-action="AllUserRequests">Requests</a>
     </li>
     <li >
         <a class="nav-link text-dark" asp-controller="UserRequest" asp-action="CreateUserRequest">Create request</a>
     </li>
+    <li>
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Contract" asp-action="Upload">Create Contract</a>
+    </li>
+    
+    <li>
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Contract" asp-action="AllUserContracts">Contracts</a>
+    </li>
+
 
 }
